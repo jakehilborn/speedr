@@ -23,7 +23,8 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/speedr_settings"
-            android:parentActivityName="com.jakehilborn.speedr.MainActivity" />
+            android:parentActivityName="com.jakehilborn.speedr.MainActivity"
+            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".MainService" />
     </application>
