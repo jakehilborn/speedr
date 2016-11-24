@@ -40,8 +40,7 @@ public class LimitTool {
     private HereMapsService hereMapsService;
     private Converter<ResponseBody, HereMapsResponse> hereMapsErrorConverter;
     private Subscription hereMapsSubscription;
-
-    private Toast apiError;
+    private Toast hereMapsError;
 
     public LimitTool() {
         buildOverpassService();
@@ -161,9 +160,9 @@ public class LimitTool {
                         Crashlytics.log(Log.ERROR, "Here maps error", toastText);
                         Crashlytics.logException(error);
 
-                        //TODO use a better way to show errors
-                        apiError = apiError.makeText(context, toastText, Toast.LENGTH_LONG);
-                        apiError.show();
+                        if (hereMapsError != null) hereMapsError.cancel(); //Cancel previous toast so they don't queue up
+                        hereMapsError = hereMapsError.makeText(context, toastText, Toast.LENGTH_LONG);
+                        hereMapsError.show();
                     }
                 });
     }
@@ -184,7 +183,7 @@ public class LimitTool {
     }
 
     private Double parseHereMapsLimit(Double limit, boolean isUseKph) {
-        //Round Here maps slightly inaccurate speed limit data to nearest 5mph increment
+        //Round Here maps slightly inaccurate speed limit data to nearest 5mph or 5kmh increment
         if (isUseKph) {
             Integer roundedLimit = UnitUtils.msToKphRoundToFive(limit);
             return UnitUtils.kphToMs(roundedLimit);
@@ -197,6 +196,6 @@ public class LimitTool {
     public void destroy() {
         if (overpassSubscription != null) overpassSubscription.unsubscribe();
         if (hereMapsSubscription != null) hereMapsSubscription.unsubscribe();
-        if (apiError != null) apiError.cancel();
+        if (hereMapsError != null) hereMapsError.cancel();
     }
 }

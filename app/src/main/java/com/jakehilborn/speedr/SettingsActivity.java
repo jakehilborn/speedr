@@ -2,7 +2,6 @@ package com.jakehilborn.speedr;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,11 +49,21 @@ public class SettingsActivity extends AppCompatActivity {
         openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 Prefs.isUseHereMaps(this) ? R.color.materialGrey : R.color.colorAccent
         )));
+        openStreetMapsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                limitProviderButtonHandler(false);
+            }
+        });
 //
         hereMapsButton = (AppCompatButton) findViewById(R.id.here_maps_button);
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 Prefs.isUseHereMaps(this) ? R.color.colorAccent : R.color.materialGrey
         )));
+        hereMapsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                limitProviderButtonHandler(true);
+            }
+        });
 
         speedUnitSpinner = (Spinner) findViewById(R.id.speed_unit);
         speedUnitSpinner.setSelection(Prefs.isUseKph(this) ? 1 : 0); //defaults to mph
@@ -69,16 +78,14 @@ public class SettingsActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public void limitProviderButtonOnClick(View view) {
-        boolean isUseHereMaps = (view.getId() == R.id.here_maps_button); //true if HereMaps was clicked, false if OpenStreetMaps was clicked
-
+    public void limitProviderButtonHandler(boolean isUseHereMaps) { //xml defined onClick not working on Android 4.2 so I'm using anonymous methods instead
         if (isUseHereMaps && (appIdField.getText().toString().isEmpty() || appCodeField.getText().toString().isEmpty())) {
             emptyCredentials.show();
             isUseHereMaps = false;
         }
 
         if (isUseHereMaps && !Prefs.isHereMapsTermsAccepted(this)) {
-            showHereMapsTerms(this, view);
+            showHereMapsTerms();
             isUseHereMaps = false;
         }
 
@@ -92,14 +99,14 @@ public class SettingsActivity extends AppCompatActivity {
         )));
     }
 
-    private void showHereMapsTerms(final Context context, final View view) {
+    private void showHereMapsTerms() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getResources().getText(R.string.here_maps_terms))
                 .setCancelable(true)
                 .setPositiveButton(R.string.accept_here_maps_terms_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        Prefs.setHereMapsTermsAccepted(context, true);
-                        limitProviderButtonOnClick(view); //Set limit provider now that terms have been accepted
+                        Prefs.setHereMapsTermsAccepted(SettingsActivity.this, true);
+                        limitProviderButtonHandler(true); //Set limit provider now that terms have been accepted
                     }})
                 .setNegativeButton(R.string.reject_here_maps_terms_alert_button_text, null);
         AlertDialog alert = builder.create();
