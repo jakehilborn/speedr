@@ -1,0 +1,239 @@
+<resources>
+    <string name="app_name">speedr</string>
+
+    <!-- MainActivity -->
+    <string name="no_gps_permission_toast">Location permission needed to track driving speed.</string>
+    <string name="no_network_toast">Internet needed to get speed limit data. Enable wifi or cellular data.</string>
+    <string name="play_services_error_toast">This app is not compatible with this device due to a Google Play Services error.</string>
+
+    <string name="gps_disabled_message">GPS is disabled, please enable it.</string>
+    <string name="go_to_location_settings_alert_button_text">Go to Location Settings</string>
+
+    <!-- SettingsActivity -->
+    <string name="speedr_settings">speedr settings</string>
+    <string name="here_maps_app_id_field">Here maps app id</string>
+    <string name="here_maps_app_code_field">Here maps app code</string>
+    <string name="open_street_maps_limit_provider_button_text">OPEN STREET MAPS</string>
+    <string name="here_maps_limit_provider_button_text">HERE MAPS</string>
+    <string name="enter_here_maps_credentials">Enter credentials for Here Maps</string>
+
+    <string-array name="speed_unit_options">
+        <item>mph</item>
+        <item>km/h</item>
+    </string-array>
+
+    <string name="accept_here_maps_terms_alert_button_text">Accept</string>
+    <string name="reject_here_maps_terms_alert_button_text">Reject</string>
+    <string name="here_maps_terms">
+        <b>HERE SERVICE TERMS</b>\n
+        \n
+        Effective date : 04.12.2015\n
+        \n
+        <b>1. Acceptance</b>\n
+        \n
+        These HERE Service Terms together with the Privacy Policy and all other additional terms and information that may be provided within the Service (collectively “Terms”) govern your use of the service, site, content and software (collectively the "Service"). By registering for or using the Service or any portion of it you accept the Terms.\n
+        \n
+        The Terms constitute an agreement between you and HERE Global B.V., De Run 1115, 5503 LB Veldhoven, Netherlands, including its affiliates and suppliers (collectively “HERE”), defining your and HERE’s rights and responsibilities with respect to the Service.\n
+        \n
+        <b>2. Eligibility</b>\n
+        \n
+        To use the Service, you must be at least thirteen (13) years of age. If you are under thirteen (13) years of age, or at least thirteen (13) years of age but a minor where you live, you must have your parent or legal guardian accept your registration on your behalf and approve your use of the Service. Anyone completing the registration must be legally competent.\n
+        \n
+        <b>3. Registration and Termination</b>\n
+        \n
+        To use a Service you may need to register and create a HERE account with username and a password. You may need to provide us with certain personal and other information. HERE may verify your email address before account can be used.\n
+        \n
+        You agree to provide truthful and complete information when you register for the Service and to keep that information updated. You must take due care to protect your username and password against misuse by others and promptly notify HERE about any misuse. You, and your parent or legal guardian if you are a minor, are personally responsible for any use of the Service.\n
+        \n
+        You may terminate your registration if you no longer wish to use the Service. After termination, you will no longer have access to the Service. HERE may terminate your registration or restrict your access to certain parts of the Service if HERE reasonably believes that you have breached the Terms or with prior notice if you have not signed into the Service with your username in the past six (6) months.\n
+        \n
+        Except as set forth in the Privacy Policy, HERE is not responsible for any removal or loss of the information or content you have submitted to the Service. When information or content is removed from the Service by either you or HERE, traces or copies may still remain elsewhere.\n
+        \n
+        <b>4. Licenses</b>\n
+        \n
+        HERE grants you a non-exclusive, non-transferable license, revocable at any time at HERE’s sole discretion, to access and use the Service strictly in accordance with the Terms. Use of the Service does not grant you any intellectual property rights in or to any information or content in the Service.\n
+        \n
+        As part of the Service, HERE may provide you with content developed by HERE or its licensors (“Content”). HERE grants you a non-exclusive and perpetual license to use Content for the purpose it is intended, unless otherwise defined in the applicable Terms or the purchase order. Some Content may only be available to residents of certain geographical areas. You are bound by any restrictions applicable to specific Content you obtain through the Service. Any license acquired to third-party Content is a binding agreement between you and the third-party Content provider. You have only the rights to the Content which are expressly granted here.\n
+        \n
+        As part of the Service, HERE may provide you with certain software developed by HERE or, its licensors (“Software”). Your use of Software may be subject to separate terms and conditions that you must accept before using the Software. If there are no separate terms and conditions applicable to such Software, the following terms apply: HERE grants to you a limited, non-exclusive, non-transferable right to install and use the Software on your computer and/or mobile device. You may not copy the Software, except to make a single archival backup copy. You may not distribute, transfer the right to use, modify, translate, reproduce, resell, sublicense, rent, lease, reverse engineer, or otherwise attempt to discover the source code of or make derivative works of the Software. For open source licensed software, applicable open source license terms apply.\n
+        \n
+        The Software maybe subject to export controls under the U.S. Export Administration Regulations and other import or export control regulations. You agree to strictly comply with all applicable import and export regulations and acknowledge that you have the responsibility to obtain licenses to export, re-export, transfer, or import such Software.\n
+        \n
+        You may be able to submit information or content (“Material”) to the Service. HERE does not claim ownership in your Material. Your submission of Material does not transfer ownership of rights of the Material to HERE. HERE is only transmitting the Material and is not responsible for editorial control over it. By submitting Material to the Service you grant HERE a world-wide, non-exclusive, sub-licensable, assignable, fully paid-up, royalty-free, perpetual and irrevocable license to use, copy, publicly perform, display, distribute in any media and modify the Material to incorporate the Material into other works, and to grant similar sublicenses to the extent necessary for HERE to provide the Service. You may be able to adjust this grant in the privacy and other settings of the Service.\n
+        \n
+        You are solely responsible for taking backup copies of the data you store on the Service, including Content you upload. If the Service is discontinued or canceled, HERE may permanently delete your data. HERE has no obligation to return data to you after the Service is discontinued or canceled.\n
+        \n
+        <b>5. Using the Service</b>\n
+        \n
+        You agree to:\n
+        \n
+        ·         Comply with applicable laws, the Terms and good manners;\n
+        \n
+        ·         Use the Service only for your personal, non-commercial purposes;\n
+        \n
+        ·         Not submit unlawful, offensive, inaccurate, misleading, abusive, pornographic, harassing, libelous or otherwise inappropriate Material;\n
+        \n
+        ·         Obtain any consents, permission or licenses that may be legally required for you to submit any Material;\n
+        \n
+        ·         Respect the privacy of others;\n
+        \n
+        ·         Not distribute or post spam, unreasonably large files, chain letters, pyramid schemes, viruses; or\n
+        \n
+        ·         Not use any other technologies or initiate other activities that may harm the Service, or the interest or property of the Service users.\n
+        \n
+        ·         Not to use any automated systems or means to access, acquire, copy or monitor any part of the service.\n
+        \n
+        ·         Be responsible for the consequences related to the Material that you post\n
+        \n
+        HERE may but has no obligation to:\n
+        \n
+        ·         Monitor or moderate any Content or Material;\n
+        \n
+        ·         Remove any Material from the Service; and\n
+        \n
+        ·         Restrict access to any part of the Service at any time in its sole discretion.\n
+        \n
+        <b>6. Content</b>\n
+        \n
+        Before downloading or accessing any Content, please check whether the Content which you wish to access is restricted by age or marked as potentially ‘offensive’ or ‘explicit’. HERE shall not be responsible for any claims or offense caused or suffered by you accessing such Content.\n
+        \n
+        You agree:\n
+        \n
+        ·         To use the Content only for your personal, non-commercial purposes;\n
+        \n
+        ·         To use the Content in accordance with the restrictions set out in the applicable laws, additional terms, guidelines and policies or on the product pages that apply to that particular piece of the Content;\n
+        \n
+        ·         Not to make copies, give, sell, resell, loan, rent, offer, broadcast, send, distribute, transfer, communicate to the public, reproduce, modify, display, perform, commercially exploit or make the Content available unless otherwise authorized in the applicable Terms and to advise HERE promptly of any such unauthorized use;\n
+        \n
+        ·         Not to remove, circumvent, reverse engineer, decrypt, or otherwise alter or interfere with any applicable usage rules or attempt to circumvent digital rights management or copy protection features associated with the Content or any other technologies used to control the access to or use of the Content or its identifying information;\n
+        \n
+        ·         Not to use any automated systems or means, except for those provided by us, for the selection or downloading of the Content;\n
+        \n
+        ·         Not to give out your password or otherwise allow other people to access the Content. The restrictions on copying that apply to applicable media also apply to the Content accessed as part of this Service.\n
+        \n
+        The Content is owned and/or controlled by HERE and/or its respective licensors and is protected by intellectual property laws. The third party Content provider is solely responsible for any Content it provides, any warranties to the extent that such warranties have not been disclaimed and for any claims you may have relating to that Content or your use of that Content. However, HERE may enforce the third party Content license terms against you as a third party beneficiary of those terms. The third party Content providers are third-party beneficiaries under these Terms and may enforce the provisions that directly concern the Content in which they have rights. HERE may be acting as an agent for third party Content provider in providing the Content to you. HERE is not a party to the transaction between you and the third party Content provider for such Content.\n
+        \n
+        <b>7. Allegations of Copyright Infringement</b>\n
+        \n
+        You may notify HERE of copyright infringement on the Service by providing notice (a) by email with “Copyright Notification” in the subject line to copyright.notices@HERE.com, (b) by a document titled “Copyright Notification” mailed to HERE North America LLC, Attn: Copyright Agent, 425 W. Randolph Street, Chicago, Illinois 60606, USA or (&#169;) via the online form, if available. Your notice must:\n
+        \n
+        (1) identify the original copyrighted work you claim is infringed; \n
+        (2) identify the content on the Service that you claim is infringing the copyrighted work. Please provide enough detail for HERE to locate the allegedly infringing content on the Service;\n
+        (3) provide your contact information, including your full name, mailing address, telephone number, and email address, if available;\n
+        (4) provide a statement that you have a good faith belief that the use of the content in the manner complained of is not authorized by the copyright owner, its agent, or the law;\n
+        (5) provide this statement: "I swear, under penalty of perjury, that the information in this notification and complaint is accurate and that I am the copyright owner, or am authorized to act on behalf of the copyright owner of an exclusive right that is infringed."; and\n
+        (6) provide your signature, as applicable.\n
+        \n
+        <b>8. Notices</b>\n
+        \n
+        HERE may post notices within the Service. HERE may also send you notices about products and Services to the email address or telephone number you have provided to us. You are deemed to have received such notices at the latest within seven (7) days from HERE sending or posting those. Your continued use of the Services constitutes your receipt of all notices regardless of delivery method.\n
+        \n
+        <b>9. Fees</b>\n
+        \n
+        Your use of the Service may be or may become subject to charges.\n
+        \n
+        Any fees charged by HERE will be announced separately in connection with the Service. \n
+        \n
+        Use of the Service may involve transmission of data through your service provider’s network. Prices listed within the Service do not include possible data transmission, text message, voice or other service provision charges by your network service provider. \n
+        HERE assumes no responsibility for the payment of any charges of your service providers.\n
+        \n
+        <b>10. Order and Payment Terms</b>\n
+        \n
+        "Order" shall mean the selection of payable Content and/or subscription to Content offered by HERE and available in the Service and submission of payment method, as well as submitting the order by selecting the "buy", "ok", "I accept" or other similar confirmation of acceptance in the order flow or providing other indication of acceptance terms that are presented to you in the order flow.\n
+        \n
+        To place an Order within the Service, you must have reached the age of legal competence according to the applicable legislation. If you have not reached the age of legal competence, you may place Orders only with the prior consent of your parent or legal guardian.\n
+        \n
+        You agree that all Orders shall be legally valid and binding. All Orders are subject to acceptance by HERE.\n
+        \n
+        You may pay by credit or debit card, network service provider billing, or other payment methods if available.\n
+        \n
+        Your credit or debit card must have a billing address in the country where the Content is offered by the Service. HERE will charge your credit card or debit your bank account within a reasonable time after you have made your Order. All credit card payments are subject to validation checks and authorization by the card issuer.\n
+        \n
+        If you choose network service provider billing, charges will appear on your mobile phone bill or be deducted from your prepaid account if it is a prepaid account. Some network service providers may subject your usage of the Service to additional terms and conditions including placing limits on the amount of charges possible with network service provider billing. Charges in excess of network service provider limits or account balance may be rejected.\n
+        \n
+        You agree to pay the charges related to your Order, to ensure that the instrument of payment is valid at the time of the Order, that you are the rightful holder of the instrument and that the instrument is used within its credit limits.\n
+        \n
+        The Content that is delivered is licensed to you. You agree to use such Content solely as permitted in these Terms and in any additional terms that you may be presented in the order flow.\n
+        \n
+        The Service may offer subscriptions. You authorize the Service to place a periodical charge during the period of the subscription. The Service may also offer a trial period. If your Order involves a trial period (also known as try-and-buy), you may be charged when the trial period expires, unless you cancel in accordance with the subscription/trial terms.\n
+        \n
+        The prices in the Service may change from time to time. Prices include applicable taxes in effect at the time of your transaction, unless otherwise stated. There may be instances where you incur additional charges from your bank or credit card provider based on currency conversion rates used and/or additional fees assessed. HERE assumes no responsibility for the payment of bank or any other third party service fees or charges.\n
+        \n
+        <b>11. Cancellations and Refunds</b>\n
+        \n
+        You agree to the electronic delivery of Content being initiated concurrently with the placement of your Order. You will not be able to cancel your Order once it has been processed. The nature of the Content is such that it cannot be returned.\n
+        \n
+        In the event that after your Order you discover and promptly inform HERE within 48 hours that (a) the Content you have ordered is faulty; (b) the Content HERE delivers to you does not match the description of the Content you ordered via the Service; or (&#169;) technical problems delayed or prevented delivery of your Content or accidental multiple orders caused by such technical problems, your sole and exclusive remedy with respect to such Content will be either replacement of such Content, or refund of the price paid for such Content, as determined solely by HERE. Otherwise, no refunds are available. If you encounter any of the above issues, please contact HERE Customer Support.\n
+        \n
+        Please note that HERE may not be able to process your customer support request if you are unable to provide your transaction ID, which is provided to you by HERE following your Order from the Service. HERE may only process refunds for Content where the total price is above the monetary limit stipulated in applicable local legislation.\n
+        \n
+        <b>12. Feedback to HERE</b>\n
+        \n
+        By submitting any ideas, feedback and/or proposals ("Feedback") to HERE through the Service or other means, you acknowledge and agree that: (1) HERE may have similar development ideas to the Feedback; (2) your Feedback does not contain confidential or proprietary information of you or any third party; (3) HERE is not under any obligation of confidentiality with respect to the Feedback; (4) HERE may freely use, distribute, exploit and further develop and modify Feedback for any purpose; and (5) you are not entitled to any compensation of any kind from HERE.\n
+        \n
+        <b>13. Social Activities and Location Sharing</b>\n
+        \n
+        You may use features in the Service to share your location, status, content, Materials or personal information or to interact with other users, sites and services. By using these features you agree that HERE may use and provide that information to other services and persons with whom you choose to interact or share this information. Users of these services and persons, such as your contacts, may see your location, status and/or personal information. In using these features you agree not to share information, Content or Material or to link to any service or site that: (a) contains content or other material that is illegal or inappropriate; or (b) exploits intellectual property rights without authorization or encourages users to piracy. Any interaction does not involve HERE and is solely between you and the other user(s).\n
+        \n
+        <b>14. Availability and Technical Requirements</b>\n
+        \n
+        The availability of Content and the Service may vary and is subject to HERE’s sole discretion. HERE expressly disclaims any representation or warranty that any particular Content or Service will be available. The Service may not be available in all countries and may be provided only in selected languages. The Service, operations and some features may also be dependent on the network, compatibility of the devices used and the content formats supported.\n
+        \n
+        To access the Service, you may need to download a specific piece of software developed by HERE or by another party.\n
+        \n
+        HERE may, in its sole discretion, change, correct or discontinue the Service in whole or in part. The Service may not be available during maintenance breaks and other times. To ensure you have the latest HERE device software and applications, your device may automatically check for the availability of software updates from HERE. If any are detected you will be prompted to approve the installation. You may disable automatic checking for updates through settings in your device. You may also install software through available software update channels. If HERE considers a Software update to be important or critical you may not continue using the previous version of the Software. HERE may prevent your use of the previous version of the Software or Service until you install the update.\n
+        \n
+        HERE may disable any Content or Software contained in your Service account for any reason and remove any Content or Software and/or disable copies of any application on your device in order to protect the Service, application providers, wireless carriers over whose network you access the service or any other affected or potentially affected parties.\n
+        \n
+        A particular service may be a pre-release version, for example a beta release, and may not work in the way a final version works. HERE may significantly change any version of Service or Software or decide not to release a final version.\n
+        \n
+        <b>15. Links to Third Party Sites and Content</b>\n
+        \n
+        HERE may include access to sites and services on the Internet or preloaded clients that enable you to interact with sites and services that are owned or operated by third parties and that are not part of the Service. You must review and agree to the terms and conditions of these sites or services before using these sites or services.\n
+        \n
+        HERE has no control over the third party content, sites or services and assumes no responsibility for services provided or material created or published on these third-party sites or services. A link to a third-party site does not imply that HERE endorses the site or the products or services referenced in the site.\n
+        \n
+        In addition, you and other users may create content and links to content within the Service that has not otherwise been submitted to the Service. HERE is not responsible for this type of content or links.\n
+        \n
+        <b>16. Advertisements</b>\n
+        \n
+        The Service may include advertisements. Advertisements may be targeted to the content or information stored on the Service, queries made through the Service, or other information.\n
+        \n
+        <b>17. Personal Data</b>\n
+        \n
+        The Privacy Policy and any additional privacy information made available to you govern the use of your personal data.\n
+        \n
+        <b>18. Limitation of Liability</b>\n
+        \n
+        The Service is provided on “AS IS” and “AS AVAILABLE” basis. HERE does not warrant that the Service will be uninterrupted or error or virus-free. No warranty of any kind, either express or implied, including but not limited to warranties of title, non-infringement, merchantability, or fitness for a particular purpose, is made in relation to the availability, accuracy, reliability, information or content of the Service. You expressly agree and acknowledge that the use of the Service is at your sole risk and that you may be exposed to content from various sources.\n
+        \n
+        Except for liability for death or personal injury caused by its gross negligence or intentional misconduct, HERE is not liable for any direct damages caused by your use or inability to use the Service. In no case will HERE be liable for any indirect, incidental, punitive or consequential damages resulting from your use or inability to use the Service.\n
+        \n
+        <b>19. Indemnification</b>\n
+        \n
+        You agree to defend and indemnify HERE from and against all third party claims and all liabilities, assessments, losses, costs or damages resulting from or arising out of (i) your breach of the Terms, (ii) your infringement or violation of any intellectual property rights, other rights or privacy of a third party, or (iii) misuse of the Service by a third party where the misuse was made possible by your failure to take reasonable measures to protect your username and password against misuse.\n
+        \n
+        <b>20. Miscellaneous</b>\n
+        <b>20.1 Choice of Law</b>\n
+        \n
+        The Terms are governed by the laws of the Netherlands without regard to its conflicts of law provisions.\n
+        \n
+        <b>20.2 Validity</b>\n
+        \n
+        The Terms neither exclude nor limit any of your mandatory rights in your country of residence that cannot by law be waived. If a provision of the Terms is found to be invalid, the remaining provisions will not be affected and the invalid provision will be replaced with a valid provision that comes closest to the result and purpose of the Terms. In the event one or more provisions of these Terms are not relevant to your use of the Service, it shall not impact the validity or enforceability of any other provision of the Terms or the Terms as a whole. If there is any conflict between these HERE Service Terms and the Privacy Policy, the provisions of these HERE Service Terms prevail. The provisions of the Terms that are intended to survive termination of your registration remain valid after termination.\n
+        \n
+        <b>20.3 Changes in Terms</b>\n
+        \n
+        HERE may modify the Terms at any time without prior notice. If the Terms are changed in a material, adverse way, HERE will provide a separate notice advising of the change.\n
+        \n
+        You are responsible for regularly reviewing the Terms. Your continued use of the Service constitutes your consent to any changes and modification.\n
+        \n
+        <b>21. Intellectual Property</b>\n
+        \n
+        The Service, Content and Software are protected under international copyright laws. HERE claims copyrights in its Service, Content, and Software to the maximum extent of the law. Subject to the Terms, HERE retains all right, title and interest in the Service, its Content, the Software and in all other HERE products, software and other properties provided to you or used by you through the Service.\n
+        \n
+        <b>22. Assignment</b>\n
+        \n
+        HERE may assign its rights and obligations under these Terms to its corporate parent, its subsidiaries, or to any company under common control with HERE. Additionally, HERE may assign its rights and obligations under these Terms to a third party in connection with a merger, acquisition, sale of assets, by operation of law or otherwise.
+    </string>
+</resources>

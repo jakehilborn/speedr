@@ -1,0 +1,20 @@
+# IDE #
+#######
+.idea/
+local.properties
+*.iml
+
+# Generated files #
+###################
+*.apk
+.gradle/
+build/
+bin/
+
+# Others #
+##########
+*.log
+*.DS_Store
+*.jks
+fabric.properties
+
