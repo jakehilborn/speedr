@@ -9,7 +9,6 @@ import android.content.res.ColorStateList;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -119,7 +118,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                         @Override
                         @SuppressWarnings("MissingPermission")
-                        public void onConnected(@Nullable Bundle bundle) {
+                        public void onConnected(Bundle bundle) {
                             String uri = "http://product.itoworld.com/map/124?lat=";
                             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                             if (lastLocation != null) {

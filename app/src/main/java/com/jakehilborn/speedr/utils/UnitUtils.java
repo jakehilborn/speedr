@@ -4,13 +4,13 @@ import android.content.Context;
 
 public class UnitUtils {
 
-    public static Integer msToMph(Double ms) { //meters per second to miles per hour
+    public static Integer msToMph(Double ms) {
         if (ms == null) return null;
 
         return (int) Math.round(ms * 2.23694);
     }
 
-    public static Integer msToKph(Double ms) { //meters per second to miles per hour
+    public static Integer msToKph(Double ms) {
         if (ms == null) return null;
 
         return (int) Math.round(ms * 3.6);
