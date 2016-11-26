@@ -13,7 +13,9 @@ import android.content.res.ColorStateList;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -27,7 +29,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.jakehilborn.speedr.utils.Prefs;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         styleStartStopButton(isMainServiceRunning());
-        ((TextView) findViewById(R.id.limit_provider)).setText(Prefs.isUseHereMaps(this) ? "Here" : "OpenStreetMaps");
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MainService.BROADCAST));
     }
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 Double diff = intent.getDoubleExtra(Constants.TIME_DIFF, Constants.NO_VALUE);
 
                 if (serviceStopped) {
-                    ((TextView) findViewById(R.id.current_speed)).setText("Current speed (mph): ");
+                    ((TextView) findViewById(R.id.current_speed)).setText("00m 00.0s");
                     ((TextView) findViewById(R.id.current_limit)).setText("Current limit (mph): ");
                 } else {
                     if (speed != Constants.NO_VALUE) ((TextView) findViewById(R.id.current_speed)).setText("Current speed (mph): " + speed);
@@ -155,16 +155,26 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean checkGPSPrereq() {
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            showNoGPSAlert();
-            return false;
+        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            return true;
         }
-        return true;
+
+        //Checking if GPS is enabled is spotty on some API levels (18) and some devices. Checking again in case of false negative.
+        String networkList = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if (networkList != null && networkList.contains("gps")) {
+            return true;
+        }
+
+        showNoGPSAlert();
+        return false;
     }
 
     private void showNoGPSAlert() {
+        int messageRef = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ?
+                R.string.gps_disabled_message_4_4up : R.string.gps_disabled_message_4_3down;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.gps_disabled_message)
+        builder.setMessage(messageRef)
                 .setCancelable(true)
                 .setPositiveButton(R.string.go_to_location_settings_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {

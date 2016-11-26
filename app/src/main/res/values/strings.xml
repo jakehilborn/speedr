@@ -6,8 +6,10 @@
     <string name="no_network_toast">Internet needed to get speed limit data. Enable wifi or cellular data.</string>
     <string name="play_services_error_toast">This app is not compatible with this device due to a Google Play Services error.</string>
 
-    <string name="gps_disabled_message">GPS is disabled, please enable it.</string>
+    <string name="gps_disabled_message_4_3down">Please enable <b>GPS satellites</b> in location settings.</string>
+    <string name="gps_disabled_message_4_4up">Please change location mode to <b>Device only</b> or <b>High accuracy</b> in settings.</string>
     <string name="go_to_location_settings_alert_button_text">Go to Location Settings</string>
+
 
     <!-- SettingsActivity -->
     <string name="speedr_settings">speedr settings</string>
