@@ -81,7 +81,7 @@ public class MainService extends Service {
                     @SuppressWarnings("MissingPermission") //Location permission is granted before the MainService is started
                     public void onConnected(@Nullable Bundle bundle) {
                         LocationRequest locationRequest = new LocationRequest();
-                        locationRequest.setInterval(1000);
+                        locationRequest.setInterval(1000); //Request GPS location every 1 second
                         locationRequest.setFastestInterval(0);
                         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationListener);

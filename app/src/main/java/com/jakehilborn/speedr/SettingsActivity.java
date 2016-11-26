@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showHereMapsTerms() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getText(R.string.here_maps_terms))
+        builder.setMessage(R.string.here_maps_terms)
                 .setCancelable(true)
                 .setPositiveButton(R.string.accept_here_maps_terms_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
