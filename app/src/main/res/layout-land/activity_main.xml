@@ -2,96 +2,23 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
-    <!-- All spacing is prepended to the top or left of each element -->
+    <!-- All spacing is prepended to the top of each element -->
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <TextView android:id="@+id/time_diff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:textSize="30dp"
         android:layout_gravity="center"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:text="1"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:typeface="sans"
-            android:textStyle="normal"
-            android:textSize="10dp"
-            android:text="h"
-            />
-
-        <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="10dp"
-              android:typeface="monospace"
-              android:textStyle="bold"
-              android:textSize="30dp"
-              android:text="13"
-            />
-
-        <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:typeface="sans"
-              android:textStyle="normal"
-              android:textSize="10dp"
-              android:text="m"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:text="22"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:typeface="sans"
-            android:textStyle="normal"
-            android:textSize="30dp"
-            android:text="."
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:text="7"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:typeface="sans"
-            android:textStyle="normal"
-            android:textSize="10dp"
-            android:text="s"
-            />
-
-    </LinearLayout>
+        android:text="00h 00m 00.0s"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -108,18 +35,18 @@
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorPrimary" />
 
     <TextView android:id="@+id/current_limit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:typeface="monospace"
         android:textStyle="bold"
         android:textSize="20dp"
-        android:text="5 mph"
+        android:text=" 3 mph"
         />
 
     <TextView
@@ -135,7 +62,7 @@
     <TextView android:id="@+id/current_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:typeface="monospace"
         android:textStyle="bold"
