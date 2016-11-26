@@ -1,13 +1,12 @@
 package com.jakehilborn.speedr;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.location.LocationManager;
@@ -15,11 +14,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,10 +29,12 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainService.Callback {
 
+    private static final int BIND_IF_SERVICE_RUNNING = 0;
     private static final int REQUEST_LOCATION = 1;
-    private BroadcastReceiver broadcastReceiver;
+
+    private MainService mainService;
 
     private Toast noGPSPermissionToast;
     private Toast noNetworkToast;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        broadcastReceiver = initializeBroadcastReceiver();
-
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
@@ -54,8 +53,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        styleStartStopButton(isMainServiceRunning());
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MainService.BROADCAST));
+        bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
+    }
+
+    private ServiceConnection mainServiceConn = new ServiceConnection() { //binder boilerplate
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            styleStartStopButton(true); //Sets color when MainActivity is re-opened while MainService is running
+            MainService.LocalBinder binder = (MainService.LocalBinder) service;
+            mainService = binder.getService();
+            mainService.setCallback(MainActivity.this);
+        }
+
+        @Override //Only called on service crashes, not called onDestroy or on unbindService
+        public void onServiceDisconnected(ComponentName className) {
+            mainService = null;
+        }
+    };
+
+    @Override
+    public void onStatsUpdate(int test) {
+        ((TextView) findViewById(R.id.current_speed)).setText("test: " + test);
     }
 
     @Override
@@ -71,59 +89,31 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private BroadcastReceiver initializeBroadcastReceiver() {
-        return new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                boolean serviceStopped = intent.getBooleanExtra(Constants.SERVICE_STOPPED, false);
-                int speed = intent.getIntExtra(Constants.CURRENT_SPEED, Constants.NO_VALUE);
-                int limit = intent.getIntExtra(Constants.CURRENT_LIMIT, Constants.NO_VALUE);
-                Double diff = intent.getDoubleExtra(Constants.TIME_DIFF, Constants.NO_VALUE);
-
-                if (serviceStopped) {
-                    ((TextView) findViewById(R.id.current_speed)).setText("00m 00.0s");
-                    ((TextView) findViewById(R.id.current_limit)).setText("Current limit (mph): ");
-                } else {
-                    if (speed != Constants.NO_VALUE) ((TextView) findViewById(R.id.current_speed)).setText("Current speed (mph): " + speed);
-                    if (limit != Constants.NO_VALUE) ((TextView) findViewById(R.id.current_limit)).setText("Current limit (mph): " + limit);
-                    if (diff != Constants.NO_VALUE) ((TextView) findViewById(R.id.time_diff)).setText("Time difference (s): " + diff);
-                }
-            }
-        };
-    }
-
-    private boolean isMainServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (MainService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void startStopButtonOnClick(View view) {
-        if (isMainServiceRunning()) {
-            stopMainService();
-        } else {
+        if (mainService == null) {
             startMainService();
+        } else {
+            stopMainService();
         }
     }
 
     private void startMainService() {
         if (requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq() && checkPlayServicesPrereq()) {
-            startService(new Intent(getApplicationContext(), MainService.class));
             styleStartStopButton(true);
+            startService(new Intent(this, MainService.class));
+            bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
         }
     }
 
     private void stopMainService() {
-        stopService(new Intent(getApplicationContext(), MainService.class));
         styleStartStopButton(false);
+        unbindService(mainServiceConn);
+        stopService(new Intent(this, MainService.class));
+        mainService = null;
     }
 
-    private void styleStartStopButton(boolean started) {
-        if (started) {
+    private void styleStartStopButton(boolean start) {
+        if (start) {
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.materialRed))); //Only solution I've found to be compatible with Android 4.2
             ((FloatingActionButton) findViewById(R.id.start_stop))
@@ -215,7 +205,8 @@ public class MainActivity extends AppCompatActivity {
         noNetworkToast.cancel();
         playServicesErrorToast.cancel();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        if (mainService != null) unbindService(mainServiceConn);
+
         super.onStop();
     }
 }

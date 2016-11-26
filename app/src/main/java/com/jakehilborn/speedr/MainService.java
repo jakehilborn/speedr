@@ -6,12 +6,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -24,9 +25,10 @@ import com.google.android.gms.location.LocationServices;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
+//MainService may run on the main thread shared by the UI. The only long running operations MainService does are network
+//calls. These calls are all async so there is no blocking. Using Service instead of IntentService for simplicity sake.
 public class MainService extends Service {
 
-    public static final String BROADCAST = MainService.class.getName() + "Broadcast";
     private static final int NOTIFICATION_ID = 1;
     private NotificationManager notificationManager;
     private NotificationCompat.Builder notificationBuilder;
@@ -37,9 +39,30 @@ public class MainService extends Service {
     private Stats stats;
     private LimitTool limitTool;
 
-    public IBinder onBind(Intent intent) {
-        return null; //Using LocalBroadcasts instead of callbacks so no need to bind to MainActivity
+    Callback callback;
+
+    //Binder for MainActivity to poll data from MainService
+    private final IBinder binder = new LocalBinder();
+    public class LocalBinder extends Binder {
+        MainService getService() {
+            return MainService.this;
+        }
     }
+
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
+    //Callback for MainService to push data to MainActivity
+    public interface Callback {
+        void onStatsUpdate(int test);
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {
@@ -79,7 +102,7 @@ public class MainService extends Service {
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     @SuppressWarnings("MissingPermission") //Location permission is granted before the MainService is started
-                    public void onConnected(@Nullable Bundle bundle) {
+                    public void onConnected(Bundle bundle) {
                         LocationRequest locationRequest = new LocationRequest();
                         locationRequest.setInterval(1000); //Request GPS location every 1 second
                         locationRequest.setFastestInterval(0);
@@ -102,7 +125,7 @@ public class MainService extends Service {
 
         googleApiClient.connect();
 
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     private void handleLocationChange(Location location) {
@@ -118,16 +141,16 @@ public class MainService extends Service {
         int currentLimit;
         if (Prefs.isUseKph(this)) {
             currentSpeed = UnitUtils.msToKph(stats.getSpeed());
-            currentLimit = stats.getLimit() == null ? Constants.NO_VALUE : UnitUtils.msToKphRoundToFive(stats.getLimit());
+            currentLimit = stats.getLimit() == null ? -1 : UnitUtils.msToKphRoundToFive(stats.getLimit());
         } else { //mph
             currentSpeed = UnitUtils.msToMph(stats.getSpeed());
-            currentLimit = stats.getLimit() == null ? Constants.NO_VALUE : UnitUtils.msToMphRoundToFive(stats.getLimit());
+            currentLimit = stats.getLimit() == null ? -1 : UnitUtils.msToMphRoundToFive(stats.getLimit());
         }
 
         Double timeDiff = UnitUtils.nanoToSeconds(stats.getTimeDiff());
 
         updateNotification(currentSpeed, currentLimit, timeDiff);
-        updateActivity(currentSpeed, currentLimit, timeDiff);
+        updateActivity();
     }
 
     private void updateNotification(int currentSpeed, int currentLimit, Double timeDiff) {
@@ -145,27 +168,18 @@ public class MainService extends Service {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private void updateActivity(int currentSpeed, int currentLimit, Double timeDiff) {
-        Intent intent = new Intent(BROADCAST);
-        intent.putExtra(Constants.CURRENT_SPEED, currentSpeed);
-        intent.putExtra(Constants.CURRENT_LIMIT, currentLimit);
-        intent.putExtra(Constants.TIME_DIFF, timeDiff);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
-
-    private void notifyMainActivityThatServiceStopped() {
-        Intent intent = new Intent(BROADCAST);
-        intent.putExtra(Constants.SERVICE_STOPPED, true);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    private void updateActivity() {
+        handler.post(new Runnable() {
+            public void run() {
+                callback.onStatsUpdate(0);
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         Crashlytics.log(Log.INFO, "MainService", "onDestroy() called");
         notificationManager.cancel(NOTIFICATION_ID);
-        notifyMainActivityThatServiceStopped();
 
         limitTool.destroy();
 
@@ -174,3 +188,4 @@ public class MainService extends Service {
         super.onDestroy();
     }
 }
+
