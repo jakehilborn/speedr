@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.jakehilborn.speedr.utils.Prefs;
+import com.jakehilborn.speedr.utils.UnitUtils;
 
 public class MainActivity extends AppCompatActivity implements MainService.Callback {
 
@@ -35,6 +37,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private static final int REQUEST_LOCATION = 1;
 
     private MainService mainService;
+
+    private TextView speed;
+    private TextView speedUnit;
+    private TextView limit;
+    private TextView limitUnit;
+    private TextView timeDiffH;
+    private TextView timeDiffM;
+    private TextView timeDiffS;
+    private TextView timeDiffS10th;
 
     private Toast noGPSPermissionToast;
     private Toast noNetworkToast;
@@ -45,6 +56,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        speed = (TextView) findViewById(R.id.speed);
+        speedUnit = (TextView) findViewById(R.id.speed_unit);
+        limit = (TextView) findViewById(R.id.limit);
+        limitUnit = (TextView) findViewById(R.id.limit_unit);
+        timeDiffH = (TextView) findViewById(R.id.time_diff_h);
+        timeDiffM = (TextView) findViewById(R.id.time_diff_m);
+        timeDiffS = (TextView) findViewById(R.id.time_diff_s);
+        timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
+
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
@@ -53,6 +73,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (Prefs.isUseKph(this)) {
+            speedUnit.setText(R.string.kmh);
+            limitUnit.setText(R.string.kmh);
+        } else {
+            speedUnit.setText(R.string.mph);
+            limitUnit.setText(R.string.mph);
+        }
+
         bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
     }
 
@@ -80,9 +109,14 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void setStatsInUI(Stats stats) {
-        if (stats.getSpeed() != null) ((TextView) findViewById(R.id.current_speed)).setText(String.valueOf(stats.getSpeed()));
-        if (stats.getLimit() != null) ((TextView) findViewById(R.id.current_limit)).setText(String.valueOf(stats.getLimit()));
-        if (stats.getTimeDiff() != null) ((TextView) findViewById(R.id.current_diff)).setText(String.valueOf(stats.getTimeDiff()));
+        if (stats.getSpeed() != null) speed.setText(String.valueOf(stats.getSpeed()));
+        if (stats.getLimit() != null) limit.setText(String.valueOf(stats.getLimit()));
+        if (stats.getTimeDiff() != null) {
+            timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(stats.getTimeDiff())));
+            timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(stats.getTimeDiff())));
+            timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
+            timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(stats.getTimeDiff())));
+        }
     }
 
     @Override

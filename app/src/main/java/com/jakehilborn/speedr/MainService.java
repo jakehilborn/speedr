@@ -144,28 +144,41 @@ public class MainService extends Service {
     private Stats buildStats() {
         Stats stats = new Stats();
         if (Prefs.isUseKph(this)) {
+            stats.setUseKph(true);
             stats.setSpeed(UnitUtils.msToKph(statsCalculator.getSpeed()));
-            stats.setLimit(statsCalculator.getLimit() == null ? -1 : UnitUtils.msToKphRoundToFive(statsCalculator.getLimit()));
+            stats.setLimit(UnitUtils.msToKphRoundToFive(statsCalculator.getLimit()));
         } else { //mph
+            stats.setUseKph(false);
             stats.setSpeed(UnitUtils.msToMph(statsCalculator.getSpeed()));
-            stats.setLimit(statsCalculator.getLimit() == null ? -1 : UnitUtils.msToMphRoundToFive(statsCalculator.getLimit()));
+            stats.setLimit(UnitUtils.msToMphRoundToFive(statsCalculator.getLimit()));
         }
-        stats.setTimeDiff(UnitUtils.nanoToSeconds(statsCalculator.getTimeDiff()));
+        stats.setTimeDiff(statsCalculator.getTimeDiff());
 
         return stats;
     }
 
     private void updateNotification(Stats stats) {
-        String speedPad = "  ";
-        if (stats.getSpeed() >= 10) speedPad = " ";
-        if (stats.getSpeed() >= 100) speedPad = ""; //Assumes currentSpeed won't exceed 999
-        String limitPad = "  ";
-        if (stats.getLimit() >= 10) limitPad = " ";
-        if (stats.getLimit() >= 100) limitPad = ""; //Assumes currentLimit won't exceed 999
+        String speed = "  "; //Padding to keep prevent values from shifting too much in notification
+        if (stats.getSpeed() == null) {
+            speed += 0;
+        } else {
+            if (stats.getSpeed() >= 10) speed = " ";
+            if (stats.getSpeed() >= 100) speed = ""; //Assumes currentSpeed won't exceed 999
+            speed += stats.getSpeed();
+        }
+
+        String limit = "  ";
+        if (stats.getLimit() == null) {
+            limit += 0;
+        } else {
+            if (stats.getLimit() >= 10) limit = " ";
+            if (stats.getLimit() >= 100) limit = ""; //Assumes currentLimit won't exceed 999
+            limit += stats.getLimit();
+        }
 
         notificationBuilder
-                .setContentTitle("Time difference: " + stats.getTimeDiff())
-                .setContentText("Speed: " + speedPad + stats.getSpeed() + "   |   SpeedLimit: " + limitPad + stats.getLimit());
+                .setContentTitle("Time Difference: " + UnitUtils.nanosToSeconds(stats.getTimeDiff()))
+                .setContentText("Speed: " + speed + "   |   Speed Limit: " + limit);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }

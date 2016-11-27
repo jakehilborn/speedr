@@ -26,12 +26,6 @@ public class UnitUtils {
         return (int) (5 * Math.round(ms * 3.6 / 5));
     }
 
-    public static Double nanoToSeconds(Double nano) {
-        if (nano == null) return null;
-
-        return nano / 1000000000;
-    }
-
     public static Double mphToMs(Integer mph) {
         if (mph == null) return null;
 
@@ -48,5 +42,35 @@ public class UnitUtils {
         if (knots == null) return null;
 
         return knots * 0.514444;
+    }
+
+    public static Double nanosToSeconds(Double nanos) {
+        if (nanos == null) return null;
+
+        return nanos / 1000000000;
+    }
+
+    public static Integer nanosTo10thsModuloSeconds(Double nanos) {
+        if (nanos == null) return null;
+
+        return (int) ((nanos % 1000000000L) / 100000000L); //mod by seconds, divide by tenth of a second
+    }
+
+    public static Integer nanosToSecondsModuloMinutes(Double nanos) {
+        if (nanos == null) return null;
+
+        return (int) ((nanos % 60000000000L) / 1000000000L); //mod by minutes, divide by seconds
+    }
+
+    public static Integer nanosToMinutesModuloHours(Double nanos) {
+        if (nanos == null) return null;
+
+        return (int) ((nanos % 3600000000000L) / 60000000000L); //mod by hours, divide by minutes
+    }
+
+    public static Integer nanosToHoursModuloMinutes(Double nanos) {
+        if (nanos == null) return null;
+
+        return (int) (nanos % 3600000000000L); //mod by hours
     }
 }

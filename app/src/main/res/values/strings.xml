@@ -19,9 +19,11 @@
     <string name="here_maps_limit_provider_button_text">HERE MAPS</string>
     <string name="enter_here_maps_credentials">Enter credentials for Here Maps</string>
 
+    <string name="mph">mph</string>
+    <string name="kmh">km/h</string>
     <string-array name="speed_unit_options">
-        <item>mph</item>
-        <item>km/h</item>
+        <item>@string/mph</item>
+        <item>@string/kmh</item>
     </string-array>
 
     <string name="accept_here_maps_terms_alert_button_text">Accept</string>

@@ -17,13 +17,13 @@
         android:layout_gravity="center"
         >
 
-        <TextView
+        <TextView android:id="@+id/time_diff_h"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:typeface="monospace"
             android:textStyle="bold"
             android:textSize="30dp"
-            android:text="1"
+            android:text="-"
             />
 
         <TextView
@@ -35,14 +35,14 @@
             android:text="h"
             />
 
-        <TextView
+        <TextView android:id="@+id/time_diff_m"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginStart="10dp"
               android:typeface="monospace"
               android:textStyle="bold"
               android:textSize="30dp"
-              android:text="13"
+              android:text="--"
             />
 
         <TextView
@@ -54,14 +54,14 @@
               android:text="m"
             />
 
-        <TextView android:id="@+id/current_diff"
+        <TextView android:id="@+id/time_diff_s"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:typeface="monospace"
             android:textStyle="bold"
             android:textSize="30dp"
-            android:text="22"
+            android:text="-"
             />
 
         <TextView
@@ -73,13 +73,13 @@
             android:text="."
             />
 
-        <TextView
+        <TextView android:id="@+id/time_diff_s10th"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:typeface="monospace"
             android:textStyle="bold"
             android:textSize="30dp"
-            android:text="7"
+            android:text="-"
             />
 
         <TextView
@@ -111,16 +111,36 @@
         android:layout_marginTop="40dp"
         android:background="@color/colorPrimary" />
 
-    <TextView android:id="@+id/current_limit"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:typeface="monospace"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:text="5 mph"
-        />
+        android:layout_gravity="center"
+        >
+
+        <TextView android:id="@+id/limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="--"
+            />
+
+        <TextView android:id="@+id/limit_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="unit"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -132,16 +152,36 @@
         android:layout_gravity="center"
         />
 
-    <TextView android:id="@+id/current_speed"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_gravity="center"
-        android:typeface="monospace"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:text="35 mph"
-        />
+        >
+
+        <TextView android:id="@+id/speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="--"
+            />
+
+        <TextView android:id="@+id/speed_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="unit"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
