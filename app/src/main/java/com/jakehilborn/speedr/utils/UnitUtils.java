@@ -1,7 +1,5 @@
 package com.jakehilborn.speedr.utils;
 
-import android.content.Context;
-
 public class UnitUtils {
 
     public static Integer msToMph(Double ms) {
@@ -29,6 +27,8 @@ public class UnitUtils {
     }
 
     public static Double nanoToSeconds(Double nano) {
+        if (nano == null) return null;
+
         return nano / 1000000000;
     }
 

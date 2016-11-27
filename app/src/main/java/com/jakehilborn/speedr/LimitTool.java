@@ -79,15 +79,15 @@ public class LimitTool {
         hereMapsErrorConverter = retrofit.responseBodyConverter(HereMapsResponse.class, new Annotation[0]);
     }
 
-    public void fetchLimit(Context context, Double latitude, Double longitude, final Stats stats) {
+    public void fetchLimit(Context context, Double latitude, Double longitude, final StatsCalculator statsCalculator) {
         if (Prefs.isUseHereMaps(context)) {
-            fetchHereMapsLimit(context, latitude, longitude, stats);
+            fetchHereMapsLimit(context, latitude, longitude, statsCalculator);
         } else {
-            fetchOverpassLimit(latitude, longitude, stats);
+            fetchOverpassLimit(latitude, longitude, statsCalculator);
         }
     }
 
-    private void fetchOverpassLimit(Double latitude, Double longitude, final Stats stats) {
+    private void fetchOverpassLimit(Double latitude, Double longitude, final StatsCalculator statsCalculator) {
         if (overpassSubscription != null) return; //Active request to Overpass has not responded yet
 
         String data = "[out:json];way(around:" +
@@ -104,7 +104,7 @@ public class LimitTool {
                         Crashlytics.log(Log.INFO, "LimitTool", "Overpass success");
                         if (value.getElements().length >= 1) {
                             Double limit = parseOverpassLimit(value.getElements()[0].getTags().getMaxSpeed());
-                            stats.setLimit(limit);
+                            statsCalculator.setLimit(limit);
                         }
                     }
 
@@ -116,7 +116,7 @@ public class LimitTool {
                 });
     }
 
-    private void fetchHereMapsLimit(final Context context, Double latitude, Double longitude, final Stats stats) {
+    private void fetchHereMapsLimit(final Context context, Double latitude, Double longitude, final StatsCalculator statsCalculator) {
         if (hereMapsSubscription != null) return; //Active request to Here Maps has not responded yet
 
         final boolean isUseKph = Prefs.isUseKph(context);
@@ -133,7 +133,7 @@ public class LimitTool {
                         hereMapsSubscription = null;
                         Crashlytics.log(Log.INFO, "LimitTool", "Here maps success");
                         Double limit = parseHereMapsLimit(result.getResponse().getLink()[0].getSpeedLimit(), isUseKph);
-                        stats.setLimit(limit);
+                        statsCalculator.setLimit(limit);
                     }
 
                     @Override

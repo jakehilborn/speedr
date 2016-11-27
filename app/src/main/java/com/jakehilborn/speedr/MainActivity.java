@@ -59,10 +59,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private ServiceConnection mainServiceConn = new ServiceConnection() { //binder boilerplate
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            styleStartStopButton(true); //Sets color when MainActivity is re-opened while MainService is running
             MainService.LocalBinder binder = (MainService.LocalBinder) service;
             mainService = binder.getService();
             mainService.setCallback(MainActivity.this);
+
+            //Sets UI values on MainActivity onStart() if MainService was already running
+            styleStartStopButton(true);
+            setStatsInUI(mainService.pollStats());
         }
 
         @Override //Only called on service crashes, not called onDestroy or on unbindService
@@ -72,8 +75,14 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     };
 
     @Override
-    public void onStatsUpdate(int test) {
-        ((TextView) findViewById(R.id.current_speed)).setText("test: " + test);
+    public void onStatsUpdate(Stats stats) {
+        setStatsInUI(stats);
+    }
+
+    private void setStatsInUI(Stats stats) {
+        if (stats.getSpeed() != null) ((TextView) findViewById(R.id.current_speed)).setText(String.valueOf(stats.getSpeed()));
+        if (stats.getLimit() != null) ((TextView) findViewById(R.id.current_limit)).setText(String.valueOf(stats.getLimit()));
+        if (stats.getTimeDiff() != null) ((TextView) findViewById(R.id.current_diff)).setText(String.valueOf(stats.getTimeDiff()));
     }
 
     @Override
