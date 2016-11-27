@@ -11,6 +11,7 @@ public class Prefs {
     private static final String HERE_APP_CODE = "here_app_code";
     private static final String USE_HERE_MAPS = "use_here_maps";
     private static final String HERE_MAPS_TERMS_ACCEPTED = "here_maps_terms_accepted";
+    private static final String SESSION_TIME_DIFF = "session_time_diff";
 
     private static SharedPreferences.Editor editPrefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
@@ -58,5 +59,14 @@ public class Prefs {
 
     public static boolean isHereMapsTermsAccepted(Context context) {
         return prefs(context).getBoolean(HERE_MAPS_TERMS_ACCEPTED, false);
+    }
+
+    public static void setSessionTimeDiff(Context context, Double timeDiff) {
+        //SharedPrefs has no putDouble method. Longs use the same number of bytes so this is a lossless conversion.
+        editPrefs(context).putLong(SESSION_TIME_DIFF, Double.doubleToRawLongBits(timeDiff)).apply();
+    }
+
+    public static Double getSessionTimeDiff(Context context) {
+        return Double.longBitsToDouble(prefs(context).getLong(SESSION_TIME_DIFF, 0));
     }
 }

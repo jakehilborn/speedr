@@ -82,6 +82,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitUnit.setText(R.string.mph);
         }
 
+        Double sessionTimeDiff = Prefs.getSessionTimeDiff(this);
+        if (sessionTimeDiff != 0) {
+            Stats stats = new Stats();
+            stats.setTimeDiff(sessionTimeDiff);
+            setStatsInUI(stats);
+        }
+
         bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
     }
 
@@ -167,6 +174,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.car));
         }
+    }
+
+    public void resetSessionOnClick(View view) {
+        timeDiffH.setText("-");
+        timeDiffM.setText("--");
+        timeDiffS.setText("-");
+        timeDiffS10th.setText("-");
+
+        Prefs.setSessionTimeDiff(this, 0D);
     }
 
     private boolean requestLocationPermission() {

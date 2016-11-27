@@ -198,6 +198,7 @@ public class MainService extends Service {
     @Override
     public void onDestroy() {
         Crashlytics.log(Log.INFO, "MainService", "onDestroy() called");
+        Prefs.setSessionTimeDiff(this, statsCalculator.getTimeDiff());
         notificationManager.cancel(NOTIFICATION_ID);
         limitTool.destroy();
         if (googleApiClient != null) googleApiClient.disconnect();
