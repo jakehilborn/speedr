@@ -71,6 +71,6 @@ public class UnitUtils {
     public static Integer nanosToHoursModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) (nanos % 3600000000000L); //mod by hours
+        return (int) (nanos / 3600000000000L); //divide by hours
     }
 }
