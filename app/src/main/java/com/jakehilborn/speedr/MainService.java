@@ -74,8 +74,8 @@ public class MainService extends Service {
 
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_s)
-                .setContentTitle("Time difference: ")
-                .setContentText("Speed data not yet available, are GPS and internet connections enabled?")
+                .setContentTitle("Speed data not yet available")
+                .setContentText("Are GPS and Internet connections enabled?")
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
@@ -177,8 +177,8 @@ public class MainService extends Service {
         }
 
         notificationBuilder
-                .setContentTitle("Time Difference: " + UnitUtils.nanosToSeconds(stats.getTimeDiff()))
-                .setContentText("Speed: " + speed + "   |   Speed Limit: " + limit);
+                .setContentTitle("Time: " + UnitUtils.nanosToSeconds(stats.getTimeDiff()))
+                .setContentText("Speed Limit : " + limit + "   |   Speed: " + speed);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
