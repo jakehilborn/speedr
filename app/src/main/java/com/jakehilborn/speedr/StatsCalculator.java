@@ -50,6 +50,10 @@ public class StatsCalculator {
         return timeDiff;
     }
 
+    public void setTimeDiff(double timeDiff) {
+        this.timeDiff = timeDiff;
+    }
+
     public void calcTimeDiff() {
         if (prevLimitTime == 0 || //Limit data not available yet
             prevLocation == null || //Less than 2 speed data points have been captured

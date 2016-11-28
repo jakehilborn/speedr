@@ -20,6 +20,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView timeDiffS;
     private TextView timeDiffS10th;
 
+    private AppCompatImageButton reset;
+
     private Toast noGPSPermissionToast;
     private Toast noNetworkToast;
     private Toast playServicesErrorToast;
@@ -65,6 +68,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         timeDiffS = (TextView) findViewById(R.id.time_diff_s);
         timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
 
+        reset = (AppCompatImageButton) findViewById(R.id.reset_session);
+        reset.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
+            public void onClick(View view) {
+                resetSessionOnClick(view);
+            }
+        });
+
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
@@ -82,12 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitUnit.setText(R.string.mph);
         }
 
-        Double sessionTimeDiff = Prefs.getSessionTimeDiff(this);
-        if (sessionTimeDiff != 0) {
-            Stats stats = new Stats();
-            stats.setTimeDiff(sessionTimeDiff);
-            setStatsInUI(stats);
-        }
+        setSessionInUI();
 
         bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
     }
@@ -126,6 +131,24 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
+    private void setSessionInUI() { //Sets timeDiff from the completed MainService session and reset button if necessary
+        Double sessionTimeDiff;
+        if (mainService != null) {
+            sessionTimeDiff = mainService.pollStats().getTimeDiff();
+        } else { //If service is not running then read the timeDiff from storage
+            sessionTimeDiff = Prefs.getSessionTimeDiff(this);
+        }
+
+        if (sessionTimeDiff != 0) {
+            Stats stats = new Stats();
+            stats.setTimeDiff(sessionTimeDiff);
+            setStatsInUI(stats);
+            reset.setVisibility(View.VISIBLE);
+        } else {
+            reset.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
@@ -150,6 +173,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private void startMainService() {
         if (requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq() && checkPlayServicesPrereq()) {
             styleStartStopButton(true);
+            reset.setVisibility(View.INVISIBLE);
+
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
         }
@@ -157,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private void stopMainService() {
         styleStartStopButton(false);
+        setSessionInUI();
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
@@ -179,8 +205,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     public void resetSessionOnClick(View view) {
         timeDiffH.setText("-");
         timeDiffM.setText("--");
-        timeDiffS.setText("-");
+        timeDiffS.setText("--");
         timeDiffS10th.setText("-");
+        reset.setVisibility(View.INVISIBLE);
 
         Prefs.setSessionTimeDiff(this, 0D);
     }

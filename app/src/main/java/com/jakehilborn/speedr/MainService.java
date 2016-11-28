@@ -87,8 +87,9 @@ public class MainService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Crashlytics.log(Log.INFO, null, "MainService starting");
 
-        statsCalculator = new StatsCalculator();
         limitTool = new LimitTool();
+        statsCalculator = new StatsCalculator();
+        statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
 
         locationListener = new LocationListener() {
             @Override

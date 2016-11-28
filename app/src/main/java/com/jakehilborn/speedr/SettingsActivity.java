@@ -48,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
         openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 Prefs.isUseHereMaps(this) ? R.color.materialGrey : R.color.colorAccent
         )));
-        openStreetMapsButton.setOnClickListener(new View.OnClickListener() {
+        openStreetMapsButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
                 limitProviderButtonHandler(false);
             }
@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 Prefs.isUseHereMaps(this) ? R.color.colorAccent : R.color.materialGrey
         )));
-        hereMapsButton.setOnClickListener(new View.OnClickListener() {
+        hereMapsButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
                 limitProviderButtonHandler(true);
             }
