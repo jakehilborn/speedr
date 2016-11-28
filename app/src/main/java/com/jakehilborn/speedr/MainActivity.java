@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             setStatsInUI(stats);
             reset.setVisibility(View.VISIBLE);
         } else {
-            reset.setVisibility(View.INVISIBLE);
+            reset.setVisibility(View.GONE);
         }
     }
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private void startMainService() {
         if (requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq() && checkPlayServicesPrereq()) {
             styleStartStopButton(true);
-            reset.setVisibility(View.INVISIBLE);
+            reset.setVisibility(View.GONE);
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         timeDiffM.setText("--");
         timeDiffS.setText("--");
         timeDiffS10th.setText("-");
-        reset.setVisibility(View.INVISIBLE);
+        reset.setVisibility(View.GONE);
 
         Prefs.setSessionTimeDiff(this, 0D);
     }
