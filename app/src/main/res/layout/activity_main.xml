@@ -129,36 +129,54 @@
         android:layout_marginTop="40dp"
         android:background="@color/colorPrimary" />
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:layout_gravity="center"
         >
 
-        <TextView android:id="@+id/limit"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="--"
-            />
+            android:layout_centerInParent="true"
+            >
 
-        <TextView android:id="@+id/limit_unit"
+            <TextView android:id="@+id/limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="--"
+                />
+
+            <TextView android:id="@+id/limit_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="unit"
+                />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/here_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="unit"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/here_maps_logo"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"

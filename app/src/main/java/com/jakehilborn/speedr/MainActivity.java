@@ -49,12 +49,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView timeDiffS10th;
 
     private AppCompatImageButton reset;
+    private AppCompatImageButton hereLogo;
 
     private Toast noGPSPermissionToast;
     private Toast noNetworkToast;
     private Toast playServicesErrorToast;
+    private Toast poweredByHereMapsToast;
 
     @Override
+    @SuppressWarnings("AndroidLintShowToast") //Toasts are initialized here, yet shown later
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -75,9 +78,18 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         });
 
+        hereLogo = (AppCompatImageButton) findViewById(R.id.here_logo);
+        hereLogo.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
+            public void onClick(View view) {
+                poweredByHereMapsToast.show();
+            }
+        });
+
+
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
+        poweredByHereMapsToast = Toast.makeText(this, R.string.powered_by_here_maps_toast, Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -91,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             speedUnit.setText(R.string.mph);
             limitUnit.setText(R.string.mph);
         }
+
+        if (!Prefs.isUseHereMaps(this)) hereLogo.setVisibility(View.GONE);
 
         setSessionInUI();
 
@@ -290,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         noGPSPermissionToast.cancel();
         noNetworkToast.cancel();
         playServicesErrorToast.cancel();
+        poweredByHereMapsToast.cancel();
 
         if (mainService != null) unbindService(mainServiceConn);
 
