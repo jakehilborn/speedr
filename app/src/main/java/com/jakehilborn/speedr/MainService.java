@@ -158,7 +158,21 @@ public class MainService extends Service {
         return stats;
     }
 
+    public Stats pollStats() {
+        return buildStats();
+    }
+
+    private void updateMainActivity(final Stats stats) {
+        handler.post(new Runnable() {
+            public void run() {
+                callback.onStatsUpdate(stats);
+            }
+        });
+    }
+
     private void updateNotification(Stats stats) {
+        String timeDiff = formatTimeDiff(stats.getTimeDiff());
+
         String speed = "  "; //Padding to keep prevent values from shifting too much in notification
         if (stats.getSpeed() == null) {
             speed += 0;
@@ -178,22 +192,26 @@ public class MainService extends Service {
         }
 
         notificationBuilder
-                .setContentTitle("Time: " + UnitUtils.nanosToSeconds(stats.getTimeDiff()))
-                .setContentText("Speed Limit : " + limit + "   |   Speed: " + speed);
+                .setContentTitle("Time:  " + timeDiff)
+                .setContentText("Speed Limit: " + limit + "   |   Speed: " + speed);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
-    private void updateMainActivity(final Stats stats) {
-        handler.post(new Runnable() {
-            public void run() {
-                callback.onStatsUpdate(stats);
-            }
-        });
-    }
+    private String formatTimeDiff(Double timeDiff) {
+        StringBuilder timeDiffString = new StringBuilder(
+                UnitUtils.nanosToSecondsModuloMinutes(timeDiff) + "." +
+                UnitUtils.nanosTo10thsModuloSeconds(timeDiff) + "s"
+        ); //always show seconds
 
-    public Stats pollStats() {
-        return buildStats();
+        if (timeDiff >= 60000000000L) {
+            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(timeDiff) + "m  ");
+        }
+        if (timeDiff >= 3600000000000L) {
+            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(timeDiff) + "h  ");
+        }
+
+        return timeDiffString.toString();
     }
 
     @Override
