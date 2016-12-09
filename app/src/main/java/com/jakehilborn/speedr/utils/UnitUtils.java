@@ -2,6 +2,11 @@ package com.jakehilborn.speedr.utils;
 
 public class UnitUtils {
 
+    public static final long nanoTenthSecond = 100000000L;
+    public static final long nanoOneSecond = 1000000000L;
+    public static final long nanoOneMinute = 60000000000L;
+    public static final long nanoOneHour = 3600000000000L;
+
     public static Integer msToMph(Double ms) {
         if (ms == null) return null;
 
@@ -44,33 +49,27 @@ public class UnitUtils {
         return knots * 0.514444;
     }
 
-    public static Double nanosToSeconds(Double nanos) {
-        if (nanos == null) return null;
-
-        return nanos / 1000000000;
-    }
-
     public static Integer nanosTo10thsModuloSeconds(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % 1000000000L) / 100000000L); //mod by seconds, divide by tenth of a second
+        return (int) ((nanos % oneSecond) / tenthSecond);
     }
 
     public static Integer nanosToSecondsModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % 60000000000L) / 1000000000L); //mod by minutes, divide by seconds
+        return (int) ((nanos % oneMinute) / oneSecond);
     }
 
     public static Integer nanosToMinutesModuloHours(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % 3600000000000L) / 60000000000L); //mod by hours, divide by minutes
+        return (int) ((nanos % oneHour) / oneMinute);
     }
 
     public static Integer nanosToHoursModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) (nanos / 3600000000000L); //divide by hours
+        return (int) (nanos / oneHour);
     }
 }
