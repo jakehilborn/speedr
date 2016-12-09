@@ -1,6 +1,7 @@
 package com.jakehilborn.speedr;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -108,7 +109,19 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         setSessionInUI();
 
-        bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
+        if (isMainServiceRunning()) {
+            bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
+        }
+    }
+
+    private boolean isMainServiceRunning() { //Using this until I figure out the ServiceConnection leak issue
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("com.jakehilborn.speedr.MainService".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private ServiceConnection mainServiceConn = new ServiceConnection() { //binder boilerplate
