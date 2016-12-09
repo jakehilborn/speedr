@@ -34,8 +34,6 @@ public class StatsCalculator {
         //1st Limit hasn't been fetched yet, avoiding NPE below
         if (prevLimitLocation == null || prevLimitTime == 0) return true;
 
-        System.out.println("DISTANCE DIFFERENCE: " + location.distanceTo(prevLimitLocation));
-
         //Stale if previous Limit request was over 5 seconds ago and the user has traveled over 40 meters since the previous Limit request
         return (prevLimitTime + 5000000000L < System.nanoTime() && location.distanceTo(prevLimitLocation) > 40);
     }
@@ -63,14 +61,5 @@ public class StatsCalculator {
                 * (location.getSpeed() - limit)) / limit;
 
         if (currentDiff > 0) timeDiff += currentDiff;
-
-        System.out.println();
-        System.out.println("speedTime: " + location.getElapsedRealtimeNanos());
-        System.out.println("prevSpeedTime: " + prevLocation.getElapsedRealtimeNanos());
-        System.out.println("speed: " + location.getSpeed());
-        System.out.println("limit: " + limit);
-        System.out.println("currentDiff: " + currentDiff);
-        System.out.println("timeDiff: " + timeDiff);
-        System.out.println();
     }
 }
