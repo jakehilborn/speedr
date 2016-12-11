@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,37 +13,45 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="5dp"
-        android:paddingStart="10dp">
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center_vertical"
-            android:text="General"
+            android:text="@string/general_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <TextView android:id="@+id/speed_unit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="speed unit"
-                android:textSize="16sp" />
+                android:text="@string/speed_unit_setting_text"
+                android:textSize="16sp"
+                />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                />
 
             <Spinner android:id="@+id/speed_unit"
                 android:entries="@array/speed_unit_options"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                />
+
         </LinearLayout>
 
         <TextView
@@ -50,28 +59,32 @@
             android:layout_height="36dp"
             android:gravity="center_vertical"
             android:paddingTop="10dp"
-
-            android:text="Speed limit provider"
+            android:text="@string/speed_limit_provider_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/open_street_maps_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/open_street_maps_limit_provider_button_text" />
+                android:text="@string/open_street_maps_limit_provider_button_text"
+                />
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/here_maps_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/here_maps_limit_provider_button_text" />
+                android:text="@string/here_maps_limit_provider_button_text"
+                />
+
         </LinearLayout>
 
         <EditText
@@ -79,78 +92,101 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/here_maps_app_id_field"
-            android:inputType="textVisiblePassword" /> <!--Hack to disable autocorrect on Swiftkey-->
+            android:inputType="textVisiblePassword"
+            /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
 
         <EditText
             android:id="@+id/here_app_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/here_maps_app_code_field"
-            android:inputType="textVisiblePassword" /> <!--Hack to disable autocorrect on Swiftkey-->
+            android:inputType="textVisiblePassword"
+            /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:paddingTop="10dp"
+            android:text="@string/open_street_maps_section"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            />
 
         <LinearLayout
             android:id="@+id/open_street_maps_coverage"
-            android:onClick="openStreetMapsCoverageOnClick"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:gravity="center"
             android:background="?selectableItemBackground"
-            android:orientation="horizontal">
+            android:onClick="openStreetMapsCoverageOnClick"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/map" />
+                android:src="@drawable/map"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:paddingStart="15dp"
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Check OpenStreetMaps coverage"
-                    android:textSize="16sp" />
+                    android:text="@string/check_open_street_maps_coverage_button_text"
+                    android:textSize="16sp"
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Visit openstreetmap.org on your computer to add/fix speed limits"
+                    android:text="@string/check_open_street_maps_coverage_button_subtext"
                     android:textColor="?android:textColorSecondary"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    />
+
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/open_street_maps_donate"
-            android:onClick="openStreetMapsDonateOnClick"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:gravity="center"
             android:background="?selectableItemBackground"
-            android:orientation="horizontal">
+            android:onClick="openStreetMapsDonateOnClick"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/heart" />
+                android:src="@drawable/heart"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:paddingStart="15dp"
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Donate to OpenStreetMaps"
-                    android:textSize="16sp" />
+                    android:text="@string/donate_to_open_street_maps_button_text"
+                    android:textSize="16sp"
+                    />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="click to visit website"
-                    android:textColor="?android:textColorSecondary"
-                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -158,7 +194,8 @@
         <View
             android:layout_weight="1"
             android:layout_height="0dp"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            />
 
         <TextView
             android:layout_width="match_parent"
@@ -166,7 +203,9 @@
             android:paddingBottom="5dp"
             android:gravity="center"
             android:textSize="14sp"
-            android:text="@string/version"
-            android:onClick="versionOnClick"/>
+            android:text="@string/version_text"
+            android:onClick="versionOnClick"
+            />
+
     </LinearLayout>
 </ScrollView>

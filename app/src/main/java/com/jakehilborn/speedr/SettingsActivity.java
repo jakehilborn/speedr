@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
         appCodeField = (EditText) findViewById(R.id.here_app_code);
         appCodeField.setText(Prefs.getHereAppCode(this));
 
-        emptyCredentials = Toast.makeText(this, R.string.enter_here_maps_credentials, Toast.LENGTH_LONG);
+        emptyCredentials = Toast.makeText(this, R.string.enter_here_maps_credentials_toast, Toast.LENGTH_LONG);
 
         openStreetMapsButton = (AppCompatButton) findViewById(R.id.open_street_maps_button);
         openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
@@ -102,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showHereMapsTerms() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.here_maps_terms)
+        builder.setMessage(R.string.here_maps_terms_content)
                 .setCancelable(true)
                 .setPositiveButton(R.string.accept_here_maps_terms_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
@@ -170,23 +170,23 @@ public class SettingsActivity extends AppCompatActivity {
 
     private boolean devInfoOnClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.developed_by_jake_hilborn)
+        builder.setTitle(R.string.developed_by_jake_hilborn_dialog_title)
                 .setCancelable(true)
-                .setNeutralButton(R.string.github, new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.github_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         launchWebpage("https://github.com/jakehilborn");
                     }
                 })
-                .setNegativeButton(R.string.linkedin, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.linkedin_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         launchWebpage("https://www.linkedin.com/in/jakehilborn");
                     }
                 })
-                .setPositiveButton(R.string.email, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.email_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         Intent intent = new Intent(Intent.ACTION_SENDTO);
                         intent.setData(Uri.parse("mailto: jakehilborn@gmail.com"));
-                        startActivity(Intent.createChooser(intent, getString(R.string.email_speedr_developer)));
+                        startActivity(Intent.createChooser(intent, getString(R.string.email_speedr_developer_chooser_text)));
                     }
                 });
         AlertDialog alert = builder.create();
@@ -196,10 +196,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void versionOnClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.changelog)
+        builder.setTitle(R.string.changelog_dialog_title)
                 .setMessage(R.string.changelog_content)
                 .setCancelable(true)
-                .setNegativeButton(R.string.close, null);
+                .setNegativeButton(R.string.close_dialog_button, null);
         AlertDialog alert = builder.create();
         alert.show();
     }

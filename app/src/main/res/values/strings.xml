@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">speedr</string>
 
-    <string name="close">Close</string>
+    <string name="close_dialog_button">Close</string>
 
     <!-- MainActivity -->
     <string name="no_gps_permission_toast">Location permission needed to track driving speed.</string>
@@ -15,13 +15,11 @@
 
 
     <!-- SettingsActivity -->
-    <string name="speedr_settings">speedr settings</string>
-    <string name="here_maps_app_id_field">Here maps app id</string>
-    <string name="here_maps_app_code_field">Here maps app code</string>
-    <string name="open_street_maps_limit_provider_button_text">OPEN STREET MAPS</string>
-    <string name="here_maps_limit_provider_button_text">HERE MAPS</string>
-    <string name="enter_here_maps_credentials">Enter credentials for Here Maps</string>
+    <string name="speedr_settings_app_bar_title">speedr settings</string>
 
+    <string name="general_section">General</string>
+
+    <string name="speed_unit_setting_text">Speed unit</string>
     <string name="mph">mph</string>
     <string name="kmh">km/h</string>
     <string-array name="speed_unit_options">
@@ -29,17 +27,29 @@
         <item>@string/kmh</item>
     </string-array>
 
+    <string name="speed_limit_provider_section">Speed limit provider</string>
+    <string name="here_maps_app_id_field">Here maps app id</string>
+    <string name="here_maps_app_code_field">Here maps app code</string>
+    <string name="open_street_maps_limit_provider_button_text">Open Street Maps</string>
+    <string name="here_maps_limit_provider_button_text">HERE Maps</string>
+    <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
+
     <string name="accept_here_maps_terms_alert_button_text">Accept</string>
     <string name="reject_here_maps_terms_alert_button_text">Reject</string>
 
-    <string name="developed_by_jake_hilborn">Developed by Jake Hilborn</string>
-    <string name="github">GitHub</string>
-    <string name="linkedin">LinkedIn</string>
-    <string name="email">Email</string>
-    <string name="email_speedr_developer">Email speedr developer</string>
+    <string name="open_street_maps_section">OpenStreetMaps</string>
+    <string name="check_open_street_maps_coverage_button_text">Check OpenStreetMaps coverage</string>
+    <string name="check_open_street_maps_coverage_button_subtext">Visit openstreetmap.org on your computer to add/fix speed limits</string>
+    <string name="donate_to_open_street_maps_button_text">Donate to OpenStreetMaps</string>
 
-    <string name="version">Version 1.0</string>
-    <string name="changelog">Changelog</string>
+    <string name="developed_by_jake_hilborn_dialog_title">Developed by Jake Hilborn</string>
+    <string name="github_link_text">GitHub</string>
+    <string name="linkedin_link_text">LinkedIn</string>
+    <string name="email_link_text">Email</string>
+    <string name="email_speedr_developer_chooser_text">Email speedr developer</string>
+
+    <string name="version_text">Version 1.0</string>
+    <string name="changelog_dialog_title">Changelog</string>
 
     <!-- Long alertDialogs HTML -->
     <string name="changelog_content">
@@ -49,7 +59,7 @@
         </ul>
     </string>
 
-    <string name="here_maps_terms">
+    <string name="here_maps_terms_content">
         <b>HERE SERVICE TERMS</b>\n
         \n
         Effective date : 04.12.2015\n

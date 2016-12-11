@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/speedr_settings"
+            android:label="@string/speedr_settings_app_bar_title"
             android:parentActivityName="com.jakehilborn.speedr.MainActivity"
             android:windowSoftInputMode="stateHidden" />
 
