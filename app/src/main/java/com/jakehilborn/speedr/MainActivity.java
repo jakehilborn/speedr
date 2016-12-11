@@ -2,7 +2,6 @@ package com.jakehilborn.speedr;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +19,7 @@ import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.Menu;
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //item ID is not checked since there the only menu button is the settings cog
+        //item ID is not checked since the only menu button is the settings cog
         startActivity(new Intent(this, SettingsActivity.class));
         return true;
     }
