@@ -32,14 +32,23 @@
     <string name="accept_here_maps_terms_alert_button_text">Accept</string>
     <string name="reject_here_maps_terms_alert_button_text">Reject</string>
 
+    <string name="developed_by_jake_hilborn">Developed by Jake Hilborn</string>
+    <string name="github">GitHub</string>
+    <string name="linkedin">LinkedIn</string>
+    <string name="email">Email</string>
+    <string name="email_speedr_developer">Email speedr developer</string>
+
     <string name="version">Version 1.0</string>
     <string name="changelog">Changelog</string>
 
-    <!-- Long alertDialogs -->
+    <!-- Long alertDialogs HTML -->
     <string name="changelog_content">
         <b>v1.0</b>\n
-        - First release
+        <ul>
+            <li>First release</li>
+        </ul>
     </string>
+
     <string name="here_maps_terms">
         <b>HERE SERVICE TERMS</b>\n
         \n

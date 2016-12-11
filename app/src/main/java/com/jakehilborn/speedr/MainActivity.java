@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         });
 
-
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);

@@ -1,7 +1,6 @@
 package com.jakehilborn.speedr;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,8 +9,11 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -112,6 +114,11 @@ public class SettingsActivity extends AppCompatActivity {
         alert.show();
     }
 
+    private void launchWebpage(String uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        startActivity(intent);
+    }
+
     public void openStreetMapsCoverageOnClick(View view) {
         if (ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleApiClient = new GoogleApiClient.Builder(this)
@@ -125,7 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 uri = uri + lastLocation.getLatitude() + "&lon=" + lastLocation.getLongitude() + "&zoom=14";
                             }
 
-                            launchCoverageMap(uri);
+                            launchWebpage(uri);
                             googleApiClient.disconnect();
                         }
 
@@ -137,19 +144,54 @@ public class SettingsActivity extends AppCompatActivity {
 
             googleApiClient.connect();
         } else {
-            launchCoverageMap("http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4"); //map of United States
+            launchWebpage("http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4"); //map of United States
         }
     }
 
-    private void launchCoverageMap(String uri) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        startActivity(intent);
+    public void openStreetMapsDonateOnClick(View view) {
+        launchWebpage("https://donate.openstreetmap.org");
     }
 
-    public void openStreetMapsDonateOnClick(View view) {
-        String uri = "https://donate.openstreetmap.org";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        startActivity(intent);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dev_info, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.dev_info:
+                return devInfoOnClick();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private boolean devInfoOnClick() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.developed_by_jake_hilborn)
+                .setCancelable(true)
+                .setNeutralButton(R.string.github, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        launchWebpage("https://github.com/jakehilborn");
+                    }
+                })
+                .setNegativeButton(R.string.linkedin, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        launchWebpage("https://www.linkedin.com/in/jakehilborn");
+                    }
+                })
+                .setPositiveButton(R.string.email, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        Intent intent = new Intent(Intent.ACTION_SENDTO);
+                        intent.setData(Uri.parse("mailto: jakehilborn@gmail.com"));
+                        startActivity(Intent.createChooser(intent, getString(R.string.email_speedr_developer)));
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        return true;
     }
 
     public void versionOnClick(View view) {
