@@ -13,6 +13,15 @@
     <string name="gps_disabled_message_4_4up">Please change location mode to <b>Device only</b> or <b>High accuracy</b> in settings.</string>
     <string name="go_to_location_settings_alert_button_text">Go to Location Settings</string>
 
+    <string name="time_difference_text">TIME DIFFERENCE</string>
+    <string name="hour_symbol">h</string>
+    <string name="minute_symbol">m</string>
+    <string name="second_symbol">s</string>
+    <string name="decimal_symbol">.</string>
+
+    <string name="unit">unit</string> <!-- used for layout.xml Design view only -->
+    <string name="current_speed_limit_title">SPEED LIMIT</string>
+    <string name="current_speed_title">SPEED</string>
 
     <!-- SettingsActivity -->
     <string name="speedr_settings_app_bar_title">speedr settings</string>

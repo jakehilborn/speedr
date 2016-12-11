@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -33,7 +33,8 @@
             android:orientation="horizontal"
             >
 
-            <TextView android:id="@+id/speed_unit_text"
+            <TextView
+                android:id="@+id/speed_unit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/speed_unit_setting_text"
