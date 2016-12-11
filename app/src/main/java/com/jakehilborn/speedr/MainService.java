@@ -204,10 +204,10 @@ public class MainService extends Service {
                 UnitUtils.nanosTo10thsModuloSeconds(timeDiff) + "s"
         ); //always show seconds
 
-        if (timeDiff >= 60000000000L) {
+        if (timeDiff >= UnitUtils.nanoOneMinute) {
             timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(timeDiff) + "m  ");
         }
-        if (timeDiff >= 3600000000000L) {
+        if (timeDiff >= UnitUtils.nanoOneHour) {
             timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(timeDiff) + "h  ");
         }
 

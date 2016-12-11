@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     >
 
-    <!-- All spacing is prepended to the top or left of each element -->
-
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -32,9 +30,11 @@
                 android:text="-"
                 />
 
-            <TextView
+            <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
+            <TextView android:id="@+id/time_diff_h_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:typeface="sans"
                 android:textStyle="normal"
                 android:textSize="10dp"
@@ -42,28 +42,28 @@
                 />
 
             <TextView android:id="@+id/time_diff_m"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginStart="10dp"
-                  android:typeface="monospace"
-                  android:textStyle="bold"
-                  android:textSize="30dp"
-                  android:text="--"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:text="--"
                 />
 
-            <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:typeface="sans"
-                  android:textStyle="normal"
-                  android:textSize="10dp"
-                  android:text="m"
+            <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
+            <TextView android:id="@+id/time_diff_m_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:typeface="sans"
+                android:textStyle="normal"
+                android:textSize="10dp"
+                android:text="m"
                 />
 
             <TextView android:id="@+id/time_diff_s"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:typeface="monospace"
                 android:textStyle="bold"
                 android:textSize="30dp"

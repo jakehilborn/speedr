@@ -52,24 +52,24 @@ public class UnitUtils {
     public static Integer nanosTo10thsModuloSeconds(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % oneSecond) / tenthSecond);
+        return (int) ((nanos % nanoOneSecond) / nanoTenthSecond);
     }
 
     public static Integer nanosToSecondsModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % oneMinute) / oneSecond);
+        return (int) ((nanos % nanoOneMinute) / nanoOneSecond);
     }
 
     public static Integer nanosToMinutesModuloHours(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % oneHour) / oneMinute);
+        return (int) ((nanos % nanoOneHour) / nanoOneMinute);
     }
 
     public static Integer nanosToHoursModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) (nanos / oneHour);
+        return (int) (nanos / nanoOneHour);
     }
 }

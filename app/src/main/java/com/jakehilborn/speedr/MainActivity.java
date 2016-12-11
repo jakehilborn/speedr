@@ -45,7 +45,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView limit;
     private TextView limitUnit;
     private TextView timeDiffH;
+    private TextView timeDiffHSymbol;
     private TextView timeDiffM;
+    private TextView timeDiffMSymbol;
     private TextView timeDiffS;
     private TextView timeDiffS10th;
 
@@ -68,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         limit = (TextView) findViewById(R.id.limit);
         limitUnit = (TextView) findViewById(R.id.limit_unit);
         timeDiffH = (TextView) findViewById(R.id.time_diff_h);
+        timeDiffHSymbol = (TextView) findViewById(R.id.time_diff_h_symbol);
         timeDiffM = (TextView) findViewById(R.id.time_diff_m);
+        timeDiffMSymbol = (TextView) findViewById(R.id.time_diff_m_symbol);
         timeDiffS = (TextView) findViewById(R.id.time_diff_s);
         timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
 
@@ -150,11 +154,24 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private void setStatsInUI(Stats stats) {
         if (stats.getSpeed() != null) speed.setText(String.valueOf(stats.getSpeed()));
         if (stats.getLimit() != null) limit.setText(String.valueOf(stats.getLimit()));
+
         if (stats.getTimeDiff() != null) {
-            timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(stats.getTimeDiff())));
-            timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(stats.getTimeDiff())));
-            timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
             timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(stats.getTimeDiff())));
+            timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
+            if (stats.getTimeDiff() >= UnitUtils.nanoOneMinute) {
+                timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(stats.getTimeDiff())));
+                timeDiffMSymbol.setVisibility(View.VISIBLE);
+            } else {
+                timeDiffM.setVisibility(View.GONE);
+                timeDiffMSymbol.setVisibility(View.GONE);
+            }
+            if (stats.getTimeDiff() >= UnitUtils.nanoOneHour) {
+                timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(stats.getTimeDiff())));
+                timeDiffMSymbol.setVisibility(View.VISIBLE);
+            } else {
+                timeDiffH.setVisibility(View.GONE);
+                timeDiffHSymbol.setVisibility(View.GONE);
+            }
         }
     }
 
