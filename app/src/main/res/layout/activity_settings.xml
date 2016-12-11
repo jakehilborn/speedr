@@ -2,7 +2,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
     android:fillViewport="true">
 
@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center_vertical"
-
             android:text="General"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -91,74 +90,83 @@
 
         <LinearLayout
             android:id="@+id/open_street_maps_coverage"
+            android:onClick="openStreetMapsCoverageOnClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/map" />
+
             <LinearLayout
-                android:id="@+id/check_coverage"
-                android:onClick="openStreetMapsCoverageOnClick"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="Check OpenStreetMaps coverage"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Check OpenStreetMaps coverage"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Visit openstreetmap.org on your computer to add/fix speed limits"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Visit openstreetmap.org on your computer to add/fix speed limits"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/open_street_maps_donate"
+            android:onClick="openStreetMapsDonateOnClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/heart" />
 
             <LinearLayout
-                android:id="@+id/donate"
-                android:onClick="openStreetMapsDonateOnClick"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="Donate to OpenStreetMaps"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Donate to OpenStreetMaps"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="click to visit website"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="click to visit website"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Items below this tag are placed on the bottom of the screen -->
+        <View
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="@string/version"
+            android:onClick="versionOnClick"/>
     </LinearLayout>
 </ScrollView>

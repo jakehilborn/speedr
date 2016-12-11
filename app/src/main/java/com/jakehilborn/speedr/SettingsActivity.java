@@ -151,4 +151,14 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(intent);
     }
+
+    public void versionOnClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.changelog)
+                .setMessage(R.string.changelog_content)
+                .setCancelable(true)
+                .setNegativeButton(R.string.close, null);
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }
