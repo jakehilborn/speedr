@@ -1,156 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:fillViewport="true"
     >
-
-    <RelativeLayout
-        android:orientation="horizontal"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="match_parent"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="40dp"
             >
 
-            <TextView
-                android:id="@+id/time_diff_h"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:typeface="monospace"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:text="-"
-                />
+                android:layout_centerInParent="true"
+                >
 
-            <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
-            <TextView
-                android:id="@+id/time_diff_h_symbol"
+                <TextView
+                    android:id="@+id/time_diff_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:text="-"
+                    />
+
+                <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
+                <TextView
+                    android:id="@+id/time_diff_h_symbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="10dp"
+                    android:text="@string/hour_symbol"
+                    />
+
+                <TextView
+                    android:id="@+id/time_diff_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:text="--"
+                    />
+
+                <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
+                <TextView
+                    android:id="@+id/time_diff_m_symbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="10dp"
+                    android:text="@string/minute_symbol"
+                    />
+
+                <TextView
+                    android:id="@+id/time_diff_s"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:text="--"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="30dp"
+                    android:text="@string/decimal_symbol"
+                    />
+
+                <TextView
+                    android:id="@+id/time_diff_s10th"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:text="-"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="10dp"
+                    android:text="@string/second_symbol"
+                    />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/reset_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="10dp"
-                android:text="@string/hour_symbol"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/reset"
                 />
 
-            <TextView
-                android:id="@+id/time_diff_m"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:typeface="monospace"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:text="--"
-                />
+        </RelativeLayout>
 
-            <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
-            <TextView
-                android:id="@+id/time_diff_m_symbol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="10dp"
-                android:text="@string/minute_symbol"
-                />
-
-            <TextView
-                android:id="@+id/time_diff_s"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:typeface="monospace"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:text="--"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="30dp"
-                android:text="@string/decimal_symbol"
-                />
-
-            <TextView
-                android:id="@+id/time_diff_s10th"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:typeface="monospace"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:text="-"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="10dp"
-                android:text="@string/second_symbol"
-                />
-
-        </LinearLayout>
-
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/reset_session"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/reset"
+            android:typeface="sans"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:text="@string/time_difference_text"
+            android:layout_gravity="center"
             />
 
-    </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimary"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:typeface="sans"
-        android:textStyle="normal"
-        android:textSize="12dp"
-        android:text="@string/time_difference_text"
-        android:layout_gravity="center"
-        />
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            >
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/colorPrimary"
-        />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                >
 
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        >
+                <TextView android:id="@+id/limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="--"
+                    />
+
+                <TextView android:id="@+id/limit_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="@string/unit"
+                    />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/here_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/here_maps_logo"
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:typeface="sans"
+            android:textStyle="normal"
+            android:textSize="10dp"
+            android:text="@string/current_speed_limit_title"
+            android:layout_gravity="center"
+            />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
             >
 
-            <TextView android:id="@+id/limit"
+            <TextView android:id="@+id/speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -160,7 +220,7 @@
                 android:text="--"
                 />
 
-            <TextView android:id="@+id/limit_unit"
+            <TextView android:id="@+id/speed_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -173,88 +233,36 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/here_logo"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/here_maps_logo"
+            android:typeface="sans"
+            android:textStyle="normal"
+            android:textSize="10dp"
+            android:text="@string/current_speed_title"
+            android:layout_gravity="center"
             />
 
-    </RelativeLayout>
+        <!-- Items below this tag are placed on the bottom of the screen -->
+        <View
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:typeface="sans"
-        android:textStyle="normal"
-        android:textSize="10dp"
-        android:text="@string/current_speed_limit_title"
-        android:layout_gravity="center"
-        />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_gravity="center"
-        >
-
-        <TextView android:id="@+id/speed"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/start_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="--"
-            />
-
-        <TextView android:id="@+id/speed_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="@string/unit"
+            android:src="@drawable/car"
+            app:backgroundTint="@color/materialGreen"
+            app:fabSize="normal"
+            app:borderWidth="0dp"
+            app:elevation="4dp"
+            android:layout_marginBottom="15dp"
+            android:onClick="startStopButtonOnClick"
             />
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:typeface="sans"
-        android:textStyle="normal"
-        android:textSize="10dp"
-        android:text="@string/current_speed_title"
-        android:layout_gravity="center"
-        />
-
-    <!-- Items below this tag are placed on the bottom of the screen -->
-    <View
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:layout_width="wrap_content"
-        />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/start_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/car"
-        app:backgroundTint="@color/materialGreen"
-        app:fabSize="normal"
-        app:borderWidth="0dp"
-        app:elevation="4dp"
-        android:layout_marginBottom="15dp"
-        android:onClick="startStopButtonOnClick"
-        />
-
-</LinearLayout>
+</ScrollView>
