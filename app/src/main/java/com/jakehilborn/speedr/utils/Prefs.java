@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 public class Prefs {
 
     private static final String USE_KPH = "use_kph";
+    private static final String HERE_SUGGESTION_ACKNOWLEDGED = "here_suggestion_acknowledged";
     private static final String HERE_APP_ID = "here_app_id";
     private static final String HERE_APP_CODE = "here_app_code";
     private static final String USE_HERE_MAPS = "use_here_maps";
@@ -27,6 +28,14 @@ public class Prefs {
 
     public static boolean isUseKph(Context context) {
         return prefs(context).getBoolean(USE_KPH, false);
+    }
+
+    public static void setHereSuggestionAcknowledged(Context context, boolean hereSuggestionAcknowledged) {
+        editPrefs(context).putBoolean(HERE_SUGGESTION_ACKNOWLEDGED, hereSuggestionAcknowledged).apply();
+    }
+
+    public static boolean isHereSuggestionAcknowledged(Context context) {
+        return prefs(context).getBoolean(HERE_SUGGESTION_ACKNOWLEDGED, false);
     }
 
     public static void setHereAppId(Context context, String appId) {

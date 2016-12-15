@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">speedr</string>
 
-    <string name="close_dialog_button">Close</string>
-
     <!-- MainActivity -->
     <string name="no_gps_permission_toast">Location permission needed to track driving speed.</string>
     <string name="no_network_toast">Internet needed to get speed limit data. Enable wifi or cellular data.</string>
@@ -22,6 +20,13 @@
     <string name="unit">unit</string> <!-- used for layout.xml Design view only -->
     <string name="current_speed_limit_title">SPEED LIMIT</string>
     <string name="current_speed_title">SPEED</string>
+
+    <string name="here_maps_suggestion_snackbar_text">
+        <b>Want more accurate speed limits?</b>\n
+        \n
+        Open settings to create a free HERE Maps account.
+    </string>
+    <string name="dismiss_snackbar">OK</string>
 
     <!-- SettingsActivity -->
     <string name="speedr_settings_app_bar_title">speedr settings</string>
@@ -59,6 +64,7 @@
 
     <string name="version_text">Version 1.0</string>
     <string name="changelog_dialog_title">Changelog</string>
+    <string name="close_dialog_button">Close</string>
 
     <!-- Long alertDialogs HTML -->
     <string name="changelog_content">

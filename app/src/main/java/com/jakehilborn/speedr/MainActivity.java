@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
+        showHereSnackbar();
     }
 
     private void styleStartStopButton(boolean start) {
@@ -245,6 +247,25 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.car));
         }
+    }
+
+    public void showHereSnackbar() {
+//        if (Prefs.hasHereSuggestionShown(this) || Prefs.isUseHereMaps(this)) return;
+        if (Prefs.isUseHereMaps(this)) return;
+
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.start_stop), R.string.here_maps_suggestion_snackbar_text, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.dismiss_snackbar, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Prefs.setHereSuggestionAcknowledged(MainActivity.this, true);
+                    }
+                });
+
+        View snackbarView = snackbar.getView();
+        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setMaxLines(5);
+        snackbar.show();
     }
 
     public void resetSessionOnClick(View view) {
