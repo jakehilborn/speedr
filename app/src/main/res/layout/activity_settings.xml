@@ -67,6 +67,64 @@
             />
 
         <LinearLayout
+            android:id="@+id/here_maps_create_account_button"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:gravity="center"
+            android:background="?selectableItemBackground"
+            android:onClick="hereMapsCreateAccountOnClick"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/here_maps_logo"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/here_maps_create_account_button_text"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/here_maps_create_account_button_sub_text"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="14sp"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/here_app_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/here_maps_app_id_field"
+            android:inputType="textVisiblePassword"
+            /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
+
+        <EditText
+            android:id="@+id/here_app_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/here_maps_app_code_field"
+            android:inputType="textVisiblePassword"
+            /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -87,22 +145,6 @@
                 />
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/here_app_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/here_maps_app_id_field"
-            android:inputType="textVisiblePassword"
-            /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
-
-        <EditText
-            android:id="@+id/here_app_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/here_maps_app_code_field"
-            android:inputType="textVisiblePassword"
-            /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
 
         <TextView
             android:layout_width="match_parent"

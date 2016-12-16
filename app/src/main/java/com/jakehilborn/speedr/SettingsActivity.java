@@ -119,6 +119,10 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void hereMapsCreateAccountOnClick(View view) {
+        launchWebpage("https://developer.here.com/plans?create=Public_Free_Plan_Monthly&keepState=true&step=account");
+    }
+
     public void openStreetMapsCoverageOnClick(View view) {
         if (ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleApiClient = new GoogleApiClient.Builder(this)

@@ -42,11 +42,13 @@
     </string-array>
 
     <string name="speed_limit_provider_section">Speed limit provider</string>
-    <string name="here_maps_app_id_field">Here maps app id</string>
-    <string name="here_maps_app_code_field">Here maps app code</string>
+    <string name="here_maps_create_account_button_text">Want more accurate speed limits?</string>
+    <string name="here_maps_create_account_button_sub_text">Create a free HERE Maps dev account. No credit card required.</string>
+    <string name="here_maps_app_id_field">HERE Maps app id</string>
+    <string name="here_maps_app_code_field">HERE Maps app code</string>
+    <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
     <string name="open_street_maps_limit_provider_button_text">Open Street Maps</string>
     <string name="here_maps_limit_provider_button_text">HERE Maps</string>
-    <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
 
     <string name="accept_here_maps_terms_alert_button_text">Accept</string>
     <string name="reject_here_maps_terms_alert_button_text">Reject</string>
