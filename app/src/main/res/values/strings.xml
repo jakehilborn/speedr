@@ -48,16 +48,16 @@
     <string name="here_maps_app_id_field">HERE Maps app id</string>
     <string name="here_maps_app_code_field">HERE Maps app code</string>
     <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
-    <string name="open_street_maps_limit_provider_button_text">Open Street Maps</string>
+    <string name="open_street_map_limit_provider_button_text">Open Street Map</string>
     <string name="here_maps_limit_provider_button_text">HERE Maps</string>
 
     <string name="accept_here_maps_terms_alert_button_text">Accept</string>
     <string name="reject_here_maps_terms_alert_button_text">Reject</string>
 
-    <string name="open_street_maps_section">OpenStreetMaps</string>
-    <string name="check_open_street_maps_coverage_button_text">Check OpenStreetMaps coverage</string>
-    <string name="check_open_street_maps_coverage_button_subtext">Visit openstreetmap.org on your computer to add/fix speed limits</string>
-    <string name="donate_to_open_street_maps_button_text">Donate to OpenStreetMaps</string>
+    <string name="open_street_map_section">OpenStreetMap</string>
+    <string name="check_open_street_map_coverage_button_text">Check OpenStreetMap coverage</string>
+    <string name="check_open_street_map_coverage_button_subtext">Visit openstreetmap.org on your computer to add/fix speed limits</string>
+    <string name="donate_to_open_street_map_button_text">Donate to OpenStreetMap</string>
 
     <string name="developed_by_jake_hilborn_dialog_title">Developed by Jake Hilborn</string>
     <string name="github_link_text">GitHub</string>

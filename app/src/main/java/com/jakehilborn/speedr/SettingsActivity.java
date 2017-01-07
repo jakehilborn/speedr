@@ -29,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText appCodeField;
     private Toast emptyCredentials;
     private AppCompatButton hereMapsButton;
-    private AppCompatButton openStreetMapsButton;
+    private AppCompatButton openStreetMapButton;
     private Spinner speedUnitSpinner;
     private GoogleApiClient googleApiClient;
 
@@ -46,11 +46,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         emptyCredentials = Toast.makeText(this, R.string.enter_here_maps_credentials_toast, Toast.LENGTH_LONG);
 
-        openStreetMapsButton = (AppCompatButton) findViewById(R.id.open_street_maps_button);
-        openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
+        openStreetMapButton = (AppCompatButton) findViewById(R.id.open_street_map_button);
+        openStreetMapButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 Prefs.isUseHereMaps(this) ? R.color.unselectedButtonGray : R.color.colorAccent
         )));
-        openStreetMapsButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
+        openStreetMapButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
                 limitProviderButtonHandler(false);
             }
@@ -92,7 +92,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         Prefs.setUseHereMaps(this, isUseHereMaps);
 
-        openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
+        openStreetMapButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 isUseHereMaps ? R.color.unselectedButtonGray : R.color.colorAccent
         )));
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
@@ -123,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
         launchWebpage("https://developer.here.com/plans?create=Public_Free_Plan_Monthly&keepState=true&step=account");
     }
 
-    public void openStreetMapsCoverageOnClick(View view) {
+    public void openStreetMapCoverageOnClick(View view) {
         if (ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -152,7 +152,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public void openStreetMapsDonateOnClick(View view) {
+    public void openStreetMapDonateOnClick(View view) {
         launchWebpage("https://donate.openstreetmap.org");
     }
 

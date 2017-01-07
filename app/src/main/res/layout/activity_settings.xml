@@ -131,10 +131,10 @@
             >
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/open_street_maps_button"
+                android:id="@+id/open_street_map_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/open_street_maps_limit_provider_button_text"
+                android:text="@string/open_street_map_limit_provider_button_text"
                 />
 
             <android.support.v7.widget.AppCompatButton
@@ -151,21 +151,21 @@
             android:layout_height="36dp"
             android:gravity="center_vertical"
             android:paddingTop="10dp"
-            android:text="@string/open_street_maps_section"
+            android:text="@string/open_street_map_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="bold"
             />
 
         <LinearLayout
-            android:id="@+id/open_street_maps_coverage"
+            android:id="@+id/open_street_map_coverage"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:gravity="center"
             android:background="?selectableItemBackground"
-            android:onClick="openStreetMapsCoverageOnClick"
+            android:onClick="openStreetMapCoverageOnClick"
             >
 
             <ImageView
@@ -184,14 +184,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/check_open_street_maps_coverage_button_text"
+                    android:text="@string/check_open_street_map_coverage_button_text"
                     android:textSize="16sp"
                     />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/check_open_street_maps_coverage_button_subtext"
+                    android:text="@string/check_open_street_map_coverage_button_subtext"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="14sp"
                     />
@@ -200,14 +200,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/open_street_maps_donate"
+            android:id="@+id/open_street_map_donate"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:gravity="center"
             android:background="?selectableItemBackground"
-            android:onClick="openStreetMapsDonateOnClick"
+            android:onClick="openStreetMapDonateOnClick"
             >
 
             <ImageView
@@ -226,7 +226,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/donate_to_open_street_maps_button_text"
+                    android:text="@string/donate_to_open_street_map_button_text"
                     android:textSize="16sp"
                     />
 
