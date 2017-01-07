@@ -384,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         noGPSPermissionToast.cancel();
         noNetworkToast.cancel();
         playServicesErrorToast.cancel();
+        poweredByOpenStreetMapToast.cancel();
         poweredByHereMapsToast.cancel();
 
         if (mainService != null) unbindService(mainServiceConn);
