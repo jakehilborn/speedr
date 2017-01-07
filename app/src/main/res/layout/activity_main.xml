@@ -140,7 +140,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="40dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
             />
 
         <RelativeLayout
@@ -256,7 +256,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/car"
-            app:backgroundTint="@color/materialGreen"
+            app:backgroundTint="@color/startButton"
             app:fabSize="normal"
             app:borderWidth="0dp"
             app:elevation="4dp"

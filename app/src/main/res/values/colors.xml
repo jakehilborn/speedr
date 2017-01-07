@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="materialGreen">#4CAF50</color>
-    <color name="materialRed">#F44336</color>
-    <color name="materialGrey">#D8D8D8</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorPrimary">@color/pastelGreen</color>
+    <color name="colorAccent">@color/pastelGreen</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="unselectedButtonGray">#5A595B</color>
+
+    <color name="pastelGreen">#21CE99</color>
+    <color name="pastelGreenDark">#26A47B</color>
+    <color name="pastelRed">#F45531</color>
+    <color name="gray">#303032</color>
+    <color name="darkGray">#212124</color>
+
+    <color name="startButton">#21CE99</color>
+    <color name="stopButton">#F45531</color>
 </resources>

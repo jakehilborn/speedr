@@ -238,12 +238,12 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private void styleStartStopButton(boolean start) {
         if (start) {
             ((FloatingActionButton) findViewById(R.id.start_stop))
-                    .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.materialRed))); //Only solution I've found to be compatible with Android 4.2
+                    .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.stopButton))); //Only solution I've found to be compatible with Android 4.2
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pause));
         } else {
             ((FloatingActionButton) findViewById(R.id.start_stop))
-                    .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.materialGreen)));
+                    .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.startButton)));
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.car));
         }

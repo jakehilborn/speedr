@@ -48,17 +48,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         openStreetMapsButton = (AppCompatButton) findViewById(R.id.open_street_maps_button);
         openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
-                Prefs.isUseHereMaps(this) ? R.color.materialGrey : R.color.colorAccent
+                Prefs.isUseHereMaps(this) ? R.color.unselectedButtonGray : R.color.colorAccent
         )));
         openStreetMapsButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
                 limitProviderButtonHandler(false);
             }
         });
-//
+
         hereMapsButton = (AppCompatButton) findViewById(R.id.here_maps_button);
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
-                Prefs.isUseHereMaps(this) ? R.color.colorAccent : R.color.materialGrey
+                Prefs.isUseHereMaps(this) ? R.color.colorAccent : R.color.unselectedButtonGray
         )));
         hereMapsButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
@@ -93,10 +93,10 @@ public class SettingsActivity extends AppCompatActivity {
         Prefs.setUseHereMaps(this, isUseHereMaps);
 
         openStreetMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
-                isUseHereMaps ? R.color.materialGrey : R.color.colorAccent
+                isUseHereMaps ? R.color.unselectedButtonGray : R.color.colorAccent
         )));
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
-                isUseHereMaps ? R.color.colorAccent : R.color.materialGrey
+                isUseHereMaps ? R.color.colorAccent : R.color.unselectedButtonGray
         )));
     }
 
