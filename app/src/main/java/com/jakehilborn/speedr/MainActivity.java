@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private static final int BIND_IF_SERVICE_RUNNING = 0;
     private static final int REQUEST_LOCATION = 1;
+    private static final int NO_VAL = -1;
 
     private MainService mainService;
 
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
         }
 
-        setSessionInUI();
+        setSessionInUI(false);
 
         if (isMainServiceRunning()) {
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
@@ -162,9 +163,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void setStatsInUI(Stats stats) {
-        if (stats.getSpeed() != null) speed.setText(String.valueOf(stats.getSpeed()));
-        if (stats.getLimit() != null) limit.setText(String.valueOf(stats.getLimit()));
-
         if (stats.getTimeDiff() != null) {
             timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(stats.getTimeDiff())));
             timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
@@ -185,21 +183,41 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 timeDiffHSymbol.setVisibility(View.GONE);
             }
         }
-    }
 
-    private void setSessionInUI() { //Sets timeDiff from the completed MainService session and reset button if necessary
-        Double sessionTimeDiff;
-        if (mainService != null) {
-            sessionTimeDiff = mainService.pollStats().getTimeDiff();
-        } else { //If service is not running then read the timeDiff from storage
-            sessionTimeDiff = Prefs.getSessionTimeDiff(this);
+        if (stats.getLimit() != null) {
+            if (stats.getLimit() == NO_VAL) {
+                limit.setText("--");
+            } else {
+                limit.setText(String.valueOf(stats.getLimit()));
+            }
         }
 
-        Stats stats = new Stats();
-        stats.setTimeDiff(sessionTimeDiff);
+        if (stats.getSpeed() != null) {
+            if (stats.getSpeed() == NO_VAL) {
+                speed.setText("--");
+            } else {
+                speed.setText(String.valueOf(stats.getSpeed()));
+            }
+        }
+    }
+
+    private void setSessionInUI(boolean serviceStopping) { //Sets timeDiff from the completed MainService session and reset button if necessary
+        Stats stats;
+        if (mainService != null) {
+            stats = mainService.pollStats();
+        } else { //If service is not running then read the timeDiff from storage
+            stats = new Stats();
+            stats.setTimeDiff(Prefs.getSessionTimeDiff(this));
+        }
+
+        if (serviceStopping) {
+            stats.setLimit(NO_VAL);
+            stats.setSpeed(NO_VAL);
+        }
+
         setStatsInUI(stats);
 
-        if (sessionTimeDiff != 0) {
+        if ((serviceStopping || !isMainServiceRunning()) && stats.getTimeDiff() != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.GONE);
@@ -239,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private void stopMainService() {
         styleStartStopButton(false);
-        setSessionInUI();
+        setSessionInUI(true);
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
@@ -279,10 +297,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     public void resetSessionOnClick(View view) {
-        timeDiffH.setText("-");
-        timeDiffM.setText("--");
-        timeDiffS.setText("--");
-        timeDiffS10th.setText("-");
+        Stats stats = new Stats();
+        stats.setTimeDiff(0D);
+        setStatsInUI(stats);
+
         reset.setVisibility(View.GONE);
 
         Prefs.setSessionTimeDiff(this, 0D);
