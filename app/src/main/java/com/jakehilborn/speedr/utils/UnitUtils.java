@@ -2,10 +2,10 @@ package com.jakehilborn.speedr.utils;
 
 public class UnitUtils {
 
-    public static final long nanoTenthSecond = 100000000L;
-    public static final long nanoOneSecond = 1000000000L;
-    public static final long nanoOneMinute = 60000000000L;
-    public static final long nanoOneHour = 3600000000000L;
+    public static final long NANO_TENTH_SECOND = 100000000L;
+    public static final long NANO_ONE_SECOND = 1000000000L;
+    public static final long NANO_ONE_MINUTE = 60000000000L;
+    public static final long NANO_ONE_HOUR = 3600000000000L;
 
     public static Integer msToMph(Double ms) {
         if (ms == null) return null;
@@ -52,24 +52,24 @@ public class UnitUtils {
     public static Integer nanosTo10thsModuloSeconds(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % nanoOneSecond) / nanoTenthSecond);
+        return (int) ((nanos % NANO_ONE_SECOND) / NANO_TENTH_SECOND);
     }
 
     public static Integer nanosToSecondsModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % nanoOneMinute) / nanoOneSecond);
+        return (int) ((nanos % NANO_ONE_MINUTE) / NANO_ONE_SECOND);
     }
 
     public static Integer nanosToMinutesModuloHours(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) ((nanos % nanoOneHour) / nanoOneMinute);
+        return (int) ((nanos % NANO_ONE_HOUR) / NANO_ONE_MINUTE);
     }
 
     public static Integer nanosToHoursModuloMinutes(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) (nanos / nanoOneHour);
+        return (int) (nanos / NANO_ONE_HOUR);
     }
 }

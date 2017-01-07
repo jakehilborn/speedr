@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (stats.getTimeDiff() != null) {
             timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(stats.getTimeDiff())));
             timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
-            if (stats.getTimeDiff() >= UnitUtils.nanoOneMinute) {
+            if (stats.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
                 timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(stats.getTimeDiff())));
                 timeDiffM.setVisibility(View.VISIBLE);
                 timeDiffMSymbol.setVisibility(View.VISIBLE);
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 timeDiffM.setVisibility(View.GONE);
                 timeDiffMSymbol.setVisibility(View.GONE);
             }
-            if (stats.getTimeDiff() >= UnitUtils.nanoOneHour) {
+            if (stats.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
                 timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(stats.getTimeDiff())));
                 timeDiffH.setVisibility(View.VISIBLE);
                 timeDiffHSymbol.setVisibility(View.VISIBLE);
