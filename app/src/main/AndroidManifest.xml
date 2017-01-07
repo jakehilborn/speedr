@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,7 +27,8 @@
             android:name=".SettingsActivity"
             android:label="@string/speedr_settings_app_bar_title"
             android:parentActivityName="com.jakehilborn.speedr.MainActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            />
 
         <service android:name=".MainService" />
     </application>
