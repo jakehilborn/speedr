@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 });
 
         View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(getResources().getColor(R.color.darkGray));
         TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setMaxLines(5); //Override 2 line limit
         snackbar.show();
