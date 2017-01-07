@@ -53,11 +53,12 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView timeDiffS10th;
 
     private AppCompatImageButton reset;
-    private AppCompatImageButton hereLogo;
+    private AppCompatImageButton limitProviderLogo;
 
     private Toast noGPSPermissionToast;
     private Toast noNetworkToast;
     private Toast playServicesErrorToast;
+    private Toast poweredByOpenStreetMapToast;
     private Toast poweredByHereMapsToast;
 
     @Override
@@ -84,16 +85,21 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         });
 
-        hereLogo = (AppCompatImageButton) findViewById(R.id.here_logo);
-        hereLogo.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
+        limitProviderLogo = (AppCompatImageButton) findViewById(R.id.limit_provider_logo);
+        limitProviderLogo.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
             public void onClick(View view) {
-                poweredByHereMapsToast.show();
+                if (Prefs.isUseHereMaps(MainActivity.this)) {
+                    poweredByHereMapsToast.show();
+                } else {
+                    poweredByOpenStreetMapToast.show();
+                }
             }
         });
 
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
+        poweredByOpenStreetMapToast = Toast.makeText(this, R.string.powered_by_open_street_map_toast, Toast.LENGTH_SHORT);
         poweredByHereMapsToast = Toast.makeText(this, R.string.powered_by_here_maps_toast, Toast.LENGTH_SHORT);
     }
 
@@ -109,7 +115,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitUnit.setText(R.string.mph);
         }
 
-        if (!Prefs.isUseHereMaps(this)) hereLogo.setVisibility(View.GONE);
+        if (Prefs.isUseHereMaps(this)) {
+            limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.here_maps_logo));
+        } else {
+            limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
+        }
 
         setSessionInUI();
 

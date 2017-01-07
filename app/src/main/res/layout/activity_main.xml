@@ -181,13 +181,12 @@
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/here_logo"
+                android:id="@+id/limit_provider_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="32dp"
-                android:background="@drawable/here_maps_logo"
                 />
 
         </RelativeLayout>

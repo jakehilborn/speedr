@@ -5,6 +5,7 @@
     <string name="no_gps_permission_toast">Location permission needed to track driving speed.</string>
     <string name="no_network_toast">Internet needed to get speed limit data. Enable wifi or cellular data.</string>
     <string name="play_services_error_toast">This app is not compatible with this device due to a Google Play Services error.</string>
+    <string name="powered_by_open_street_map_toast">Powered by OpenStreetMap</string>
     <string name="powered_by_here_maps_toast">Powered by HERE Maps</string>
 
     <string name="gps_disabled_message_4_3down">Please enable <b>GPS satellites</b> in location settings.</string>

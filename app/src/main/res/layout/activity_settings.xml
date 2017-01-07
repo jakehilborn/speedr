@@ -171,7 +171,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/open_street_maps_logo"
+                android:src="@drawable/open_street_map_logo"
                 />
 
             <LinearLayout
