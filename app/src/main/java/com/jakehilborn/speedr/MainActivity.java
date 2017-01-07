@@ -195,10 +195,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             sessionTimeDiff = Prefs.getSessionTimeDiff(this);
         }
 
+        Stats stats = new Stats();
+        stats.setTimeDiff(sessionTimeDiff);
+        setStatsInUI(stats);
+
         if (sessionTimeDiff != 0) {
-            Stats stats = new Stats();
-            stats.setTimeDiff(sessionTimeDiff);
-            setStatsInUI(stats);
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.GONE);
