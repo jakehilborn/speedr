@@ -150,19 +150,18 @@ public class LimitTool {
                             }
                         }
 
-                        String toastText;
-                        if (result == null) {
-                            toastText = "Unknown error occurred with Here Maps";
+                        String errorString;
+                        if (result != null) {
+                            errorString = result.getType() + " - " + result.getSubtype() + "\n\n" + result.getDetails();
+                            if (hereMapsError != null) hereMapsError.cancel(); //Cancel previous toast so they don't queue up
+                            hereMapsError = hereMapsError.makeText(context, errorString, Toast.LENGTH_LONG);
+                            hereMapsError.show();
                         } else {
-                            toastText = result.getType() + " - " + result.getSubtype() + "\n\n" + result.getDetails();
+                            errorString = "Unknown error occurred with HERE";
                         }
 
-                        Crashlytics.log(Log.ERROR, "Here maps error", toastText);
-                        Crashlytics.logException(error);
-
-                        if (hereMapsError != null) hereMapsError.cancel(); //Cancel previous toast so they don't queue up
-                        hereMapsError = hereMapsError.makeText(context, toastText, Toast.LENGTH_LONG);
-                        hereMapsError.show();
+                        Crashlytics.log(Log.ERROR, "HERE error", errorString);
+                        Crashlytics.logException(error); //Log exception at the end so Crashlytics includes recent logs in report
                     }
                 });
     }
