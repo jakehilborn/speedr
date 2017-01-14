@@ -175,7 +175,7 @@ public class MainService extends Service {
 
         String speed = "  "; //Padding to keep prevent values from shifting too much in notification
         if (stats.getSpeed() == null) {
-            speed += 0;
+            speed = "  0";
         } else {
             if (stats.getSpeed() >= 10) speed = " ";
             if (stats.getSpeed() >= 100) speed = ""; //Assumes currentSpeed won't exceed 999
@@ -183,8 +183,8 @@ public class MainService extends Service {
         }
 
         String limit = "  ";
-        if (stats.getLimit() == null) {
-            limit += 0;
+        if (stats.getLimit() == null || stats.getLimit() == 0) {
+            limit = " --";
         } else {
             if (stats.getLimit() >= 10) limit = " ";
             if (stats.getLimit() >= 100) limit = ""; //Assumes currentLimit won't exceed 999

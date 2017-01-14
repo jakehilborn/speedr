@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
 
         if (stats.getLimit() != null) {
-            if (stats.getLimit() == NO_VAL) {
+            if (stats.getLimit() == NO_VAL || stats.getLimit() == 0) {
                 limit.setText("--");
             } else {
                 limit.setText(String.valueOf(stats.getLimit()));
