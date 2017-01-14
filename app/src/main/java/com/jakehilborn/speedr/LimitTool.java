@@ -105,6 +105,8 @@ public class LimitTool {
                         if (value.getElements().length >= 1) {
                             Double limit = parseOverpassLimit(value.getElements()[0].getTags().getMaxSpeed());
                             statsCalculator.setLimit(limit);
+                        } else {
+                            statsCalculator.setLimit(null);
                         }
                     }
 

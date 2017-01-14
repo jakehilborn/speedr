@@ -133,7 +133,8 @@ public class MainService extends Service {
         statsCalculator.setLocation(location);
         statsCalculator.calcTimeDiff();
 
-        if (statsCalculator.isLimitStale()) {
+        boolean forceFetch = false;
+        if (statsCalculator.isLimitStale() || forceFetch) {
             limitTool.fetchLimit(this, location.getLatitude(), location.getLongitude(), statsCalculator);
         }
 

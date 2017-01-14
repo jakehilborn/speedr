@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private static final int BIND_IF_SERVICE_RUNNING = 0;
     private static final int REQUEST_LOCATION = 1;
-    private static final int NO_VAL = -1;
 
     private MainService mainService;
 
@@ -184,20 +183,16 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         }
 
-        if (stats.getLimit() != null) {
-            if (stats.getLimit() == NO_VAL || stats.getLimit() == 0) {
-                limit.setText("--");
-            } else {
-                limit.setText(String.valueOf(stats.getLimit()));
-            }
+        if (stats.getLimit() == null || stats.getLimit() == 0) {
+            limit.setText("--");
+        } else {
+            limit.setText(String.valueOf(stats.getLimit()));
         }
 
-        if (stats.getSpeed() != null) {
-            if (stats.getSpeed() == NO_VAL) {
-                speed.setText("--");
-            } else {
-                speed.setText(String.valueOf(stats.getSpeed()));
-            }
+        if (stats.getSpeed() == null) {
+            speed.setText("--");
+        } else {
+            speed.setText(String.valueOf(stats.getSpeed()));
         }
     }
 
@@ -211,8 +206,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
 
         if (serviceStopping) {
-            stats.setLimit(NO_VAL);
-            stats.setSpeed(NO_VAL);
+            stats.setLimit(null);
+            stats.setSpeed(null);
         }
 
         setStatsInUI(stats);

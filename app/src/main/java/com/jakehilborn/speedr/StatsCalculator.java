@@ -55,6 +55,7 @@ public class StatsCalculator {
     public void calcTimeDiff() {
         if (prevLimitTime == 0 || //Limit data not available yet
             prevLocation == null || //Less than 2 speed data points have been captured
+            limit == null ||
             limit == 0) return; //Avoiding divide by zero
 
         double currentDiff = ((location.getElapsedRealtimeNanos() - prevLocation.getElapsedRealtimeNanos())
