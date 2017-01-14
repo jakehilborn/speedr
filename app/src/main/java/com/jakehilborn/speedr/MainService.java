@@ -174,7 +174,7 @@ public class MainService extends Service {
     private void updateNotification(Stats stats) {
         String timeDiff = formatTimeDiff(stats.getTimeDiff());
 
-        String speed = "  "; //Padding to keep prevent values from shifting too much in notification
+        String speed = "  "; //Padding to prevent values from shifting too much in notification
         if (stats.getSpeed() == null) {
             speed = "  0";
         } else {
