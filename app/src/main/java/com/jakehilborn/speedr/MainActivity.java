@@ -339,16 +339,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         int messageRef = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ?
                 R.string.gps_disabled_message_4_4up : R.string.gps_disabled_message_4_3down;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(messageRef)
+        new AlertDialog.Builder(this)
+                .setMessage(messageRef)
                 .setCancelable(true)
                 .setPositiveButton(R.string.go_to_location_settings_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+                })
+                .show();
     }
 
     private boolean checkNetworkPrereq() {

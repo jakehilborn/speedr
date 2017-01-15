@@ -32,24 +32,16 @@
     <!-- SettingsActivity -->
     <string name="speedr_settings_app_bar_title">speedr settings</string>
 
-    <string name="general_section">General</string>
-
-    <string name="speed_unit_setting_text">Speed unit</string>
-    <string name="mph">mph</string>
-    <string name="kmh">km/h</string>
-    <string-array name="speed_unit_options">
-        <item>@string/mph</item>
-        <item>@string/kmh</item>
-    </string-array>
-
     <string name="speed_limit_provider_section">Speed limit provider</string>
+    <string name="open_street_map_limit_provider_button_text">Open Street Map</string>
+    <string name="here_maps_limit_provider_button_text">HERE Maps</string>
+
+    <string name="here_maps_section">HERE Maps</string>
     <string name="here_maps_create_account_button_text">Want more accurate speed limits?</string>
     <string name="here_maps_create_account_button_sub_text">Create a free HERE Maps dev account. No credit card required.</string>
     <string name="here_maps_app_id_field">HERE Maps app id</string>
     <string name="here_maps_app_code_field">HERE Maps app code</string>
     <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
-    <string name="open_street_map_limit_provider_button_text">Open Street Map</string>
-    <string name="here_maps_limit_provider_button_text">HERE Maps</string>
 
     <string name="here_maps_terms_url">"https://legal.here.com/en/terms/serviceterms/us/"</string>
     <string name="accept_here_maps_terms_alert_button_text">Accept Terms</string>
@@ -59,6 +51,25 @@
     <string name="check_open_street_map_coverage_button_text">Check OpenStreetMap coverage</string>
     <string name="check_open_street_map_coverage_button_subtext">Visit <b>openstreetmap.org</b> on your computer to add/fix speed limits</string>
     <string name="donate_to_open_street_map_button_text">Donate to OpenStreetMap</string>
+
+    <string name="general_section">General</string>
+    <string name="speed_unit_setting_text">Speed unit</string>
+    <string name="mph">mph</string>
+    <string name="kmh">km/h</string>
+    <string-array name="speed_unit_options">
+        <item>@string/mph</item>
+        <item>@string/kmh</item>
+    </string-array>
+    <string name="privacy_policy_terms_and_conditions">Privacy Policy / Terms and Conditions</string>
+    <string name="privacy_policy_title">Speedr Privacy Policy</string>
+    <string name="privacy_policy_content"><![CDATA[
+        Crash reports, device info, and usage statistics are sent to the Speedr developer to help make the app better. No location data, speed data, speed limit data, or unique identifiers are logged. No data is harvested for advertising purposes and nothing is sold to 3rd parties. Feel free to audit the source code on <a href="https://github.com/jakehilborn">GitHub</a>.<br>
+        <br>
+        3rd party speed Limit providers
+        <br>
+        <a href="HERE_TERMS_PLACEHOLDER">HERE Service Terms</a><br>
+        <a href="https://www.openstreetmap.org/copyright">OpenStreetMap Copyright</a>
+    ]]></string> <!-- HERE_TERMS_PLACEHOLDER is replaced with @string/here_maps_terms_url at runtime -->
 
     <string name="developed_by_jake_hilborn_dialog_title">Developed by Jake Hilborn</string>
     <string name="github_link_text">GitHub</string>

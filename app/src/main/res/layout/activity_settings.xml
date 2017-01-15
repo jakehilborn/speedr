@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center_vertical"
-            android:text="@string/general_section"
+            android:paddingTop="10dp"
+            android:text="@string/speed_limit_provider_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -33,24 +34,18 @@
             android:orientation="horizontal"
             >
 
-            <TextView
-                android:id="@+id/speed_unit_text"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/here_maps_button"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/speed_unit_setting_text"
-                android:textSize="16sp"
+                android:layout_height="wrap_content"
+                android:text="@string/here_maps_limit_provider_button_text"
                 />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
-
-            <Spinner android:id="@+id/speed_unit"
-                android:entries="@array/speed_unit_options"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/open_street_map_button"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/open_street_map_limit_provider_button_text"
                 />
 
         </LinearLayout>
@@ -60,7 +55,7 @@
             android:layout_height="36dp"
             android:gravity="center_vertical"
             android:paddingTop="10dp"
-            android:text="@string/speed_limit_provider_section"
+            android:text="@string/here_maps_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -123,28 +118,6 @@
             android:hint="@string/here_maps_app_code_field"
             android:inputType="textVisiblePassword"
             /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/open_street_map_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/open_street_map_limit_provider_button_text"
-                />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/here_maps_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/here_maps_limit_provider_button_text"
-                />
-
-        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -227,6 +200,85 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/donate_to_open_street_map_button_text"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:text="@string/general_section"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ruler"
+                />
+
+            <TextView
+                android:id="@+id/speed_unit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingStart="15dp"
+                android:text="@string/speed_unit_setting_text"
+                android:textSize="16sp"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <Spinner
+                android:id="@+id/speed_unit"
+                android:entries="@array/speed_unit_options"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/privacy_policy_terms"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:gravity="center"
+            android:background="?selectableItemBackground"
+            android:onClick="privacyAndTermsOnClick"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/incognito"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_policy_terms_and_conditions"
                     android:textSize="16sp"
                     />
 

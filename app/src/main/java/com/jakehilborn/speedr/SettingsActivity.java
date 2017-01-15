@@ -12,12 +12,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -105,17 +108,16 @@ public class SettingsActivity extends AppCompatActivity {
         WebView webView = new WebView(this);
         webView.loadUrl(getString(R.string.here_maps_terms_url));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(webView)
+        new AlertDialog.Builder(this)
+                .setView(webView)
                 .setCancelable(true)
                 .setPositiveButton(R.string.accept_here_maps_terms_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         Prefs.setHereMapsTermsAccepted(SettingsActivity.this, true);
                         limitProviderButtonHandler(true); //Set limit provider now that terms have been accepted
                     }})
-                .setNegativeButton(R.string.reject_here_maps_terms_alert_button_text, null);
-        AlertDialog alert = builder.create();
-        alert.show();
+                .setNegativeButton(R.string.reject_here_maps_terms_alert_button_text, null)
+                .show();
     }
 
     private void launchWebpage(String uri) {
@@ -160,6 +162,19 @@ public class SettingsActivity extends AppCompatActivity {
         launchWebpage("https://donate.openstreetmap.org");
     }
 
+    public void privacyAndTermsOnClick(View view) {
+        String content = getString(R.string.privacy_policy_content).replace("HERE_TERMS_PLACEHOLDER", getString(R.string.here_maps_terms_url));
+
+        ((TextView) new AlertDialog.Builder(this)
+                .setTitle(R.string.privacy_policy_title)
+                .setMessage(Html.fromHtml(content))
+                .setCancelable(true)
+                .setNegativeButton(R.string.close_dialog_button, null)
+                .show()
+                .findViewById(android.R.id.message)) //These 2 lines make the hyperlinks clickable
+                .setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dev_info, menu);
@@ -177,8 +192,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private boolean devInfoOnClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.developed_by_jake_hilborn_dialog_title)
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.developed_by_jake_hilborn_dialog_title)
                 .setCancelable(true)
                 .setNeutralButton(R.string.github_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
@@ -196,19 +211,17 @@ public class SettingsActivity extends AppCompatActivity {
                         intent.setData(Uri.parse("mailto: jakehilborn@gmail.com"));
                         startActivity(Intent.createChooser(intent, getString(R.string.email_speedr_developer_chooser_text)));
                     }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+                })
+                .show();
         return true;
     }
 
     public void versionOnClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.changelog_dialog_title)
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.changelog_dialog_title)
                 .setMessage(R.string.changelog_content)
                 .setCancelable(true)
-                .setNegativeButton(R.string.close_dialog_button, null);
-        AlertDialog alert = builder.create();
-        alert.show();
+                .setNegativeButton(R.string.close_dialog_button, null)
+                .show();
     }
 }
