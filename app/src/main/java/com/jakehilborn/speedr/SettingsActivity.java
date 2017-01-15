@@ -15,6 +15,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -101,8 +102,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void showHereMapsTerms() {
+        WebView webView = new WebView(this);
+        webView.loadUrl(getString(R.string.here_maps_terms_url));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.here_maps_terms_content)
+        builder.setView(webView)
                 .setCancelable(true)
                 .setPositiveButton(R.string.accept_here_maps_terms_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
