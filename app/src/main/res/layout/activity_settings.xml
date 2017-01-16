@@ -108,6 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/here_maps_app_id_field"
+            android:imeOptions="flagNoExtractUi"
             android:inputType="textVisiblePassword"
             /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
 
@@ -116,6 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/here_maps_app_code_field"
+            android:imeOptions="flagNoExtractUi"
             android:inputType="textVisiblePassword"
             /> <!--textVisiblePassword is a hack to disable autocorrect on Swiftkey-->
 
