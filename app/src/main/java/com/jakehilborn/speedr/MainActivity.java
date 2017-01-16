@@ -1,6 +1,7 @@
 package com.jakehilborn.speedr;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,6 +33,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
@@ -39,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private static final int BIND_IF_SERVICE_RUNNING = 0;
     private static final int REQUEST_LOCATION = 1;
+
+    private GoogleApiClient googleApiClient;
 
     private MainService mainService;
 
@@ -242,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void startMainService() {
-        if (requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq() && checkPlayServicesPrereq()) {
+        if (checkPlayServicesPrereq() && requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq()) {
             styleStartStopButton(true);
             reset.setVisibility(View.GONE);
 
@@ -308,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private boolean requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-            return false;
+            return false; //Short circuit startMainService() call, it will be recalled onRequestPermissionsResult()
         }
         return true;
     }
@@ -316,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Success
-            startMainService();
+            startMainService(); //Restart startMainService() chain
         } else {
             noGPSPermissionToast.show();
         }
@@ -334,8 +344,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             return true;
         }
 
-        showNoGPSAlert();
-        return false;
+        enableGPSViaPlayServices();
+        return false; //Short circuit startMainService() call, it will be recalled by enableGPSViaPlayServices()
     }
 
     private void showNoGPSAlert() {
@@ -377,6 +387,53 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         return true;
     }
 
+    private void enableGPSViaPlayServices() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+
+        LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY))
+                .setAlwaysShow(true)
+                .build();
+
+        LocationServices.SettingsApi.checkLocationSettings(googleApiClient, locationSettingsRequest)
+        .setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult result) {
+                boolean showingLocationSettingsDialog = false;
+                if (result.getStatus().getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                    try {
+                        //Show location settings change dialog and check the result in onActivityResult()
+                        result.getStatus().startResolutionForResult(MainActivity.this, REQUEST_LOCATION);
+                        showingLocationSettingsDialog = true;
+                    } catch (Exception e) {
+                        //Do nothing
+                    }
+                }
+                if (!showingLocationSettingsDialog) {
+                    showNoGPSAlert(); //Ask user to manually enable GPS
+                    googleApiClient.disconnect();
+                }
+            }
+        });
+    }
+
+    @Override //Needed to receive result of enableGPSViaPlayServices AlertDialog choice
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            //Check for the integer request code originally supplied to startResolutionForResult()
+            case REQUEST_LOCATION:
+                if (resultCode == Activity.RESULT_OK) {
+                    startMainService(); //Restart startMainService() chain
+                } else {
+                    showNoGPSAlert(); //Ask user to manually enable GPS
+                }
+                googleApiClient.disconnect();
+        }
+    }
+
     @Override
     public void onStop() {
         noGPSPermissionToast.cancel();
@@ -386,6 +443,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         poweredByHereMapsToast.cancel();
 
         if (mainService != null) unbindService(mainServiceConn);
+        if (googleApiClient != null) googleApiClient.disconnect();
 
         super.onStop();
     }
