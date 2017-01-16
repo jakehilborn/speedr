@@ -12,17 +12,16 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="5dp"
+        android:paddingTop="15dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
+        android:orientation="vertical"
         >
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
-            android:paddingTop="10dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
             android:text="@string/speed_limit_provider_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -48,14 +47,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/open_street_map_limit_provider_button_text"
                 />
-
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
             android:text="@string/here_maps_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -64,9 +61,11 @@
 
         <LinearLayout
             android:id="@+id/here_maps_create_account_button"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
             android:gravity="center"
             android:background="?selectableItemBackground"
             android:onClick="hereMapsCreateAccountOnClick"
@@ -75,6 +74,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
                 android:src="@drawable/here_maps_logo"
                 android:contentDescription="@string/content_description_speed_limit_provider"
                 />
@@ -82,7 +82,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
                 android:orientation="vertical"
                 >
 
@@ -122,9 +121,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
-            android:paddingTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="@string/open_street_map_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -133,10 +131,11 @@
 
         <LinearLayout
             android:id="@+id/open_street_map_coverage"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
             android:gravity="center"
             android:background="?selectableItemBackground"
             android:onClick="openStreetMapCoverageOnClick"
@@ -145,6 +144,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
                 android:src="@drawable/open_street_map_logo"
                 tools:ignore="ContentDescription"
                 />
@@ -152,7 +152,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
                 android:orientation="vertical"
                 >
 
@@ -176,10 +175,11 @@
 
         <LinearLayout
             android:id="@+id/open_street_map_donate"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
             android:gravity="center"
             android:background="?selectableItemBackground"
             android:onClick="openStreetMapDonateOnClick"
@@ -188,6 +188,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
                 android:src="@drawable/heart"
                 tools:ignore="ContentDescription"
                 />
@@ -195,7 +196,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
                 android:orientation="vertical"
                 >
 
@@ -211,8 +211,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="@string/general_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -223,11 +223,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
                 android:src="@drawable/ruler"
                 tools:ignore="ContentDescription"
                 />
@@ -236,7 +239,6 @@
                 android:id="@+id/speed_unit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingStart="15dp"
                 android:text="@string/speed_unit_setting_text"
                 android:textSize="16sp"
                 />
@@ -249,18 +251,19 @@
 
             <Spinner
                 android:id="@+id/speed_unit"
-                android:entries="@array/speed_unit_options"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:entries="@array/speed_unit_options"
                 />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/privacy_policy_terms"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
             android:gravity="center"
             android:background="?selectableItemBackground"
             android:onClick="privacyAndTermsOnClick"
@@ -269,6 +272,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
                 android:src="@drawable/incognito"
                 tools:ignore="ContentDescription"
                 />
@@ -276,7 +280,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
                 android:orientation="vertical"
                 >
 
@@ -298,15 +301,14 @@
             />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
-            android:gravity="center"
+            android:padding="5dp"
+            android:layout_gravity="center"
             android:textSize="14sp"
             android:text="@string/version_text"
+            android:background="?selectableItemBackground"
             android:onClick="versionOnClick"
             />
-
     </LinearLayout>
 </ScrollView>
