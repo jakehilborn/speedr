@@ -7,27 +7,29 @@
     android:orientation="vertical"
     android:fillViewport="true"
     >
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         >
 
         <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:orientation="horizontal"
             >
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_centerInParent="true"
-                tools:ignore="RelativeOverlap">
+                tools:ignore="RelativeOverlap"
+                >
 
                 <TextView
                     android:id="@+id/time_diff_h"
@@ -37,9 +39,10 @@
                     android:textStyle="bold"
                     android:textSize="30dp"
                     android:text="-"
-                    tools:ignore="HardcodedText,SpUsage"/>
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
 
-                <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
+                <!--margin on end instead of start so that setVisibility.GONE hides margin correctly-->
                 <TextView
                     android:id="@+id/time_diff_h_symbol"
                     android:layout_width="wrap_content"
@@ -49,7 +52,8 @@
                     android:textStyle="normal"
                     android:textSize="10dp"
                     android:text="@string/hour_symbol"
-                    tools:ignore="SpUsage"/>
+                    tools:ignore="SpUsage"
+                    />
 
                 <TextView
                     android:id="@+id/time_diff_m"
@@ -59,9 +63,10 @@
                     android:textStyle="bold"
                     android:textSize="30dp"
                     android:text="--"
-                    tools:ignore="HardcodedText,SpUsage"/>
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
 
-                <!--padding on end instead of start so that setVisibility.GONE hides padding correctly-->
+                <!--margin on end instead of start so that setVisibility.GONE hides margin correctly-->
                 <TextView
                     android:id="@+id/time_diff_m_symbol"
                     android:layout_width="wrap_content"
@@ -71,7 +76,8 @@
                     android:textStyle="normal"
                     android:textSize="10dp"
                     android:text="@string/minute_symbol"
-                    tools:ignore="SpUsage"/>
+                    tools:ignore="SpUsage"
+                    />
 
                 <TextView
                     android:id="@+id/time_diff_s"
@@ -81,7 +87,8 @@
                     android:textStyle="bold"
                     android:textSize="30dp"
                     android:text="--"
-                    tools:ignore="HardcodedText,SpUsage"/>
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,7 +97,8 @@
                     android:textStyle="normal"
                     android:textSize="30dp"
                     android:text="@string/decimal_symbol"
-                    tools:ignore="SpUsage"/>
+                    tools:ignore="SpUsage"
+                    />
 
                 <TextView
                     android:id="@+id/time_diff_s10th"
@@ -100,7 +108,8 @@
                     android:textStyle="bold"
                     android:textSize="30dp"
                     android:text="-"
-                    tools:ignore="HardcodedText,SpUsage"/>
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,31 +118,31 @@
                     android:textStyle="normal"
                     android:textSize="10dp"
                     android:text="@string/second_symbol"
-                    tools:ignore="SpUsage"/>
-
+                    tools:ignore="SpUsage"
+                    />
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/reset_session"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="30dp"
                 android:background="@drawable/reset"
                 />
-
         </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:typeface="sans"
             android:textStyle="normal"
             android:textSize="12dp"
             android:text="@string/time_difference_text"
-            android:layout_gravity="center"
-            tools:ignore="SpUsage"/>
+            tools:ignore="SpUsage"
+            />
 
         <View
             android:layout_width="match_parent"
@@ -145,20 +154,22 @@
             />
 
         <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:orientation="horizontal"
             >
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_centerInParent="true"
-                tools:ignore="RelativeOverlap">
+                tools:ignore="RelativeOverlap"
+                >
 
-                <TextView android:id="@+id/limit"
+                <TextView
+                    android:id="@+id/limit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -166,9 +177,11 @@
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:text="--"
-                          tools:ignore="HardcodedText,SpUsage"/>
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
 
-                <TextView android:id="@+id/limit_unit"
+                <TextView
+                    android:id="@+id/limit_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -177,40 +190,41 @@
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:text="@string/unit"
-                          tools:ignore="SpUsage"/>
-
+                    tools:ignore="SpUsage"
+                    />
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/limit_provider_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="32dp"
                 />
-
         </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:typeface="sans"
             android:textStyle="normal"
             android:textSize="10dp"
             android:text="@string/current_speed_limit_title"
-            android:layout_gravity="center"
-            tools:ignore="SpUsage"/>
+            tools:ignore="SpUsage"
+            />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:orientation="horizontal"
             android:layout_gravity="center"
             >
 
-            <TextView android:id="@+id/speed"
+            <TextView
+                android:id="@+id/speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -218,9 +232,11 @@
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:text="--"
-                      tools:ignore="HardcodedText,SpUsage"/>
+                tools:ignore="HardcodedText,SpUsage"
+                />
 
-            <TextView android:id="@+id/speed_unit"
+            <TextView
+                android:id="@+id/speed_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -229,19 +245,20 @@
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:text="@string/unit"
-                      tools:ignore="SpUsage"/>
-
+                tools:ignore="SpUsage"
+                />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:typeface="sans"
             android:textStyle="normal"
             android:textSize="10dp"
             android:text="@string/current_speed_title"
-            android:layout_gravity="center"
-            tools:ignore="SpUsage"/>
+            tools:ignore="SpUsage"
+            />
 
         <!-- Items below this tag are placed on the bottom of the screen -->
         <View
@@ -254,15 +271,14 @@
             android:id="@+id/start_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:layout_gravity="center"
-            android:src="@drawable/car"
-            app:backgroundTint="@color/startButton"
             app:fabSize="normal"
             app:borderWidth="0dp"
             app:elevation="4dp"
-            android:layout_marginBottom="15dp"
+            android:src="@drawable/car"
+            app:backgroundTint="@color/startButton"
             android:onClick="startStopButtonOnClick"
             />
-
     </LinearLayout>
 </ScrollView>
