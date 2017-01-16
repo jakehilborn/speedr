@@ -48,8 +48,6 @@ public class SettingsActivity extends AppCompatActivity {
         appCodeField = (EditText) findViewById(R.id.here_app_code);
         appCodeField.setText(Prefs.getHereAppCode(this));
 
-        emptyCredentials = Toast.makeText(this, R.string.enter_here_maps_credentials_toast, Toast.LENGTH_LONG);
-
         openStreetMapButton = (AppCompatButton) findViewById(R.id.open_street_map_button);
         openStreetMapButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 Prefs.isUseHereMaps(this) ? R.color.unselectedButtonGray : R.color.colorAccent
@@ -85,6 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void limitProviderButtonHandler(boolean isUseHereMaps) { //xml defined onClick not working on Android 4.2 so I'm using anonymous methods instead
         if (isUseHereMaps && (appIdField.getText().toString().isEmpty() || appCodeField.getText().toString().isEmpty())) {
+            emptyCredentials = Toast.makeText(this, R.string.enter_here_maps_credentials_toast, Toast.LENGTH_LONG);
             emptyCredentials.show();
             isUseHereMaps = false;
         }

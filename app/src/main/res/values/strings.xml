@@ -29,6 +29,8 @@
     </string>
     <string name="dismiss_snackbar">OK</string>
 
+    <string name="content_description_speed_limit_provider">speed limit provider</string>
+
     <!-- SettingsActivity -->
     <string name="speedr_settings_app_bar_title">speedr settings</string>
 

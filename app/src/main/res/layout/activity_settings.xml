@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -52,9 +53,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
-            android:paddingTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/here_maps_section"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
@@ -66,7 +67,6 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:gravity="center"
             android:background="?selectableItemBackground"
             android:onClick="hereMapsCreateAccountOnClick"
@@ -76,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/here_maps_logo"
+                android:contentDescription="@string/content_description_speed_limit_provider"
                 />
 
             <LinearLayout
@@ -145,6 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/open_street_map_logo"
+                tools:ignore="ContentDescription"
                 />
 
             <LinearLayout
@@ -187,6 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/heart"
+                tools:ignore="ContentDescription"
                 />
 
             <LinearLayout
@@ -226,6 +229,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ruler"
+                tools:ignore="ContentDescription"
                 />
 
             <TextView
@@ -266,6 +270,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/incognito"
+                tools:ignore="ContentDescription"
                 />
 
             <LinearLayout

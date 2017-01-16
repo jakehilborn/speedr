@@ -3,8 +3,6 @@ package com.jakehilborn.speedr.overpass;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 
 import java.io.IOException;
 

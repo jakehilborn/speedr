@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -261,11 +262,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private void styleStartStopButton(boolean start) {
         if (start) {
+            //noinspection RedundantCast
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.stopButton))); //Only solution I've found to be compatible with Android 4.2
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pause));
         } else {
+            //noinspection RedundantCast
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.startButton)));
             ((FloatingActionButton) findViewById(R.id.start_stop))
@@ -311,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Success
             startMainService();
         } else {
