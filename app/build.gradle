@@ -31,8 +31,8 @@ buildscript {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') { transitive = true }
     compile 'com.google.android.gms:play-services-location:9.2.1' //Latest version compatible with Android 4.2
     compile 'com.google.code.gson:gson:2.8.0'

@@ -75,7 +75,7 @@
     <string name="github_link_text">GitHub</string>
     <string name="linkedin_link_text">LinkedIn</string>
     <string name="email_link_text">Email</string>
-    <string name="email_speedr_developer_chooser_text">Email speedr developer</string>
+    <string name="email_speedr_developer_chooser_text">Email Speedr developer</string>
 
     <string name="version_text">Version 0.1</string>
     <string name="changelog_dialog_title">Changelog</string>
