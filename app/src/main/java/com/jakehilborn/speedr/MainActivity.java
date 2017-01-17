@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private static final int BIND_IF_SERVICE_RUNNING = 0;
     private static final int REQUEST_LOCATION = 1;
 
+    private MainService mainService;
     private GoogleApiClient googleApiClient;
 
-    private MainService mainService;
+    private boolean useHereMaps;
 
     private TextView speed;
     private TextView speedUnit;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private AppCompatImageButton reset;
     private AppCompatImageButton limitProviderLogo;
+    private AppCompatImageButton missingOpenStreetMapLimit;
 
     private Toast noGPSPermissionToast;
     private Toast noNetworkToast;
@@ -99,11 +101,18 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         limitProviderLogo = (AppCompatImageButton) findViewById(R.id.limit_provider_logo);
         limitProviderLogo.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
             public void onClick(View view) {
-                if (Prefs.isUseHereMaps(MainActivity.this)) {
+                if (useHereMaps) {
                     poweredByHereMapsToast.show();
                 } else {
                     poweredByOpenStreetMapToast.show();
                 }
+            }
+        });
+
+        missingOpenStreetMapLimit = (AppCompatImageButton) findViewById(R.id.missing_open_street_map_limit);
+        missingOpenStreetMapLimit.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
+            public void onClick(View view) {
+                missingOpenStreetMapLimitOnClick();
             }
         });
 
@@ -126,20 +135,23 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitUnit.setText(R.string.mph);
         }
 
-        if (Prefs.isUseHereMaps(this)) {
+        useHereMaps = Prefs.isUseHereMaps(this);
+
+        if (useHereMaps) {
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.here_maps_logo));
+            missingOpenStreetMapLimit.setVisibility(View.GONE); //only applies to OpenStreetMap
         } else {
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
         }
 
-        setSessionInUI(false);
+        restoreSessionInUI();
 
         if (isMainServiceRunning()) {
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
         }
     }
 
-    private boolean isMainServiceRunning() { //Using this until I figure out the ServiceConnection leak issue
+    private boolean isMainServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if("com.jakehilborn.speedr.MainService".equals(service.service.getClassName())) {
@@ -176,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (stats.getTimeDiff() != null) {
             timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(stats.getTimeDiff())));
             timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
+
             if (stats.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
                 timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(stats.getTimeDiff())));
                 timeDiffM.setVisibility(View.VISIBLE);
@@ -196,8 +209,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         if (stats.getLimit() == null || stats.getLimit() == 0) {
             limit.setText("--");
+            //If service is running and returns null limit for OpenStreetMap show badge about spotty coverage
+            if (!useHereMaps && mainService != null) missingOpenStreetMapLimit.setVisibility(View.VISIBLE);
         } else {
             limit.setText(String.valueOf(stats.getLimit()));
+            missingOpenStreetMapLimit.setVisibility(View.GONE);
         }
 
         if (stats.getSpeed() == null) {
@@ -207,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void setSessionInUI(boolean serviceStopping) { //Sets timeDiff from the completed MainService session and reset button if necessary
+    private void restoreSessionInUI() { //Restores timeDiff from the completed MainService session and reset button if necessary
         Stats stats;
         if (mainService != null) {
             stats = mainService.pollStats();
@@ -216,14 +232,29 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             stats.setTimeDiff(Prefs.getSessionTimeDiff(this));
         }
 
-        if (serviceStopping) {
-            stats.setLimit(null);
-            stats.setSpeed(null);
-        }
-
         setStatsInUI(stats);
 
-        if ((serviceStopping || !isMainServiceRunning()) && stats.getTimeDiff() != 0) {
+        if (stats.getTimeDiff() != 0 && !isMainServiceRunning()) { //MainService may not be binded yet so explicitly check if running
+            reset.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void finalizeSessionInUI() {
+        Stats stats;
+        if (mainService != null) {
+            stats = mainService.pollStats();
+        } else { //If MainService was unexpectedly terminated this else block provides null safety and displays most recent timeDiff
+            stats = new Stats();
+            stats.setTimeDiff(Prefs.getSessionTimeDiff(this));
+        }
+
+        stats.setLimit(null);
+        stats.setSpeed(null);
+        setStatsInUI(stats);
+
+        missingOpenStreetMapLimit.setVisibility(View.GONE); //Only show during active sessions
+
+        if (stats.getTimeDiff() != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.GONE);
@@ -263,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private void stopMainService() {
         styleStartStopButton(false);
-        setSessionInUI(true);
+        finalizeSessionInUI();
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
@@ -287,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     public void showHereSuggstion() {
-        if (Prefs.isHereSuggestionAcknowledged(this) || Prefs.isUseHereMaps(this)) return;
+        if (useHereMaps || Prefs.isHereSuggestionAcknowledged(this)) return;
 
         Snackbar snackbar = Snackbar
                 .make(findViewById(R.id.start_stop), R.string.here_maps_suggestion_snackbar_text, Snackbar.LENGTH_INDEFINITE)
@@ -313,6 +344,19 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         reset.setVisibility(View.GONE);
 
         Prefs.setSessionTimeDiff(this, 0D);
+    }
+
+    public void missingOpenStreetMapLimitOnClick() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.missing_open_street_map_limit_dialog_title)
+                .setMessage(R.string.missing_open_street_map_limit_dialog_content)
+                .setCancelable(true)
+                .setPositiveButton(R.string.settings_dialog_button, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    }
+                })
+                .show();
     }
 
     private boolean requestLocationPermission() {

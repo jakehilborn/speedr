@@ -18,7 +18,7 @@
     <string name="second_symbol">s</string>
     <string name="decimal_symbol">.</string>
 
-    <string name="unit">unit</string> <!-- used for layout.xml Design view only -->
+    <string name="unit">unit</string> <!-- used for layout.xml Design tab only -->
     <string name="current_speed_limit_title">SPEED LIMIT</string>
     <string name="current_speed_title">SPEED</string>
 
@@ -28,6 +28,10 @@
         Open settings to create a free HERE Maps account.
     </string>
     <string name="dismiss_snackbar">OK</string>
+
+    <string name="missing_open_street_map_limit_dialog_title">Spotty speed limits?</string>
+    <string name="missing_open_street_map_limit_dialog_content">HERE Maps offers more accurate speed limits and better coverage. Open settings to create a free HERE Maps account.</string>
+    <string name="settings_dialog_button">Settings</string>
 
     <string name="content_description_speed_limit_provider">speed limit provider</string>
 
