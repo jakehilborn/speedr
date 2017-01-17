@@ -36,7 +36,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/speed_limit_layout"
                     android:background="@drawable/question_mark"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     />
 
                 <LinearLayout
@@ -274,7 +274,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:background="@drawable/reset"
                 />
 

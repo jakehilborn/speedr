@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         if (useHereMaps) {
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.here_maps_logo));
-            missingOpenStreetMapLimit.setVisibility(View.GONE); //only applies to OpenStreetMap
+            missingOpenStreetMapLimit.setVisibility(View.INVISIBLE); //only applies to OpenStreetMap
         } else {
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
         }
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 timeDiffM.setVisibility(View.VISIBLE);
                 timeDiffMSymbol.setVisibility(View.VISIBLE);
             } else {
-                timeDiffM.setVisibility(View.GONE);
+                timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view is not rendered which lets timeDiff center correctly
                 timeDiffMSymbol.setVisibility(View.GONE);
             }
             if (stats.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             if (!useHereMaps && mainService != null) missingOpenStreetMapLimit.setVisibility(View.VISIBLE);
         } else {
             limit.setText(String.valueOf(stats.getLimit()));
-            missingOpenStreetMapLimit.setVisibility(View.GONE);
+            missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
         }
 
         if (stats.getSpeed() == null) {
@@ -252,12 +252,12 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         stats.setSpeed(null);
         setStatsInUI(stats);
 
-        missingOpenStreetMapLimit.setVisibility(View.GONE); //Only show during active sessions
+        missingOpenStreetMapLimit.setVisibility(View.INVISIBLE); //Only show during active sessions
 
         if (stats.getTimeDiff() != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
-            reset.setVisibility(View.GONE);
+            reset.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private void startMainService() {
         if (checkPlayServicesPrereq() && requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq()) {
             styleStartStopButton(true);
-            reset.setVisibility(View.GONE);
+            reset.setVisibility(View.INVISIBLE);
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         stats.setTimeDiff(0D);
         setStatsInUI(stats);
 
-        reset.setVisibility(View.GONE);
+        reset.setVisibility(View.INVISIBLE);
 
         Prefs.setSessionTimeDiff(this, 0D);
     }
