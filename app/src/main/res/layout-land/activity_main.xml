@@ -28,7 +28,19 @@
                 android:orientation="horizontal"
                 >
 
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/missing_open_street_map_limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/speed_limit_layout"
+                    android:background="@drawable/question_mark"
+                    android:visibility="gone"
+                    />
+
                 <LinearLayout
+                    android:id="@+id/speed_limit_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -262,6 +274,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:background="@drawable/reset"
                 />
 
