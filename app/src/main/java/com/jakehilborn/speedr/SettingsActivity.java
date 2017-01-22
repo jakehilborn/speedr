@@ -157,7 +157,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }, delay);
 
-        delay += 1000;
+        delay += 1600;
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
