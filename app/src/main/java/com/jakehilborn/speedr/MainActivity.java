@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    public void showHereSuggstion() {
+    private void showHereSuggstion() {
         if (useHereMaps || Prefs.isHereSuggestionAcknowledged(this)) return;
 
         Snackbar snackbar = Snackbar
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         Prefs.setSessionTimeDiff(this, 0D);
     }
 
-    public void missingOpenStreetMapLimitOnClick() {
+    private void missingOpenStreetMapLimitOnClick() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.missing_open_street_map_limit_dialog_title)
                 .setMessage(R.string.missing_open_street_map_limit_dialog_content)
