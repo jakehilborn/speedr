@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
         )));
         openStreetMapButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
-                limitProviderButtonHandler(false);
+                limitProviderSelectorHandler(false);
             }
         });
 
@@ -67,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
         )));
         hereMapsButton.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatButton crashes on Android 4.2
             public void onClick(View view) {
-                limitProviderButtonHandler(true);
+                limitProviderSelectorHandler(true);
             }
         });
 
@@ -76,16 +76,30 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause() {
-        Prefs.setHereAppId(this, appIdField.getText().toString().trim());
-        Prefs.setHereAppCode(this, appCodeField.getText().toString().trim());
-        Prefs.setUseKph(this, (speedUnitSpinner.getSelectedItemPosition() == 1)); //0 is mph, 1 is km/h
-        emptyCredentials.cancel();
-        super.onPause();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dev_info, menu);
+        return true;
     }
 
-    public void limitProviderButtonHandler(boolean isUseHereMaps) { //xml defined onClick not working on Android 4.2 so I'm using anonymous methods instead
-        if (isUseHereMaps && (appIdField.getText().toString().isEmpty() || appCodeField.getText().toString().isEmpty())) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.dev_info:
+                devInfoOnClick();
+                return true;
+            case android.R.id.home:
+                if (newHereCredentials()) {
+                    return true;
+                } else {
+                    return super.onOptionsItemSelected(item);
+                }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void limitProviderSelectorHandler(boolean isUseHereMaps) {
+        if (isUseHereMaps && (appIdField.getText().toString().trim().isEmpty() || appCodeField.getText().toString().trim().isEmpty())) {
             emptyCredentials.show();
             isUseHereMaps = false;
         }
@@ -95,6 +109,8 @@ public class SettingsActivity extends AppCompatActivity {
             isUseHereMaps = false;
         }
 
+        Prefs.setHereAppId(this, appIdField.getText().toString().trim());
+        Prefs.setHereAppCode(this, appCodeField.getText().toString().trim());
         Prefs.setUseHereMaps(this, isUseHereMaps);
 
         openStreetMapButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
@@ -103,6 +119,26 @@ public class SettingsActivity extends AppCompatActivity {
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 isUseHereMaps ? R.color.colorAccent : R.color.unselectedButtonGray
         )));
+    }
+
+    //Detect if user input HERE credentials but did not click the HERE MAPS button, activate HERE for them.
+    private boolean newHereCredentials() {
+        if (appIdField.getText().toString().trim().length() < 20) {
+            return false;
+        }
+        if (appCodeField.getText().toString().trim().length() < 22) {
+            return false;
+        }
+        if (appIdField.getText().toString().trim().equals(Prefs.getHereAppId(this)) &&
+                appCodeField.getText().toString().trim().equals(Prefs.getHereAppCode(this))) {
+            return false;
+        }
+        if (Prefs.isUseHereMaps(this)) {
+            return false;
+        }
+
+        limitProviderSelectorHandler(true);
+        return true;
     }
 
     private void showHereMapsTerms() {
@@ -115,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.accept_here_maps_terms_alert_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         Prefs.setHereMapsTermsAccepted(SettingsActivity.this, true);
-                        limitProviderButtonHandler(true); //Set limit provider now that terms have been accepted
+                        limitProviderSelectorHandler(true); //Set limit provider now that terms have been accepted
                     }})
                 .setNegativeButton(R.string.reject_here_maps_terms_alert_button_text, null)
                 .show();
@@ -220,23 +256,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dev_info, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.dev_info:
-                return devInfoOnClick();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private boolean devInfoOnClick() {
+    private void devInfoOnClick() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.developed_by_jake_hilborn_dialog_title)
                 .setCancelable(true)
@@ -258,7 +278,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-        return true;
     }
 
     public void versionOnClick(View view) {
@@ -268,5 +287,22 @@ public class SettingsActivity extends AppCompatActivity {
                 .setCancelable(true)
                 .setNegativeButton(R.string.close_dialog_button, null)
                 .show();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (!newHereCredentials()) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        Prefs.setHereAppId(this, appIdField.getText().toString().trim());
+        Prefs.setHereAppCode(this, appCodeField.getText().toString().trim());
+        Prefs.setUseKph(this, (speedUnitSpinner.getSelectedItemPosition() == 1)); //0 is mph, 1 is km/h
+        emptyCredentials.cancel();
+        super.onPause();
     }
 }
