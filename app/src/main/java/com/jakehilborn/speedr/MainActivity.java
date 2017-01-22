@@ -101,10 +101,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         limitProviderLogo.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
             public void onClick(View view) {
                 if (useHereMaps) {
-                    poweredByHereMapsToast = Toast.makeText(MainActivity.this, R.string.powered_by_here_maps_toast, Toast.LENGTH_SHORT);
                     poweredByHereMapsToast.show();
                 } else {
-                    poweredByOpenStreetMapToast = Toast.makeText(MainActivity.this, R.string.powered_by_open_street_map_toast, Toast.LENGTH_SHORT);
                     poweredByOpenStreetMapToast.show();
                 }
             }
@@ -116,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 missingOpenStreetMapLimitOnClick();
             }
         });
+
+        noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
+        noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
+        playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
+        poweredByOpenStreetMapToast = Toast.makeText(MainActivity.this, R.string.powered_by_open_street_map_toast, Toast.LENGTH_SHORT);
+        poweredByHereMapsToast = Toast.makeText(MainActivity.this, R.string.powered_by_here_maps_toast, Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -367,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Success
             startMainService(); //Restart startMainService() chain
         } else {
-            noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
             noGPSPermissionToast.show();
         }
     }
@@ -407,7 +410,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
-            noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
             noNetworkToast.show();
             return false;
         }
@@ -421,7 +423,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(this, result, 0).show();
             } else {
-                playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
                 playServicesErrorToast.show();
             }
             return false;
