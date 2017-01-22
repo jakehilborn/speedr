@@ -138,6 +138,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         limitProviderSelectorHandler(true);
+        Toast.makeText(this, R.string.enabled_here_maps_toast, Toast.LENGTH_LONG).show();
         return true;
     }
 

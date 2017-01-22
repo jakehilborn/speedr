@@ -52,6 +52,7 @@
     <string name="here_maps_app_id_field">HERE Maps app id</string>
     <string name="here_maps_app_code_field">HERE Maps app code</string>
     <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
+    <string name="enabled_here_maps_toast">Enabled HERE Maps</string>
 
     <string name="here_maps_terms_url">"https://legal.here.com/en/terms/serviceterms/us/"</string>
     <string name="accept_here_maps_terms_alert_button_text">Accept Terms</string>
