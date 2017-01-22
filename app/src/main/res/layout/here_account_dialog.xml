@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:adjustViewBounds="true"
+    android:animateLayoutChanges="true"
+    >
+
+    <TextView
+        android:id="@+id/here_tutorial_step_1_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:textSize="20sp"
+        android:text="@string/here_maps_tutorial_step1_text"
+        android:visibility="invisible"
+        />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/here_tutorial_step_1_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/here_tutorial_step1"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/here_tutorial_step_2_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:textSize="20sp"
+        android:text="@string/here_maps_tutorial_step2_text"
+        android:visibility="invisible"
+        />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/here_tutorial_step_2_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/here_tutorial_step2"
+        android:visibility="invisible"
+        />
+</LinearLayout>

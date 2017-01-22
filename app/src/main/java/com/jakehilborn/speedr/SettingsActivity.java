@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -126,7 +127,51 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void hereMapsCreateAccountOnClick(View view) {
-        launchWebpage("https://developer.here.com/plans?create=Public_Free_Plan_Monthly&keepState=true&step=account");
+        final View dialogView = getLayoutInflater().inflate(R.layout.here_account_dialog, null);
+
+        new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(true)
+                .setPositiveButton(R.string.here_maps_create_account_dialog_button, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        launchWebpage("https://developer.here.com/plans?create=Public_Free_Plan_Monthly&keepState=true&step=account");
+                    }
+                })
+                .show();
+
+        Handler handler = new Handler();
+
+        int delay = 250;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_step_1_text).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+
+        delay += 500;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_step_1_image).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+
+        delay += 1000;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_step_2_text).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+
+        delay += 500;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_step_2_image).setVisibility(View.VISIBLE);
+            }
+        }, delay);
     }
 
     public void openStreetMapCoverageOnClick(View view) {

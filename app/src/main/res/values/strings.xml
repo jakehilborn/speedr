@@ -45,6 +45,10 @@
     <string name="here_maps_section">HERE Maps</string>
     <string name="here_maps_create_account_button_text">Want more accurate speed limits?</string>
     <string name="here_maps_create_account_button_sub_text">Create a free HERE Maps dev account. No credit card required.</string>
+    <string name="here_maps_create_account_dialog_button">Create Account</string>
+    <string name="here_maps_tutorial_step1_text">After creating an account click here</string>
+    <string name="here_maps_tutorial_step2_text">Then click here</string>
+
     <string name="here_maps_app_id_field">HERE Maps app id</string>
     <string name="here_maps_app_code_field">HERE Maps app code</string>
     <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
