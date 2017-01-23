@@ -228,10 +228,12 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         @SuppressWarnings("MissingPermission")
                         public void onConnected(Bundle bundle) {
-                            String uri = "http://product.itoworld.com/map/124?lat=";
+                            String uri;
                             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                             if (lastLocation != null) {
-                                uri = uri + lastLocation.getLatitude() + "&lon=" + lastLocation.getLongitude() + "&zoom=14";
+                                uri = "http://product.itoworld.com/map/124?lat=" + lastLocation.getLatitude() + "&lon=" + lastLocation.getLongitude() + "&zoom=14";
+                            } else {
+                                uri = "http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4"; //map of United States
                             }
 
                             launchWebpage(uri);
