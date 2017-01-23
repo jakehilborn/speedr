@@ -4,7 +4,6 @@ public class Stats {
     private Integer speed;
     private Integer limit;
     private Double timeDiff; //nanoseconds
-    private boolean useKph;
 
     public Integer getSpeed() {
         return speed;
@@ -28,13 +27,5 @@ public class Stats {
 
     public void setTimeDiff(Double timeDiff) {
         this.timeDiff = timeDiff;
-    }
-
-    public boolean isUseKph() {
-        return useKph;
-    }
-
-    public void setUseKph(boolean useKph) {
-        this.useKph = useKph;
     }
 }

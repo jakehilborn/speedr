@@ -146,11 +146,9 @@ public class MainService extends Service {
     private Stats buildStats() {
         Stats stats = new Stats();
         if (Prefs.isUseKph(this)) {
-            stats.setUseKph(true);
             stats.setSpeed(UnitUtils.msToKph(statsCalculator.getSpeed()));
             stats.setLimit(UnitUtils.msToKphRoundToFive(statsCalculator.getLimit()));
         } else { //mph
-            stats.setUseKph(false);
             stats.setSpeed(UnitUtils.msToMph(statsCalculator.getSpeed()));
             stats.setLimit(UnitUtils.msToMphRoundToFive(statsCalculator.getLimit()));
         }
