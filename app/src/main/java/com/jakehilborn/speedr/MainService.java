@@ -74,8 +74,8 @@ public class MainService extends Service {
 
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_s)
-                .setContentTitle("Speed data not yet available")
-                .setContentText("Are GPS and Internet connections enabled?")
+                .setContentTitle(getString(R.string.notification_init_title))
+                .setContentText(getString(R.string.notification_init_text))
                 .setContentIntent(pendingIntent)
                 .setOngoing(true);
 
@@ -193,23 +193,23 @@ public class MainService extends Service {
         }
 
         notificationBuilder
-                .setContentTitle("Time:  " + timeDiff)
-                .setContentText("Speed Limit: " + limit + "   |   Speed: " + speed);
+                .setContentTitle(getString(R.string.notification_time) + ":  " + timeDiff)
+                .setContentText(getString(R.string.notification_speed_limit) + ": " + limit + "   |   " + getString(R.string.notification_speed) + ": " + speed);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private String formatTimeDiff(Double timeDiff) {
         StringBuilder timeDiffString = new StringBuilder(
-                UnitUtils.nanosToSecondsModuloMinutes(timeDiff) + "." +
-                UnitUtils.nanosTo10thsModuloSeconds(timeDiff) + "s"
+                UnitUtils.nanosToSecondsModuloMinutes(timeDiff) + getString(R.string.decimal_symbol) +
+                UnitUtils.nanosTo10thsModuloSeconds(timeDiff) + getString(R.string.second_symbol)
         ); //always show seconds
 
         if (timeDiff >= UnitUtils.NANO_ONE_MINUTE) {
-            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(timeDiff) + "m  ");
+            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(timeDiff) + getString(R.string.minute_symbol) + "  ");
         }
         if (timeDiff >= UnitUtils.NANO_ONE_HOUR) {
-            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(timeDiff) + "h  ");
+            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(timeDiff) + getString(R.string.hour_symbol) + "  ");
         }
 
         return timeDiffString.toString();
