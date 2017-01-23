@@ -3,6 +3,7 @@ package com.jakehilborn.speedr.overpass;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.jakehilborn.speedr.utils.UnitUtils;
 
 import java.io.IOException;
 
@@ -83,11 +84,11 @@ public class OverpassInterceptor implements Interceptor {
               //Latencies can't be compared, use return value below.
             } else if (DE.getLatency() / RU.getLatency() >= 5) {
                 DE.clearLatencies();
-                DE.setDelay(System.nanoTime() + 60000000000L); //Don't retry this server for 60 seconds
+                DE.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
                 return RU;
             } else if (RU.getLatency() / DE.getLatency() >= 5) {
                 RU.clearLatencies();
-                RU.setDelay(System.nanoTime() + 60000000000L); //Don't retry this server for 60 seconds
+                RU.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
                 return DE;
             }
 
@@ -102,7 +103,7 @@ public class OverpassInterceptor implements Interceptor {
     }
 
     private void recordError(Server overpassServer, String message) {
-        overpassServer.setDelay(System.nanoTime() + 60000000000L); //Don't retry this server for 60 seconds
+        overpassServer.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
         Crashlytics.log(Log.ERROR, "Overpass interceptor error", "Server: " + overpassServer.getBaseUrl() + "Message: \n" + message);
     }
 }
