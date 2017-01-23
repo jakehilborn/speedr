@@ -1,5 +1,7 @@
 package com.jakehilborn.speedr.overpass;
 
+import java.util.Arrays;
+
 public class Server {
     private String baseUrl; //Base url of the server
     private long delay; //Delay until the time to use this endpoint again. System elapsed time in nanos.
@@ -47,5 +49,17 @@ public class Server {
 
     public void clearLatencies() {
         latencies = new long[5];
+    }
+
+    @Override
+    public String toString() {
+        return "Server{" +
+                "baseUrl='" + baseUrl + '\'' +
+                ", delay=" + delay +
+                ", latencies=" + Arrays.toString(latencies) +
+                ", ptr=" + ptr +
+                ", latency=" + getLatency() +
+                ", delayDiff=" + (delay - System.nanoTime()) / 1000000000L +
+                '}';
     }
 }
