@@ -53,16 +53,17 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private boolean useHereMaps;
 
-    private TextView speed;
-    private TextView speedUnit;
-    private TextView limit;
-    private TextView limitUnit;
     private TextView timeDiffH;
     private TextView timeDiffHSymbol;
     private TextView timeDiffM;
     private TextView timeDiffMSymbol;
     private TextView timeDiffS;
     private TextView timeDiffS10th;
+    private TextView speed;
+    private TextView speedUnit;
+    private TextView limit;
+    private TextView limitUnit;
+    private TextView pendingHereActivationNotice;
 
     private AppCompatImageButton reset;
     private AppCompatImageButton limitProviderLogo;
@@ -79,16 +80,17 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        speed = (TextView) findViewById(R.id.speed);
-        speedUnit = (TextView) findViewById(R.id.speed_unit);
-        limit = (TextView) findViewById(R.id.limit);
-        limitUnit = (TextView) findViewById(R.id.limit_unit);
         timeDiffH = (TextView) findViewById(R.id.time_diff_h);
         timeDiffHSymbol = (TextView) findViewById(R.id.time_diff_h_symbol);
         timeDiffM = (TextView) findViewById(R.id.time_diff_m);
         timeDiffMSymbol = (TextView) findViewById(R.id.time_diff_m_symbol);
         timeDiffS = (TextView) findViewById(R.id.time_diff_s);
         timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
+        speed = (TextView) findViewById(R.id.speed);
+        speedUnit = (TextView) findViewById(R.id.speed_unit);
+        limit = (TextView) findViewById(R.id.limit);
+        limitUnit = (TextView) findViewById(R.id.limit_unit);
+        pendingHereActivationNotice = (TextView) findViewById(R.id.pending_here_activation_notice);
 
         reset = (AppCompatImageButton) findViewById(R.id.reset_session);
         reset.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
@@ -220,6 +222,12 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         } else {
             speed.setText(String.valueOf(stats.getSpeed()));
         }
+
+        if (useHereMaps && mainService != null && Prefs.isPendingHereActivation(this)) {
+            pendingHereActivationNotice.setVisibility(View.VISIBLE);
+        } else {
+            pendingHereActivationNotice.setVisibility(View.GONE);
+        }
     }
 
     private void restoreSessionInUI() { //Restores timeDiff from the completed MainService session and reset button if necessary
@@ -251,7 +259,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         stats.setSpeed(null);
         setStatsInUI(stats);
 
-        missingOpenStreetMapLimit.setVisibility(View.INVISIBLE); //Only show during active sessions
+        //Only show during active sessions
+        missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
+        pendingHereActivationNotice.setVisibility(View.GONE);
 
         if (stats.getTimeDiff() != 0) {
             reset.setVisibility(View.VISIBLE);

@@ -133,7 +133,7 @@ public class MainService extends Service {
         statsCalculator.setLocation(location);
         statsCalculator.calcTimeDiff();
 
-        boolean forceFetch = false;
+        boolean forceFetch = true;
         if (statsCalculator.isLimitStale() || forceFetch) {
             limitTool.fetchLimit(this, location.getLatitude(), location.getLongitude(), statsCalculator);
         }
@@ -220,7 +220,7 @@ public class MainService extends Service {
         Crashlytics.log(Log.INFO, "MainService", "onDestroy() called");
         Prefs.setSessionTimeDiff(this, statsCalculator.getTimeDiff());
         notificationManager.cancel(NOTIFICATION_ID);
-        limitTool.destroy();
+        limitTool.destroy(this);
         if (googleApiClient != null) googleApiClient.disconnect();
         super.onDestroy();
     }

@@ -109,8 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
             isUseHereMaps = false;
         }
 
-        Prefs.setHereAppId(this, appIdField.getText().toString().trim());
-        Prefs.setHereAppCode(this, appCodeField.getText().toString().trim());
+        saveHereCredsIfChanged();
         Prefs.setUseHereMaps(this, isUseHereMaps);
 
         openStreetMapButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
@@ -140,6 +139,17 @@ public class SettingsActivity extends AppCompatActivity {
         limitProviderSelectorHandler(true);
         Toast.makeText(this, R.string.enabled_here_maps_toast, Toast.LENGTH_LONG).show();
         return true;
+    }
+
+    private void saveHereCredsIfChanged() {
+        if (appIdField.getText().toString().trim().equals(Prefs.getHereAppId(this)) &&
+                appCodeField.getText().toString().trim().equals(Prefs.getHereAppCode(this))) {
+            return;
+        }
+
+        Prefs.setHereAppId(this, appIdField.getText().toString().trim());
+        Prefs.setHereAppCode(this, appCodeField.getText().toString().trim());
+        Prefs.setTimeOfHereCreds(this, System.currentTimeMillis());
     }
 
     private void showHereMapsTerms() {
@@ -291,8 +301,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         if (!newHereCredentials()) {
             super.onBackPressed();
         }
@@ -300,8 +309,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
-        Prefs.setHereAppId(this, appIdField.getText().toString().trim());
-        Prefs.setHereAppCode(this, appCodeField.getText().toString().trim());
+        saveHereCredsIfChanged();
         Prefs.setUseKph(this, (speedUnitSpinner.getSelectedItemPosition() == 1)); //0 is mph, 1 is km/h
         emptyCredentials.cancel();
         super.onPause();

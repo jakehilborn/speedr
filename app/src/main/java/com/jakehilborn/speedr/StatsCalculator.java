@@ -2,6 +2,8 @@ package com.jakehilborn.speedr;
 
 import android.location.Location;
 
+import com.jakehilborn.speedr.utils.UnitUtils;
+
 public class StatsCalculator {
     //Time values in nanoseconds
     //Speed values in meters / second
@@ -35,7 +37,7 @@ public class StatsCalculator {
         if (prevLimitLocation == null || prevLimitTime == 0) return true;
 
         //Stale if previous Limit request was over 5 seconds ago and the user has traveled over 40 meters since the previous Limit request
-        return (prevLimitTime + 5000000000L < System.nanoTime() && location.distanceTo(prevLimitLocation) > 40);
+        return (prevLimitTime + UnitUtils.secondsToNanos(5) < System.nanoTime() && location.distanceTo(prevLimitLocation) > 40);
     }
 
     public void setLimit(Double limit) {

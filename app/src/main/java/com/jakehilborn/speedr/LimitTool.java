@@ -18,6 +18,7 @@ import com.jakehilborn.speedr.utils.UnitUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.net.HttpURLConnection;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -118,7 +119,7 @@ public class LimitTool {
                 });
     }
 
-    private void fetchHereMapsLimit(final Context context, Double latitude, Double longitude, final StatsCalculator statsCalculator) {
+    private void fetchHereMapsLimit(final Context context, final Double latitude, final Double longitude, final StatsCalculator statsCalculator) {
         if (hereMapsSubscription != null) return; //Active request to Here Maps has not responded yet
 
         final boolean isUseKph = Prefs.isUseKph(context);
@@ -133,6 +134,7 @@ public class LimitTool {
                     @Override
                     public void onSuccess(HereMapsResponse result) {
                         hereMapsSubscription = null;
+                        Prefs.setPendingHereActivation(context, false);
                         Crashlytics.log(Log.INFO, "LimitTool", "Here maps success");
                         Double limit = parseHereMapsLimit(result.getResponse().getLink()[0].getSpeedLimit(), isUseKph);
                         statsCalculator.setLimit(limit);
@@ -142,9 +144,11 @@ public class LimitTool {
                     public void onError(Throwable error) {
                         hereMapsSubscription = null;
 
+                        int statusCode = -1;
                         Response result = null;
                         if (error instanceof HttpException) {
                             try {
+                                statusCode = ((HttpException) error).code();
                                 ResponseBody body = ((HttpException) error).response().errorBody();
                                 result = hereMapsErrorConverter.convert(body).getResponse();
                             } catch (IOException ioe) {
@@ -153,10 +157,18 @@ public class LimitTool {
                         }
 
                         String errorString;
-                        if (result != null) {
+                        //New HERE accounts take up to an hour to activate. New creds returns 403, invalid creds returns 401.
+                        //If new account show notice on MainActivity instead of showing error as Toast. Then retry the request using Overpass.
+                        if (statusCode == HttpURLConnection.HTTP_FORBIDDEN &&
+                                System.currentTimeMillis() < Prefs.getTimeOfHereCreds(context) + UnitUtils.secondsToMillis(60 * 60)) {
+                            Prefs.setPendingHereActivation(context, true);
+                            errorString = "Pending HERE Activation";
+                            fetchOverpassLimit(latitude, longitude, statsCalculator);
+                        } else if (result != null) {
+                            Prefs.setPendingHereActivation(context, false);
                             errorString = result.getType() + " - " + result.getSubtype() + "\n\n" + result.getDetails();
                             if (hereMapsError != null) hereMapsError.cancel(); //Cancel previous toast so they don't queue up
-                            hereMapsError = hereMapsError.makeText(context, errorString, Toast.LENGTH_LONG);
+                            hereMapsError = Toast.makeText(context, errorString, Toast.LENGTH_LONG);
                             hereMapsError.show();
                         } else {
                             errorString = "Unknown error occurred with HERE";
@@ -194,9 +206,10 @@ public class LimitTool {
         }
     }
 
-    public void destroy() {
+    public void destroy(Context context) {
         if (overpassSubscription != null) overpassSubscription.unsubscribe();
         if (hereMapsSubscription != null) hereMapsSubscription.unsubscribe();
         if (hereMapsError != null) hereMapsError.cancel();
+        Prefs.setPendingHereActivation(context, false); //Set to false so the next time MainService is started the pending activation notice does not show
     }
 }

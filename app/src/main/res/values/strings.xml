@@ -22,16 +22,17 @@
     <string name="current_speed_limit_title">SPEED LIMIT</string>
     <string name="current_speed_title">SPEED</string>
 
+    <string name="missing_open_street_map_limit_dialog_title">Spotty speed limits?</string>
+    <string name="missing_open_street_map_limit_dialog_content">HERE Maps offers more accurate speed limits and better coverage. Open settings to create a free HERE Maps account.</string>
+    <string name="settings_dialog_button">Settings</string>
+
     <string name="here_maps_suggestion_snackbar_text">
         <b>Want more accurate speed limits?</b>\n
         \n
         Open settings to create a free HERE Maps account.
     </string>
     <string name="dismiss_snackbar">OK</string>
-
-    <string name="missing_open_street_map_limit_dialog_title">Spotty speed limits?</string>
-    <string name="missing_open_street_map_limit_dialog_content">HERE Maps offers more accurate speed limits and better coverage. Open settings to create a free HERE Maps account.</string>
-    <string name="settings_dialog_button">Settings</string>
+    <string name="pending_here_activation_text">HERE accounts may take up to 1 hour to activate. This text will disappear once activation completes. Using OpenStreetMap until activation complete.</string>
 
     <string name="content_description_speed_limit_provider">speed limit provider</string>
 

@@ -72,4 +72,16 @@ public class UnitUtils {
 
         return (int) (nanos / NANO_ONE_HOUR);
     }
+
+    public static Long secondsToNanos(Integer seconds) {
+        if (seconds == null) return null;
+
+        return (long) seconds * 1000000000;
+    }
+
+    public static Long secondsToMillis(Integer seconds) {
+        if (seconds == null) return null;
+
+        return (long) seconds * 1000;
+    }
 }

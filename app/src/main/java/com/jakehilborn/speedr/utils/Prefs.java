@@ -12,6 +12,8 @@ public class Prefs {
     private static final String HERE_APP_CODE = "here_app_code";
     private static final String USE_HERE_MAPS = "use_here_maps";
     private static final String HERE_MAPS_TERMS_ACCEPTED = "here_maps_terms_accepted";
+    private static final String TIME_OF_HERE_CREDS = "time_of_here_creds";
+    private static final String PENDING_HERE_ACTIVATION = "pending_here_activation";
     private static final String SESSION_TIME_DIFF = "session_time_diff";
 
     private static SharedPreferences.Editor editPrefs(Context context) {
@@ -68,6 +70,22 @@ public class Prefs {
 
     public static boolean isHereMapsTermsAccepted(Context context) {
         return prefs(context).getBoolean(HERE_MAPS_TERMS_ACCEPTED, false);
+    }
+
+    public static void setTimeOfHereCreds(Context context, long time) {
+        editPrefs(context).putLong(TIME_OF_HERE_CREDS, time).apply();
+    }
+
+    public static long getTimeOfHereCreds(Context context) {
+        return prefs(context).getLong(TIME_OF_HERE_CREDS, 0);
+    }
+
+    public static void setPendingHereActivation(Context context, boolean pendingHereActivation) {
+        editPrefs(context).putBoolean(PENDING_HERE_ACTIVATION, pendingHereActivation).apply();
+    }
+
+    public static boolean isPendingHereActivation(Context context) {
+        return prefs(context).getBoolean(PENDING_HERE_ACTIVATION, false);
     }
 
     public static void setSessionTimeDiff(Context context, Double timeDiff) {
