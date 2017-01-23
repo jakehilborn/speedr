@@ -38,10 +38,6 @@ public class OverpassInterceptor implements Interceptor {
                 .addHeader("User-Agent", "currentlydebugging") //replace this with name + version or something
                 .build();
 
-//        request = request.newBuilder()
-//                .url(overpassServer.getBaseUrl() + "?" + query)
-//                .build();
-
         overpassServer.setDelay(System.nanoTime());
         Response response;
         try {
