@@ -277,13 +277,12 @@
             android:id="@+id/pending_here_activation_notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="10dp"
             android:gravity="center"
             android:typeface="normal"
             android:textStyle="italic"
             android:textSize="10dp"
             android:text="@string/pending_here_activation_text"
-            android:visibility="gone"
             tools:ignore="SpUsage"
             />
 

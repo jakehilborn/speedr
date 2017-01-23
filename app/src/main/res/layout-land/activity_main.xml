@@ -139,6 +139,19 @@
                 android:text="@string/current_speed_title"
                 tools:ignore="SpUsage"
                 />
+
+            <TextView
+                android:id="@+id/pending_here_activation_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:typeface="normal"
+                android:textStyle="italic"
+                android:textSize="10dp"
+                android:text="@string/pending_here_activation_text"
+                tools:ignore="SpUsage"
+                />
         </LinearLayout>
 
         <View
