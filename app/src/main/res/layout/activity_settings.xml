@@ -76,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:paddingEnd="15dp"
                 android:src="@drawable/here_maps_logo"
-                android:contentDescription="@string/content_description_speed_limit_provider"
                 />
 
             <LinearLayout

@@ -36,6 +36,7 @@
             android:adjustViewBounds="true"
             android:src="@drawable/here_tutorial_step1"
             android:visibility="invisible"
+            android:contentDescription="@string/content_description_here_maps_tutorial_step1"
             />
 
         <TextView
@@ -56,6 +57,7 @@
             android:adjustViewBounds="true"
             android:src="@drawable/here_tutorial_step2"
             android:visibility="invisible"
+            android:contentDescription="@string/content_description_here_maps_tutorial_step2"
             />
     </LinearLayout>
 </ScrollView>

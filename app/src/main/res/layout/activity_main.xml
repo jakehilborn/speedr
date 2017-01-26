@@ -131,6 +131,7 @@
                 android:layout_alignParentEnd="true"
                 android:visibility="invisible"
                 android:background="@drawable/reset"
+                android:contentDescription="@string/content_description_start_stop_button"
                 />
         </RelativeLayout>
 
@@ -170,6 +171,7 @@
                 android:layout_toStartOf="@+id/speed_limit_layout"
                 android:visibility="invisible"
                 android:background="@drawable/question_mark"
+                android:contentDescription="@string/content_description_spotty_speed_limits"
                 />
 
             <LinearLayout
@@ -214,6 +216,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:contentDescription="@string/content_description_speed_limit_provider"
                 />
         </RelativeLayout>
 
@@ -305,6 +308,7 @@
             android:src="@drawable/car"
             app:backgroundTint="@color/startButton"
             android:onClick="startStopButtonOnClick"
+            android:contentDescription="@string/content_description_start_stop_button"
             />
     </LinearLayout>
 </ScrollView>
