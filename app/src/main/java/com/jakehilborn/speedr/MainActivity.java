@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         });
 
+        //Toasts declared here so that they are not reassigned. Allows for easy calls to toast.cancel() when stopping Activity
         noGPSPermissionToast = Toast.makeText(this, R.string.no_gps_permission_toast, Toast.LENGTH_LONG);
         noNetworkToast = Toast.makeText(this, R.string.no_network_toast, Toast.LENGTH_LONG);
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         setStatsInUI(stats);
 
-        if (stats.getTimeDiff() != 0 && !isMainServiceRunning()) { //MainService may not be binded yet so explicitly check if running
+        if (stats.getTimeDiff() != 0 && !isMainServiceRunning()) { //MainService may not be bound yet so explicitly check if running
             reset.setVisibility(View.VISIBLE);
         }
     }
@@ -307,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
-        showHereSuggstion();
+        showHereSuggestion();
     }
 
     private void styleStartStopButton(boolean start) {
@@ -326,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void showHereSuggstion() {
+    private void showHereSuggestion() {
         if (useHereMaps || Prefs.isHereSuggestionAcknowledged(this)) return;
 
         Snackbar snackbar = Snackbar

@@ -6,8 +6,6 @@
     <color name="darkGray">#1e1e1e</color>
     <color name="pastelGreen">#21CE99</color>
     <color name="pastelGreenDark">#26A47B</color>
-    <color name="pastelRed">#F45531</color>
-    <color name="white">#FFFFFF</color>
 
     <color name="startButton">#21CE99</color>
     <color name="stopButton">#F45531</color>
