@@ -5,6 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakehilborn.speedr.heremaps.HereMapsService;
@@ -162,8 +164,9 @@ public class LimitTool {
                         if (statusCode == HttpURLConnection.HTTP_FORBIDDEN &&
                                 System.currentTimeMillis() < Prefs.getTimeOfHereCreds(context) + UnitUtils.secondsToMillis(60 * 60)) {
                             Prefs.setPendingHereActivation(context, true);
-                            errorString = "Pending HERE Activation";
                             fetchOverpassLimit(latitude, longitude, statsCalculator);
+                            errorString = "Pending HERE Activation";
+                            Answers.getInstance().logCustom(new CustomEvent("Pending HERE Activation"));
                         } else if (result != null) {
                             Prefs.setPendingHereActivation(context, false);
                             errorString = result.getType() + " - " + result.getSubtype() + "\n\n" + result.getDetails();
