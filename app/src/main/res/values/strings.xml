@@ -60,10 +60,15 @@
     <string name="here_maps_create_account_button_text">Want more accurate speed limits?</string>
     <string name="here_maps_create_account_button_sub_text">Create a free HERE Maps dev account. No credit card required.</string>
     <string name="here_maps_create_account_dialog_button">Create Account</string>
-    <string name="here_maps_tutorial_step1_text">After creating an account click here</string>
-    <string name="here_maps_tutorial_step2_text">Then click here</string>
-    <string name="content_description_here_maps_tutorial_step1">click start coding</string>
-    <string name="content_description_here_maps_tutorial_step2">click javascript generate app id and app code</string>
+    <string name="help_dialog_button">Help</string>
+    <string name="here_maps_tutorial_step_1_content">After creating an account click here</string>
+    <string name="here_maps_tutorial_step_2_content">Then click here</string>
+    <string name="content_description_here_maps_tutorial_step_1">click start coding image</string>
+    <string name="content_description_here_maps_tutorial_step_2">click javascript generate app id and app code image</string>
+    <string name="here_maps_tutorial_help_1_content">After creating your account you can view your credentials by visiting https://developer.here.com/projects and clicking on the plan you subscribed to.</string>
+    <string name="here_maps_tutorial_help_2_content">Copy and paste your JavaScript/REST app id and app code into Speedr.</string>
+    <string name="content_description_here_maps_tutorial_help_1">click your plan image</string>
+    <string name="content_description_here_maps_tutorial_help_2">HERE website app id and app code section image</string>
 
     <string name="here_maps_app_id_field">HERE Maps app id</string>
     <string name="here_maps_app_code_field">HERE Maps app code</string>

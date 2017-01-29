@@ -184,6 +184,11 @@ public class SettingsActivity extends AppCompatActivity {
                         launchWebpage("https://developer.here.com/plans?create=Public_Free_Plan_Monthly&keepState=true&step=account");
                     }
                 })
+                .setNeutralButton(R.string.help_dialog_button, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        showHereMapsCreateAccountHelpDialog();
+                    }
+                })
                 .show();
 
         Handler handler = new Handler();
@@ -217,6 +222,50 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 dialogView.findViewById(R.id.here_tutorial_step_2_image).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+    }
+
+    public void showHereMapsCreateAccountHelpDialog() {
+        final View dialogView = getLayoutInflater().inflate(R.layout.here_account_help_dialog, null);
+
+        new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(true)
+                .setPositiveButton(R.string.close_dialog_button, null)
+                .show();
+
+        Handler handler = new Handler();
+
+        int delay = 250;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_help_1_text).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+
+        delay += 500;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_help_1_image).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+
+        delay += 1600;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_help_2_text).setVisibility(View.VISIBLE);
+            }
+        }, delay);
+
+        delay += 500;
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.findViewById(R.id.here_tutorial_help_2_image).setVisibility(View.VISIBLE);
             }
         }, delay);
     }

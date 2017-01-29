@@ -19,45 +19,46 @@
         >
 
         <TextView
-            android:id="@+id/here_tutorial_step_1_text"
+            android:id="@+id/here_tutorial_help_1_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
-            android:textSize="20sp"
-            android:text="@string/here_maps_tutorial_step_1_content"
+            android:textSize="14sp"
+            android:text="@string/here_maps_tutorial_help_1_content"
             android:visibility="invisible"
+            android:autoLink="web"
             />
 
         <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/here_tutorial_step_1_image"
+            android:id="@+id/here_tutorial_help_1_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/here_tutorial_step1"
+            android:src="@drawable/here_tutorial_help1"
             android:visibility="invisible"
-            android:contentDescription="@string/content_description_here_maps_tutorial_step_1"
+            android:contentDescription="@string/content_description_here_maps_tutorial_help_1"
             />
 
         <TextView
-            android:id="@+id/here_tutorial_step_2_text"
+            android:id="@+id/here_tutorial_help_2_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
-            android:textSize="20sp"
-            android:text="@string/here_maps_tutorial_step_2_content"
+            android:textSize="14sp"
+            android:text="@string/here_maps_tutorial_help_2_content"
             android:visibility="invisible"
             />
 
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/here_tutorial_step_2_image"
+        <ImageView
+            android:id="@+id/here_tutorial_help_2_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/here_tutorial_step2"
+            android:src="@drawable/here_tutorial_help2"
             android:visibility="invisible"
-            android:contentDescription="@string/content_description_here_maps_tutorial_step_2"
+            android:contentDescription="@string/content_description_here_maps_tutorial_help_2"
             />
     </LinearLayout>
 </ScrollView>
