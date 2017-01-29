@@ -129,7 +129,7 @@ public class LimitTool {
         String appCode = Prefs.getHereAppCode(context);
         String waypoint = latitude + "," + longitude;
 
-        hereMapsSubscription = hereMapsService.getLimit(appId, appCode, waypoint)
+        hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<HereMapsResponse>() {

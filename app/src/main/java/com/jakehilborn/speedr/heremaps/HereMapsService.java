@@ -12,5 +12,6 @@ public interface HereMapsService {
     Single<HereMapsResponse> getLimit(
             @Query("app_id") String appId,
             @Query("app_code") String appCode,
+            @Query("linkattributes") String linkattributes,
             @Query("waypoint") String waypoint);
 }
