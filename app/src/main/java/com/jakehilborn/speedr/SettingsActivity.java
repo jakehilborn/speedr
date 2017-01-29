@@ -32,9 +32,13 @@ import com.jakehilborn.speedr.utils.Prefs;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private int APP_ID_LENGTH = 20;
+    private int APP_CODE_LENGTH = 22;
+
     private EditText appIdField;
     private EditText appCodeField;
     private Toast emptyCredentials;
+    private Toast shortCredentials;
     private AppCompatButton hereMapsButton;
     private AppCompatButton openStreetMapButton;
     private Spinner speedUnitSpinner;
@@ -52,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
         appCodeField.setText(Prefs.getHereAppCode(this));
 
         emptyCredentials = Toast.makeText(this, R.string.enter_here_maps_credentials_toast, Toast.LENGTH_LONG);
+        shortCredentials = Toast.makeText(this, R.string.short_here_maps_credentials_toast, Toast.LENGTH_LONG);
 
         openStreetMapButton = (AppCompatButton) findViewById(R.id.open_street_map_button);
         openStreetMapButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
@@ -111,6 +116,11 @@ public class SettingsActivity extends AppCompatActivity {
             isUseHereMaps = false;
         }
 
+        if (isUseHereMaps && (appIdField.getText().toString().trim().length() < APP_ID_LENGTH ||
+                appCodeField.getText().toString().trim().length() < APP_CODE_LENGTH)) {
+            shortCredentials.show(); //Show warning but leave HERE Maps enabled
+        }
+
         saveHereCredsIfChanged();
         Prefs.setUseHereMaps(this, isUseHereMaps);
 
@@ -127,10 +137,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     //Detect if user input HERE credentials but did not click the HERE MAPS button, activate HERE for them.
     private boolean newHereCredentials() {
-        if (appIdField.getText().toString().trim().length() < 20) {
+        if (appIdField.getText().toString().trim().length() < APP_ID_LENGTH) {
             return false;
         }
-        if (appCodeField.getText().toString().trim().length() < 22) {
+        if (appCodeField.getText().toString().trim().length() < APP_CODE_LENGTH) {
             return false;
         }
         if (appIdField.getText().toString().trim().equals(Prefs.getHereAppId(this)) &&
@@ -387,6 +397,7 @@ public class SettingsActivity extends AppCompatActivity {
         saveHereCredsIfChanged();
         Prefs.setUseKph(this, (speedUnitSpinner.getSelectedItemPosition() == 1)); //0 is mph, 1 is km/h
         emptyCredentials.cancel();
+        shortCredentials.cancel();
         super.onPause();
     }
 }

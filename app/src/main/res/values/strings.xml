@@ -73,6 +73,7 @@
     <string name="here_maps_app_id_field">HERE Maps app id</string>
     <string name="here_maps_app_code_field">HERE Maps app code</string>
     <string name="enter_here_maps_credentials_toast">Enter credentials for HERE Maps</string>
+    <string name="short_here_maps_credentials_toast">The HERE Maps credentials you entered look incomplete. Check to make sure you copied the entire app id and app code.</string>
     <string name="enabled_here_maps_toast">Enabled HERE Maps</string>
 
     <string name="here_maps_terms_url">"https://legal.here.com/en/terms/serviceterms/us/"</string>
