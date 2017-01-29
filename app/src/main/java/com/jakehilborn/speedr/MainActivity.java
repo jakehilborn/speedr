@@ -31,6 +31,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -367,6 +369,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                     }
                 })
                 .show();
+
+        Answers.getInstance().logCustom(new CustomEvent("Viewed missing OpenStreetMaps limit"));
     }
 
     private boolean requestLocationPermission() {
@@ -433,8 +437,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (result != ConnectionResult.SUCCESS) {
             if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(this, result, 0).show();
+                Answers.getInstance().logCustom(new CustomEvent("PlayServices update required"));
             } else {
                 playServicesErrorToast.show();
+                Answers.getInstance().logCustom(new CustomEvent("PlayServices incompatible"));
             }
             return false;
         }

@@ -24,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.jakehilborn.speedr.utils.Prefs;
@@ -72,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         speedUnitSpinner = (Spinner) findViewById(R.id.speed_unit);
-        speedUnitSpinner.setSelection(Prefs.isUseKph(this) ? 1 : 0); //defaults to mph
+        speedUnitSpinner.setSelection(Prefs.isUseKph(this) ? 1 : 0); //defaults to mph - 0 is mph, 1 is km/h
     }
 
     @Override
@@ -118,6 +120,9 @@ public class SettingsActivity extends AppCompatActivity {
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 isUseHereMaps ? R.color.colorAccent : R.color.unselectedButtonGray
         )));
+
+        Answers.getInstance().logCustom(new CustomEvent("Limit provider")
+                .putCustomAttribute("Provider", isUseHereMaps ? "HERE" : "OpenStreetMap"));
     }
 
     //Detect if user input HERE credentials but did not click the HERE MAPS button, activate HERE for them.
@@ -138,6 +143,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         limitProviderSelectorHandler(true);
         Toast.makeText(this, R.string.enabled_here_maps_toast, Toast.LENGTH_LONG).show();
+
+        Answers.getInstance().logCustom(new CustomEvent("Auto enabled HERE"));
+
         return true;
     }
 
@@ -182,6 +190,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.here_maps_create_account_dialog_button, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         launchWebpage("https://developer.here.com/plans?create=Public_Free_Plan_Monthly&keepState=true&step=account");
+                        Answers.getInstance().logCustom(new CustomEvent("Launched create account"));
                     }
                 })
                 .setNeutralButton(R.string.help_dialog_button, new DialogInterface.OnClickListener() {
@@ -268,9 +277,13 @@ public class SettingsActivity extends AppCompatActivity {
                 dialogView.findViewById(R.id.here_tutorial_help_2_image).setVisibility(View.VISIBLE);
             }
         }, delay);
+
+        Answers.getInstance().logCustom(new CustomEvent("Viewed HERE help dialog"));
     }
 
     public void openStreetMapCoverageOnClick(View view) {
+        final String mapOfUnitedStates = "http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4";
+
         if (ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -282,7 +295,7 @@ public class SettingsActivity extends AppCompatActivity {
                             if (lastLocation != null) {
                                 uri = "http://product.itoworld.com/map/124?lat=" + lastLocation.getLatitude() + "&lon=" + lastLocation.getLongitude() + "&zoom=14";
                             } else {
-                                uri = "http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4"; //map of United States
+                                uri = mapOfUnitedStates;
                             }
 
                             launchWebpage(uri);
@@ -297,12 +310,15 @@ public class SettingsActivity extends AppCompatActivity {
 
             googleApiClient.connect();
         } else {
-            launchWebpage("http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4"); //map of United States
+            launchWebpage(mapOfUnitedStates);
         }
+
+        Answers.getInstance().logCustom(new CustomEvent("Launched OpenStreetMap coverage"));
     }
 
     public void openStreetMapDonateOnClick(View view) {
         launchWebpage("https://donate.openstreetmap.org");
+        Answers.getInstance().logCustom(new CustomEvent("Launched OpenStreetMap donate"));
     }
 
     public void privacyAndTermsOnClick(View view) {
@@ -316,6 +332,8 @@ public class SettingsActivity extends AppCompatActivity {
                 .show()
                 .findViewById(android.R.id.message)) //These 2 lines make the hyperlinks clickable
                 .setMovementMethod(LinkMovementMethod.getInstance());
+
+        Answers.getInstance().logCustom(new CustomEvent("Viewed privacy policy"));
     }
 
     private void devInfoOnClick() {
@@ -325,11 +343,13 @@ public class SettingsActivity extends AppCompatActivity {
                 .setNeutralButton(R.string.github_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         launchWebpage("https://github.com/jakehilborn");
+                        Answers.getInstance().logCustom(new CustomEvent("Launched GitHub"));
                     }
                 })
                 .setNegativeButton(R.string.linkedin_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         launchWebpage("https://www.linkedin.com/in/jakehilborn");
+                        Answers.getInstance().logCustom(new CustomEvent("Launched LinkedIn"));
                     }
                 })
                 .setPositiveButton(R.string.email_link_text, new DialogInterface.OnClickListener() {
@@ -340,6 +360,8 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
+        Answers.getInstance().logCustom(new CustomEvent("Viewed developer info"));
     }
 
     public void versionOnClick(View view) {
@@ -349,6 +371,8 @@ public class SettingsActivity extends AppCompatActivity {
                 .setCancelable(true)
                 .setNegativeButton(R.string.close_dialog_button, null)
                 .show();
+
+        Answers.getInstance().logCustom(new CustomEvent("Viewed changelog"));
     }
 
     @Override
