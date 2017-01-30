@@ -9,11 +9,13 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakehilborn.speedr.heremaps.HereMapsManager;
 import com.jakehilborn.speedr.heremaps.HereMapsService;
 import com.jakehilborn.speedr.heremaps.deserial.HereMapsResponse;
 import com.jakehilborn.speedr.heremaps.deserial.Response;
 import com.jakehilborn.speedr.overpass.OverpassInterceptor;
 import com.jakehilborn.speedr.overpass.OverpassService;
+import com.jakehilborn.speedr.overpass.deserial.OverpassManager;
 import com.jakehilborn.speedr.overpass.deserial.OverpassResponse;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
@@ -36,18 +38,23 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LimitTool {
-    private static final String RADIUS = "10"; //meters
+    private static final String RADIUS = "25"; //meters
     private OverpassService overpassService;
     private Subscription overpassSubscription;
+    private OverpassManager overpassManager;
 
     private HereMapsService hereMapsService;
     private Converter<ResponseBody, HereMapsResponse> hereMapsErrorConverter;
     private Subscription hereMapsSubscription;
+    private HereMapsManager hereMapsManager;
     private Toast hereMapsError;
 
-    public LimitTool() {
+    public LimitTool(StatsCalculator statsCalculator) {
         buildOverpassService();
+        overpassManager = new OverpassManager(statsCalculator);
+
         buildHereMapsService();
+        hereMapsManager = new HereMapsManager(statsCalculator);
     }
 
     private void buildOverpassService() {
@@ -82,19 +89,19 @@ public class LimitTool {
         hereMapsErrorConverter = retrofit.responseBodyConverter(HereMapsResponse.class, new Annotation[0]);
     }
 
-    public void fetchLimit(Context context, Double latitude, Double longitude, final StatsCalculator statsCalculator) {
+    public void fetchLimit(Context context, Double lat, Double lon) {
         if (Prefs.isUseHereMaps(context)) {
-            fetchHereMapsLimit(context, latitude, longitude, statsCalculator);
+            fetchHereMapsLimit(context, lat, lon);
         } else {
-            fetchOverpassLimit(latitude, longitude, statsCalculator);
+            fetchOverpassLimit(lat, lon);
         }
     }
 
-    private void fetchOverpassLimit(Double latitude, Double longitude, final StatsCalculator statsCalculator) {
+    private void fetchOverpassLimit(final Double lat, final Double lon) {
         if (overpassSubscription != null) return; //Active request to Overpass has not responded yet
 
         String data = "[out:json];way(around:" +
-                RADIUS + "," + latitude + "," + longitude +
+                RADIUS + "," + lat + "," + lon +
                 ")[\"highway\"][\"maxspeed\"];out;";
 
         overpassSubscription = overpassService.getLimit(data)
@@ -102,15 +109,10 @@ public class LimitTool {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<OverpassResponse>() {
                     @Override
-                    public void onSuccess(OverpassResponse value) {
+                    public void onSuccess(OverpassResponse overpassResponse) {
                         overpassSubscription = null;
                         Crashlytics.log(Log.INFO, "LimitTool", "Overpass success");
-                        if (value.getElements().length >= 1) {
-                            Double limit = parseOverpassLimit(value.getElements()[0].getTags().getMaxSpeed());
-                            statsCalculator.setLimit(limit);
-                        } else {
-                            statsCalculator.setLimit(null);
-                        }
+                        overpassManager.handleResponse(overpassResponse, lat, lon);
                     }
 
                     @Override
@@ -121,25 +123,24 @@ public class LimitTool {
                 });
     }
 
-    private void fetchHereMapsLimit(final Context context, final Double latitude, final Double longitude, final StatsCalculator statsCalculator) {
+    private void fetchHereMapsLimit(final Context context, final Double lat, final Double lon) {
         if (hereMapsSubscription != null) return; //Active request to Here Maps has not responded yet
 
         final boolean isUseKph = Prefs.isUseKph(context);
         String appId = Prefs.getHereAppId(context);
         String appCode = Prefs.getHereAppCode(context);
-        String waypoint = latitude + "," + longitude;
+        String waypoint = lat + "," + lon;
 
         hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<HereMapsResponse>() {
                     @Override
-                    public void onSuccess(HereMapsResponse result) {
+                    public void onSuccess(HereMapsResponse hereMapsResponse) {
                         hereMapsSubscription = null;
                         Prefs.setPendingHereActivation(context, false);
                         Crashlytics.log(Log.INFO, "LimitTool", "Here maps success");
-                        Double limit = parseHereMapsLimit(result.getResponse().getLink()[0].getSpeedLimit(), isUseKph);
-                        statsCalculator.setLimit(limit);
+                        hereMapsManager.handleResponse(hereMapsResponse, lat, lon, isUseKph);
                     }
 
                     @Override
@@ -164,7 +165,7 @@ public class LimitTool {
                         if (statusCode == HttpURLConnection.HTTP_FORBIDDEN &&
                                 System.currentTimeMillis() < Prefs.getTimeOfHereCreds(context) + UnitUtils.secondsToMillis(60 * 60)) {
                             Prefs.setPendingHereActivation(context, true);
-                            fetchOverpassLimit(latitude, longitude, statsCalculator);
+                            fetchOverpassLimit(lat, lon);
                             errorString = "Pending HERE Activation";
                             Answers.getInstance().logCustom(new CustomEvent("Pending HERE Activation"));
                         } else if (result != null) {
@@ -181,32 +182,6 @@ public class LimitTool {
                         Crashlytics.logException(error); //Log exception at the end so Crashlytics includes recent logs in report
                     }
                 });
-    }
-
-    private Double parseOverpassLimit(String limit) {
-        if (limit == null || limit.isEmpty()) return null;
-
-        //Overpass maxspeed uses whole numbers. Example limit: "35 mph"
-        Integer num = Integer.parseInt(limit.replaceAll("[^0-9]", ""));
-
-        if (limit.contains("mph")) {
-            return UnitUtils.mphToMs(num);
-        } else if (limit.contains("knots")) {
-            return UnitUtils.knotsToMs(num);
-        } else { //kph if unit is not specified in response
-            return UnitUtils.kphToMs(num);
-        }
-    }
-
-    private Double parseHereMapsLimit(Double limit, boolean isUseKph) {
-        //Round Here maps slightly inaccurate speed limit data to nearest 5mph or 5kmh increment
-        if (isUseKph) {
-            Integer roundedLimit = UnitUtils.msToKphRoundToFive(limit);
-            return UnitUtils.kphToMs(roundedLimit);
-        } else { //mph
-            Integer roundedLimit = UnitUtils.msToMphRoundToFive(limit);
-            return UnitUtils.mphToMs(roundedLimit);
-        }
     }
 
     public void destroy(Context context) {

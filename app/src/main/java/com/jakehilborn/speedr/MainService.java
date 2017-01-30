@@ -87,9 +87,9 @@ public class MainService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Crashlytics.log(Log.INFO, null, "MainService starting");
 
-        limitTool = new LimitTool();
         statsCalculator = new StatsCalculator();
         statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
+        limitTool = new LimitTool(statsCalculator);
 
         locationListener = new LocationListener() {
             @Override
@@ -135,7 +135,7 @@ public class MainService extends Service {
 
         boolean forceFetch = false;
         if (statsCalculator.isLimitStale() || forceFetch) {
-            limitTool.fetchLimit(this, location.getLatitude(), location.getLongitude(), statsCalculator);
+            limitTool.fetchLimit(this, location.getLatitude(), location.getLongitude());
         }
 
         Stats stats = buildStats();

@@ -15,6 +15,8 @@ public class StatsCalculator {
     private long prevLimitTime;
     private Location prevLimitLocation; //The location when the most recent speed limit was fetched
 
+    private boolean forceLimitStale;
+
     private double timeDiff;
 
     public void setLocation(Location location) {
@@ -36,14 +38,27 @@ public class StatsCalculator {
         //1st Limit hasn't been fetched yet, avoiding NPE below
         if (prevLimitLocation == null || prevLimitTime == 0) return true;
 
+        if (forceLimitStale) {
+            forceLimitStale = false;
+            return true;
+        }
+
         //Stale if previous Limit request was over 5 seconds ago and the user has traveled over 40 meters since the previous Limit request
-        return (prevLimitTime + UnitUtils.secondsToNanos(5) < System.nanoTime() && location.distanceTo(prevLimitLocation) > 40);
+        return (prevLimitTime + UnitUtils.secondsToNanos(5) < System.nanoTime() && location.distanceTo(prevLimitLocation) > 25);
     }
 
-    public void setLimit(Double limit) {
+    //When limit is set to null it means there is no speed limit data available so continue showing existing speed limit.
+    //When limit is set to 0 it means there is no speed limit data available, set speed limit to missing.
+    public void setLimit(Double limit, Double lat, Double lon) {
         prevLimitTime = System.nanoTime();
-        prevLimitLocation = location;
-        this.limit = limit;
+        if (limit != null) this.limit = limit;
+        prevLimitLocation = new Location("fused");
+        prevLimitLocation.setLatitude(lat);
+        prevLimitLocation.setLongitude(lon);
+    }
+
+    public void setForceLimitStale(boolean forceLimitStale) {
+        this.forceLimitStale = forceLimitStale;
     }
 
     public double getTimeDiff() {
