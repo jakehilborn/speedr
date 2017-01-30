@@ -30,8 +30,7 @@ public class HereMapsManager {
                 prevLimitMissing = true;
                 statsCalculator.setLimit(null, lat, lon);
             }
-        }
-        else if (prevRoadName == null || roadName.equals(prevRoadName) || prevLimitMissing) {
+        } else if (prevRoadName == null || roadName.equals(prevRoadName) || prevLimitMissing) {
             //Normal case, user is on the same road.
             prevRoadName = roadName;
             prevLimitMissing = false;
