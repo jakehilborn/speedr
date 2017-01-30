@@ -22,7 +22,7 @@ public class OverpassManager {
 
         if (limitNodes.size() == 0) {
             //OpenStreetMaps is missing data for the user's location
-            if (prevRoadName.equals(NO_DATA)) {
+            if (prevRoadName != null && prevRoadName.equals(NO_DATA)) {
                 //Two responses in a row with no speed limit data, set limit to missing.
                 statsCalculator.setLimit(0D, lat, lon);
             } else {
