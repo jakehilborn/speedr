@@ -37,7 +37,7 @@ public class MainService extends Service {
     private NotificationCompat.Builder notificationBuilder;
 
     private StatsCalculator statsCalculator;
-    private LimitTool limitTool;
+    private LimitFetcher limitFetcher;
 
     //Binder for MainActivity to poll data from MainService
     private final IBinder binder = new LocalBinder();
@@ -89,7 +89,7 @@ public class MainService extends Service {
 
         statsCalculator = new StatsCalculator();
         statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
-        limitTool = new LimitTool(statsCalculator);
+        limitFetcher = new LimitFetcher(statsCalculator);
 
         locationListener = new LocationListener() {
             @Override
@@ -135,7 +135,7 @@ public class MainService extends Service {
 
         boolean forceFetch = false;
         if (statsCalculator.isLimitStale() || forceFetch) {
-            limitTool.fetchLimit(this, location.getLatitude(), location.getLongitude());
+            limitFetcher.fetchLimit(this, location.getLatitude(), location.getLongitude());
         }
 
         Stats stats = buildStats();
@@ -218,7 +218,7 @@ public class MainService extends Service {
         Crashlytics.log(Log.INFO, "MainService", "onDestroy() called");
         Prefs.setSessionTimeDiff(this, statsCalculator.getTimeDiff());
         notificationManager.cancel(NOTIFICATION_ID);
-        limitTool.destroy(this);
+        limitFetcher.destroy(this);
         if (googleApiClient != null) googleApiClient.disconnect();
         super.onDestroy();
     }

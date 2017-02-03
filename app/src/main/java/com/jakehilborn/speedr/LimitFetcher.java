@@ -37,7 +37,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class LimitTool {
+public class LimitFetcher {
     private static final String RADIUS = "25"; //meters
     private OverpassService overpassService;
     private Subscription overpassSubscription;
@@ -49,7 +49,7 @@ public class LimitTool {
     private HereMapsManager hereMapsManager;
     private Toast hereMapsError;
 
-    public LimitTool(StatsCalculator statsCalculator) {
+    public LimitFetcher(StatsCalculator statsCalculator) {
         buildOverpassService();
         overpassManager = new OverpassManager(statsCalculator);
 
@@ -111,7 +111,7 @@ public class LimitTool {
                     @Override
                     public void onSuccess(OverpassResponse overpassResponse) {
                         overpassSubscription = null;
-                        Crashlytics.log(Log.INFO, "LimitTool", "Overpass success");
+                        Crashlytics.log(Log.INFO, "LimitFetcher", "Overpass success");
                         overpassManager.handleResponse(overpassResponse, lat, lon);
                     }
 
@@ -139,7 +139,7 @@ public class LimitTool {
                     public void onSuccess(HereMapsResponse hereMapsResponse) {
                         hereMapsSubscription = null;
                         Prefs.setPendingHereActivation(context, false);
-                        Crashlytics.log(Log.INFO, "LimitTool", "Here maps success");
+                        Crashlytics.log(Log.INFO, "LimitFetcher", "Here maps success");
                         hereMapsManager.handleResponse(hereMapsResponse, lat, lon, isUseKph);
                     }
 
