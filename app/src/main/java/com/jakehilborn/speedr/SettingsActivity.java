@@ -130,9 +130,6 @@ public class SettingsActivity extends AppCompatActivity {
         hereMapsButton.setSupportBackgroundTintList(ColorStateList.valueOf(getResources().getColor(
                 isUseHereMaps ? R.color.colorAccent : R.color.unselectedButtonGray
         )));
-
-        Answers.getInstance().logCustom(new CustomEvent("Limit provider")
-                .putCustomAttribute("Provider", isUseHereMaps ? "HERE" : "OpenStreetMap"));
     }
 
     //Detect if user input HERE credentials but did not click the HERE MAPS button, activate HERE for them.
@@ -181,6 +178,7 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onClick(final DialogInterface dialog, final int id) {
                         Prefs.setHereMapsTermsAccepted(SettingsActivity.this, true);
                         limitProviderSelectorHandler(true); //Set limit provider now that terms have been accepted
+                        Answers.getInstance().logCustom(new CustomEvent("Enabled HERE"));
                     }})
                 .setNegativeButton(R.string.reject_here_maps_terms_alert_button_text, null)
                 .show();
