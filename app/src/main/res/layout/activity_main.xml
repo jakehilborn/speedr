@@ -131,7 +131,7 @@
                 android:layout_alignParentEnd="true"
                 android:visibility="invisible"
                 android:background="@drawable/reset"
-                android:contentDescription="@string/content_description_start_stop_button"
+                android:contentDescription="@string/content_description_reset"
                 />
         </RelativeLayout>
 

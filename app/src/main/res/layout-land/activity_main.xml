@@ -37,6 +37,7 @@
                     android:layout_toStartOf="@+id/speed_limit_layout"
                     android:background="@drawable/question_mark"
                     android:visibility="invisible"
+                    android:contentDescription="@string/content_description_spotty_speed_limits"
                     />
 
                 <LinearLayout
@@ -81,6 +82,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/content_description_speed_limit_provider"
                     />
             </RelativeLayout>
 
@@ -289,6 +291,7 @@
                 android:layout_gravity="center"
                 android:visibility="invisible"
                 android:background="@drawable/reset"
+                android:contentDescription="@string/content_description_reset"
                 />
 
             <!-- Items below this tag are placed on the bottom of the screen -->
@@ -311,6 +314,7 @@
                 android:src="@drawable/car"
                 app:backgroundTint="@color/startButton"
                 android:onClick="startStopButtonOnClick"
+                android:contentDescription="@string/content_description_start_stop_button"
                 />
         </LinearLayout>
     </LinearLayout>
