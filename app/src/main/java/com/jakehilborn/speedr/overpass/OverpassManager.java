@@ -72,6 +72,8 @@ public class OverpassManager {
     private Set<LimitNode> normalizeResponse(OverpassResponse overpassResponse) {
         Set<LimitNode> limitNodes = new HashSet<>();
 
+        if (overpassResponse == null || overpassResponse.getElements() == null) return limitNodes;
+
         for (Element element : overpassResponse.getElements()) {
             Double limit = parseLimit(element.getTags().getMaxSpeed());
             String roadName = element.getTags().getName();
