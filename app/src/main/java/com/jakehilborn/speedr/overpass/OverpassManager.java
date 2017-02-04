@@ -1,7 +1,8 @@
-package com.jakehilborn.speedr.overpass.deserial;
+package com.jakehilborn.speedr.overpass;
 
 import com.jakehilborn.speedr.StatsCalculator;
-import com.jakehilborn.speedr.overpass.LimitNode;
+import com.jakehilborn.speedr.overpass.deserial.Element;
+import com.jakehilborn.speedr.overpass.deserial.OverpassResponse;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
 import java.util.HashSet;

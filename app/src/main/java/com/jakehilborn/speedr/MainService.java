@@ -66,7 +66,7 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onCreate() called");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onCreate()");
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -85,7 +85,7 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "MainService starting");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onStartCommand()");
 
         statsCalculator = new StatsCalculator();
         statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
@@ -103,11 +103,13 @@ public class MainService extends Service {
                     @Override
                     @SuppressWarnings("MissingPermission") //Location permission is granted before the MainService is started
                     public void onConnected(Bundle bundle) {
+                        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "Location connecting");
                         LocationRequest locationRequest = new LocationRequest();
                         locationRequest.setInterval(1000); //Request GPS location every 1 second
                         locationRequest.setFastestInterval(500);
                         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationListener);
+                        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "Location connected");
                     }
 
                     @Override
@@ -115,7 +117,9 @@ public class MainService extends Service {
                         if (googleApiClient != null && googleApiClient.isConnected()) { //Remove pending updates, let GoogleAPIClient auto reconnect to restart updates
                             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationListener).setResultCallback(new ResultCallback<Status>() {
                                 @Override
-                                public void onResult(@NonNull Status status) {}
+                                public void onResult(@NonNull Status status) {
+                                    Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "Location suspended");
+                                }
                             });
                         }
                     }
@@ -129,7 +133,6 @@ public class MainService extends Service {
     }
 
     private void handleLocationChange(Location location) {
-        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "handling location change");
         statsCalculator.setLocation(location);
         statsCalculator.calcTimeDiff();
 
@@ -215,7 +218,7 @@ public class MainService extends Service {
 
     @Override
     public void onDestroy() {
-        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onDestroy() called");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onDestroy()");
         Prefs.setSessionTimeDiff(this, statsCalculator.getTimeDiff());
         notificationManager.cancel(NOTIFICATION_ID);
         limitFetcher.destroy(this);
@@ -223,4 +226,3 @@ public class MainService extends Service {
         super.onDestroy();
     }
 }
-

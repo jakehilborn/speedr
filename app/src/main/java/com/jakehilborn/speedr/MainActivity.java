@@ -25,12 +25,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.common.ConnectionResult;
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onCreate()");
         setContentView(R.layout.activity_main);
 
         timeDiffH = (TextView) findViewById(R.id.time_diff_h);
@@ -130,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     @Override
     protected void onStart() {
         super.onStart();
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onStart()");
 
         if (Prefs.isUseKph(this)) {
             speedUnit.setText(R.string.kmh);
@@ -159,15 +163,18 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if(MainService.class.getCanonicalName().equals(service.service.getClassName())) {
+                Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService running");
                 return true;
             }
         }
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService not running");
         return false;
     }
 
     private ServiceConnection mainServiceConn = new ServiceConnection() { //binder boilerplate
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService connected");
             MainService.LocalBinder binder = (MainService.LocalBinder) service;
             mainService = binder.getService();
             mainService.setCallback(MainActivity.this);
@@ -179,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         @Override //Only called on service crashes, not called onDestroy or on unbindService
         public void onServiceDisconnected(ComponentName className) {
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService disconnected");
             mainService = null;
         }
     };
@@ -295,16 +303,21 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void startMainService() {
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService start chain");
         if (checkPlayServicesPrereq() && requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq()) {
             styleStartStopButton(true);
             reset.setVisibility(View.INVISIBLE);
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
+        } else {
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService not started");
         }
     }
 
     private void stopMainService() {
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Stopping MainService");
         styleStartStopButton(false);
         finalizeSessionInUI();
         unbindService(mainServiceConn);
@@ -332,6 +345,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private void showHereSuggestion() {
         if (useHereMaps || Prefs.isHereSuggestionAcknowledged(this)) return;
 
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "showHereSuggestion()");
+
         Snackbar snackbar = Snackbar
                 .make(findViewById(R.id.start_stop), R.string.here_maps_suggestion_snackbar_text, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.dismiss_snackbar, new View.OnClickListener() {
@@ -349,6 +364,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     public void resetSessionOnClick(View view) {
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "resetSessionOnClick()");
+
         Stats stats = new Stats();
         stats.setTimeDiff(0D);
         setStatsInUI(stats);
@@ -376,8 +393,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private boolean requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Request location permission");
             return false; //Short circuit startMainService() call, it will be recalled onRequestPermissionsResult()
         }
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Location permission granted");
         return true;
     }
 
@@ -393,20 +412,25 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private boolean checkGPSPrereq() {
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "GPS provider enabled");
             return true;
         }
 
         //Checking if GPS is enabled is spotty on some API levels (18) and some devices. Checking again in case of false negative.
         String networkList = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         if (networkList != null && networkList.contains("gps")) {
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "GPS in network list");
             return true;
         }
 
         enableGPSViaPlayServices();
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "GPS is disabled");
         return false; //Short circuit startMainService() call, it will be recalled by enableGPSViaPlayServices()
     }
 
     private void showNoGPSAlert() {
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "showNoGPSAlert()");
+
         int messageRef = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ?
                 R.string.gps_disabled_message_4_4up : R.string.gps_disabled_message_4_3down;
 
@@ -426,8 +450,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
             noNetworkToast.show();
+            Crashlytics.log(Log.ERROR, MainActivity.class.getSimpleName(), "Network unavailable");
             return false;
         }
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Network available");
         return true;
     }
 
@@ -437,9 +463,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (result != ConnectionResult.SUCCESS) {
             if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(this, result, 0).show();
+
+                Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "PlayServices update required");
                 Answers.getInstance().logCustom(new CustomEvent("PlayServices update required"));
             } else {
                 playServicesErrorToast.show();
+
+                Crashlytics.log(Log.ERROR, MainActivity.class.getSimpleName(), "PlayServices incompatible");
                 Answers.getInstance().logCustom(new CustomEvent("PlayServices incompatible"));
             }
             return false;
@@ -448,6 +478,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void enableGPSViaPlayServices() {
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "enableGPSViaPlayServices()");
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .build();
@@ -468,8 +500,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                         //Show location settings change dialog and check the result in onActivityResult()
                         result.getStatus().startResolutionForResult(MainActivity.this, REQUEST_LOCATION);
                         showingLocationSettingsDialog = true;
+                        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Showing PlayServices GPS settings dialog");
                     } catch (Exception e) {
-                        //Do nothing
+                        Crashlytics.log(Log.ERROR, MainActivity.class.getSimpleName(), "Error showing PlayServices GPS settings dialog");
+                        Crashlytics.logException(e);
                     }
                 }
                 if (!showingLocationSettingsDialog) {
@@ -480,14 +514,16 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         });
     }
 
-    @Override //Needed to receive result of enableGPSViaPlayServices AlertDialog choice
+    @Override //Receives result of enableGPSViaPlayServices AlertDialog choice
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             //Check for the integer request code originally supplied to startResolutionForResult()
             case REQUEST_LOCATION:
                 if (resultCode == Activity.RESULT_OK) {
+                    Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "GPS enabled via PlayServices");
                     startMainService(); //Restart startMainService() chain
                 } else {
+                    Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "GPS not enabled via PlayServices");
                     showNoGPSAlert(); //Ask user to manually enable GPS
                 }
                 googleApiClient.disconnect();
@@ -496,6 +532,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     @Override
     public void onStop() {
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onStop()");
         noGPSPermissionToast.cancel();
         noNetworkToast.cancel();
         playServicesErrorToast.cancel();

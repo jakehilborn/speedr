@@ -29,6 +29,7 @@ public class OverpassInterceptor implements Interceptor {
         Request request = chain.request();
         String query = request.url().encodedQuery();
         Server overpassServer = chooseServer();
+        Crashlytics.log(Log.INFO, OverpassInterceptor.class.getSimpleName(), "Using server" + overpassServer.getBaseUrl());
 
         request = request.newBuilder()
                 .url(overpassServer.getBaseUrl() + "?" + query)

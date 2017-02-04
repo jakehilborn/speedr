@@ -15,7 +15,7 @@ import com.jakehilborn.speedr.heremaps.deserial.HereMapsResponse;
 import com.jakehilborn.speedr.heremaps.deserial.Response;
 import com.jakehilborn.speedr.overpass.OverpassInterceptor;
 import com.jakehilborn.speedr.overpass.OverpassService;
-import com.jakehilborn.speedr.overpass.deserial.OverpassManager;
+import com.jakehilborn.speedr.overpass.OverpassManager;
 import com.jakehilborn.speedr.overpass.deserial.OverpassResponse;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
@@ -48,6 +48,8 @@ public class LimitFetcher {
     private Subscription hereMapsSubscription;
     private HereMapsManager hereMapsManager;
     private Toast hereMapsError;
+
+    private int requestID;
 
     public LimitFetcher(StatsCalculator statsCalculator) {
         buildOverpassService();
@@ -104,6 +106,10 @@ public class LimitFetcher {
                 RADIUS + "," + lat + "," + lon +
                 ")[\"highway\"][\"maxspeed\"];out;";
 
+        requestID++;
+        final int thisRequestID = requestID;
+        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Overpass request " + thisRequestID);
+
         overpassSubscription = overpassService.getLimit(data)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -111,13 +117,14 @@ public class LimitFetcher {
                     @Override
                     public void onSuccess(OverpassResponse overpassResponse) {
                         overpassSubscription = null;
-                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Overpass success");
+                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Overpass response " + thisRequestID);
                         overpassManager.handleResponse(overpassResponse, lat, lon);
                     }
 
                     @Override
                     public void onError(Throwable error) {
                         overpassSubscription = null;
+                        Crashlytics.log(Log.ERROR, LimitFetcher.class.getSimpleName(), "Overpass error " + thisRequestID);
                         Crashlytics.logException(error);
                     }
                 });
@@ -131,6 +138,10 @@ public class LimitFetcher {
         String appCode = Prefs.getHereAppCode(context);
         String waypoint = lat + "," + lon;
 
+        requestID++;
+        final int thisRequestID = requestID;
+        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "HERE request " + thisRequestID);
+
         hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -138,14 +149,15 @@ public class LimitFetcher {
                     @Override
                     public void onSuccess(HereMapsResponse hereMapsResponse) {
                         hereMapsSubscription = null;
+                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "HERE response " + thisRequestID);
                         Prefs.setPendingHereActivation(context, false);
-                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Here maps success");
                         hereMapsManager.handleResponse(hereMapsResponse, lat, lon, isUseKph);
                     }
 
                     @Override
                     public void onError(Throwable error) {
                         hereMapsSubscription = null;
+                        Crashlytics.log(Log.ERROR, LimitFetcher.class.getSimpleName(), "HERE error " + thisRequestID);
 
                         int statusCode = -1;
                         Response result = null;
@@ -185,6 +197,7 @@ public class LimitFetcher {
     }
 
     public void destroy(Context context) {
+        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "destroy()");
         if (overpassSubscription != null) overpassSubscription.unsubscribe();
         if (hereMapsSubscription != null) hereMapsSubscription.unsubscribe();
         if (hereMapsError != null) hereMapsError.cancel();
