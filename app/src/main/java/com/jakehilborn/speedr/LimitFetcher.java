@@ -111,7 +111,7 @@ public class LimitFetcher {
                     @Override
                     public void onSuccess(OverpassResponse overpassResponse) {
                         overpassSubscription = null;
-                        Crashlytics.log(Log.INFO, "LimitFetcher", "Overpass success");
+                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Overpass success");
                         overpassManager.handleResponse(overpassResponse, lat, lon);
                     }
 
@@ -139,7 +139,7 @@ public class LimitFetcher {
                     public void onSuccess(HereMapsResponse hereMapsResponse) {
                         hereMapsSubscription = null;
                         Prefs.setPendingHereActivation(context, false);
-                        Crashlytics.log(Log.INFO, "LimitFetcher", "Here maps success");
+                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Here maps success");
                         hereMapsManager.handleResponse(hereMapsResponse, lat, lon, isUseKph);
                     }
 
@@ -178,7 +178,7 @@ public class LimitFetcher {
                             errorString = "Unknown error occurred with HERE";
                         }
 
-                        Crashlytics.log(Log.ERROR, "HERE error", errorString);
+                        Crashlytics.log(Log.ERROR, LimitFetcher.class.getSimpleName(), errorString);
                         Crashlytics.logException(error); //Log exception at the end so Crashlytics includes recent logs in report
                     }
                 });

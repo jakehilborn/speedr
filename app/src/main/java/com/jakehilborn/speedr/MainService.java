@@ -66,7 +66,7 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Crashlytics.log(Log.INFO, "MainService", "onCreate() called");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onCreate() called");
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -85,7 +85,7 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Crashlytics.log(Log.INFO, null, "MainService starting");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "MainService starting");
 
         statsCalculator = new StatsCalculator();
         statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
@@ -129,7 +129,7 @@ public class MainService extends Service {
     }
 
     private void handleLocationChange(Location location) {
-        Crashlytics.log(Log.INFO, "MainService", "handling location change");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "handling location change");
         statsCalculator.setLocation(location);
         statsCalculator.calcTimeDiff();
 
@@ -215,7 +215,7 @@ public class MainService extends Service {
 
     @Override
     public void onDestroy() {
-        Crashlytics.log(Log.INFO, "MainService", "onDestroy() called");
+        Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onDestroy() called");
         Prefs.setSessionTimeDiff(this, statsCalculator.getTimeDiff());
         notificationManager.cancel(NOTIFICATION_ID);
         limitFetcher.destroy(this);

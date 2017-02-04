@@ -100,6 +100,6 @@ public class OverpassInterceptor implements Interceptor {
 
     private void recordError(Server overpassServer, String message) {
         overpassServer.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
-        Crashlytics.log(Log.ERROR, "Overpass interceptor error", "Server: " + overpassServer.getBaseUrl() + "Message: \n" + message);
+        Crashlytics.log(Log.ERROR, OverpassInterceptor.class.getSimpleName(), "Server: " + overpassServer.getBaseUrl() + "Message: \n" + message);
     }
 }

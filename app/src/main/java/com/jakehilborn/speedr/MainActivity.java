@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private boolean isMainServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if("com.jakehilborn.speedr.MainService".equals(service.service.getClassName())) {
+            if(MainService.class.getCanonicalName().equals(service.service.getClassName())) {
                 return true;
             }
         }
