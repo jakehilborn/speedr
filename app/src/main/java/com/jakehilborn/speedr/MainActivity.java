@@ -474,6 +474,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
             return false;
         }
+
+        Crashlytics.log(Log.ERROR, MainActivity.class.getSimpleName(), "PlayServices compatible");
         return true;
     }
 
