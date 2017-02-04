@@ -14,9 +14,10 @@ import com.jakehilborn.speedr.heremaps.HereMapsService;
 import com.jakehilborn.speedr.heremaps.deserial.HereMapsResponse;
 import com.jakehilborn.speedr.heremaps.deserial.Response;
 import com.jakehilborn.speedr.overpass.OverpassInterceptor;
-import com.jakehilborn.speedr.overpass.OverpassService;
 import com.jakehilborn.speedr.overpass.OverpassManager;
+import com.jakehilborn.speedr.overpass.OverpassService;
 import com.jakehilborn.speedr.overpass.deserial.OverpassResponse;
+import com.jakehilborn.speedr.utils.ErrorReporter;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
@@ -49,8 +50,6 @@ public class LimitFetcher {
     private HereMapsManager hereMapsManager;
     private Toast hereMapsError;
 
-    private int requestID;
-
     public LimitFetcher(StatsCalculator statsCalculator) {
         buildOverpassService();
         overpassManager = new OverpassManager(statsCalculator);
@@ -69,7 +68,7 @@ public class LimitFetcher {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://dummy.url") //OverpassInterceptor will choose the appropriate Overpass endpoint
+                .baseUrl("http://dummy.url/") //OverpassInterceptor will choose the appropriate Overpass endpoint
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -106,10 +105,6 @@ public class LimitFetcher {
                 RADIUS + "," + lat + "," + lon +
                 ")[\"highway\"][\"maxspeed\"];out;";
 
-        requestID++;
-        final int thisRequestID = requestID;
-        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Overpass request " + thisRequestID);
-
         overpassSubscription = overpassService.getLimit(data)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,15 +112,13 @@ public class LimitFetcher {
                     @Override
                     public void onSuccess(OverpassResponse overpassResponse) {
                         overpassSubscription = null;
-                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "Overpass response " + thisRequestID);
                         overpassManager.handleResponse(overpassResponse, lat, lon);
                     }
 
                     @Override
                     public void onError(Throwable error) {
                         overpassSubscription = null;
-                        Crashlytics.log(Log.ERROR, LimitFetcher.class.getSimpleName(), "Overpass error " + thisRequestID);
-                        Crashlytics.logException(error);
+                        //Error was already logged in OverpassInterceptor
                     }
                 });
     }
@@ -138,10 +131,6 @@ public class LimitFetcher {
         String appCode = Prefs.getHereAppCode(context);
         String waypoint = lat + "," + lon;
 
-        requestID++;
-        final int thisRequestID = requestID;
-        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "HERE request " + thisRequestID);
-
         hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -149,7 +138,6 @@ public class LimitFetcher {
                     @Override
                     public void onSuccess(HereMapsResponse hereMapsResponse) {
                         hereMapsSubscription = null;
-                        Crashlytics.log(Log.INFO, LimitFetcher.class.getSimpleName(), "HERE response " + thisRequestID);
                         Prefs.setPendingHereActivation(context, false);
                         hereMapsManager.handleResponse(hereMapsResponse, lat, lon, isUseKph);
                     }
@@ -157,41 +145,48 @@ public class LimitFetcher {
                     @Override
                     public void onError(Throwable error) {
                         hereMapsSubscription = null;
-                        Crashlytics.log(Log.ERROR, LimitFetcher.class.getSimpleName(), "HERE error " + thisRequestID);
 
                         int statusCode = -1;
-                        Response result = null;
+                        String type = "";
+                        String subType = "";
+                        String details = "";
                         if (error instanceof HttpException) {
                             try {
-                                statusCode = ((HttpException) error).code();
                                 ResponseBody body = ((HttpException) error).response().errorBody();
-                                result = hereMapsErrorConverter.convert(body).getResponse();
+                                Response hereResponse = hereMapsErrorConverter.convert(body).getResponse();
+
+                                statusCode = ((HttpException) error).code();
+                                type = hereResponse.getType();
+                                subType = hereResponse.getSubtype();
+                                details = hereResponse.getDetails();
                             } catch (IOException ioe) {
                                 Crashlytics.logException(ioe);
                             }
+                        } else {
+                            ErrorReporter.logHereError(error);
+                            return;
                         }
 
-                        String errorString;
                         //New HERE accounts take up to an hour to activate. New creds returns 403, invalid creds returns 401.
-                        //If new account show notice on MainActivity instead of showing error as Toast. Then retry the request using Overpass.
+                        //If new account, show notice on MainActivity instead of showing error as Toast. Then retry the request using Overpass.
                         if (statusCode == HttpURLConnection.HTTP_FORBIDDEN &&
                                 System.currentTimeMillis() < Prefs.getTimeOfHereCreds(context) + UnitUtils.secondsToMillis(60 * 60)) {
                             Prefs.setPendingHereActivation(context, true);
                             fetchOverpassLimit(lat, lon);
-                            errorString = "Pending HERE Activation";
                             Answers.getInstance().logCustom(new CustomEvent("Pending HERE Activation"));
-                        } else if (result != null) {
-                            Prefs.setPendingHereActivation(context, false);
-                            errorString = result.getType() + " - " + result.getSubtype() + "\n\n" + result.getDetails();
-                            if (hereMapsError != null) hereMapsError.cancel(); //Cancel previous toast so they don't queue up
-                            hereMapsError = Toast.makeText(context, errorString, Toast.LENGTH_LONG);
-                            hereMapsError.show();
-                        } else {
-                            errorString = "Unknown error occurred with HERE";
+                            return;
                         }
 
-                        Crashlytics.log(Log.ERROR, LimitFetcher.class.getSimpleName(), errorString);
-                        Crashlytics.logException(error); //Log exception at the end so Crashlytics includes recent logs in report
+                        //Show error message to user via Toast
+                        if (!type.isEmpty() || !subType.isEmpty() || !details.isEmpty()) {
+                            Prefs.setPendingHereActivation(context, false);
+                            String toastText = type + " - " + subType + "\n\n" + details;
+                            if (hereMapsError != null) hereMapsError.cancel(); //Cancel previous toast so they don't queue up
+                            hereMapsError = Toast.makeText(context, toastText, Toast.LENGTH_LONG);
+                            hereMapsError.show();
+                        }
+
+                        ErrorReporter.logHereError(statusCode, type, subType, details);
                     }
                 });
     }

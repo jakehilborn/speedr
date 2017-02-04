@@ -3,9 +3,11 @@ package com.jakehilborn.speedr.overpass;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.jakehilborn.speedr.utils.ErrorReporter;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -44,27 +46,30 @@ public class OverpassInterceptor implements Interceptor {
         try {
             response = chain.proceed(request);
         } catch (Throwable error) {
-            recordError(overpassServer, error.toString());
+            ErrorReporter.logOverpassError(error, overpassServer.getBaseUrl());
+            overpassServer.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
             throw error;
         }
 
+        //OkHttp response body is stored in a buffer that is consumed upon read. We consume the buffer
+        //into a string and then re-insert it into the response so that Gson can deserialize later.
+        String bodyString = response.body().string();
+        ResponseBody rebuildBody = ResponseBody.create(response.body().contentType(), bodyString);
+        response = response.newBuilder().body(rebuildBody).build();
+
         //Catches non-200 responses, empty 200 responses, and 200 responses that contain warning/error strings.
         //Requests for coordinates that don't return any data will still have an empty "elements" array.
-        if (response.isSuccessful()) {
-
-            //OkHttp response body is stored in a buffer that is consumed upon read. We consume the buffer
-            //into a string and then re-insert it into the response so that Gson can deserialize later.
-            String bodyString = response.body().string();
-            ResponseBody rebuildBody = ResponseBody.create(response.body().contentType(), bodyString);
-            response = response.newBuilder().body(rebuildBody).build();
+        if (response.code() == HttpURLConnection.HTTP_OK) {
 
             if (bodyString.contains("\"elements\"")) { //success
                 overpassServer.addLatency(response.receivedResponseAtMillis() - response.sentRequestAtMillis());
             } else {
-                recordError(overpassServer, "Body: " + bodyString);
+                overpassServer.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
+                ErrorReporter.logOverpassError(response.code(), overpassServer.getBaseUrl(), bodyString);
             }
         } else {
-            recordError(overpassServer, "HTTP code: " + response.code() + ", Body: " + response.body().string());
+            overpassServer.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
+            ErrorReporter.logOverpassError(response.code(), overpassServer.getBaseUrl(), bodyString);
         }
 
         return response;
@@ -97,10 +102,5 @@ public class OverpassInterceptor implements Interceptor {
                 return FR.getDelay() <= RU.getDelay() ? FR : RU;
             }
         }
-    }
-
-    private void recordError(Server overpassServer, String message) {
-        overpassServer.setDelay(System.nanoTime() + UnitUtils.secondsToNanos(60)); //Don't retry this server for 60 seconds
-        Crashlytics.log(Log.ERROR, OverpassInterceptor.class.getSimpleName(), "Server: " + overpassServer.getBaseUrl() + "Message: \n" + message);
     }
 }
