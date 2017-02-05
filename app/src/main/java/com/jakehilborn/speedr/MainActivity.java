@@ -310,7 +310,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
+
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
+            Answers.getInstance().logCustom(new CustomEvent(useHereMaps ? "Using HERE" : "Using Overpass"));
         } else {
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService not started");
         }
@@ -475,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             return false;
         }
 
-        Crashlytics.log(Log.ERROR, MainActivity.class.getSimpleName(), "PlayServices compatible");
+        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "PlayServices compatible");
         return true;
     }
 
