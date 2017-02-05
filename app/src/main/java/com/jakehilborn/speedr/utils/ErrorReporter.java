@@ -15,8 +15,8 @@ import java.util.Arrays;
 //This inspects the exception and limit provider to log exceptions on different line numbers.
 public class ErrorReporter {
 
-    private static final String HERE = "HERE ";
     private static final String OVERPASS = "Overpass ";
+    private static final String HERE = "HERE ";
 
     public static void logOverpassError(int statusCode, String baseUrl, String body) {
         Crashlytics.log(Log.ERROR, ErrorReporter.class.getSimpleName(), "Overpass error: " + baseUrl);

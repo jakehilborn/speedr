@@ -14,8 +14,10 @@ public class StatsCalculator {
     private Double limit;
     private long prevLimitTime;
     private Location prevLimitLocation; //The location when the most recent speed limit was fetched
-
     private boolean forceLimitStale;
+
+    private boolean networkDown;
+    private long prevNetworkCheckTime;
 
     private double timeDiff;
 
@@ -43,8 +45,30 @@ public class StatsCalculator {
             return true;
         }
 
+        if (networkDown) {
+            return true;
+        }
+
         //Stale if previous Limit request was over 5 seconds ago and the user has traveled over 40 meters since the previous Limit request
         return (prevLimitTime + UnitUtils.secondsToNanos(5) < System.nanoTime() && location.distanceTo(prevLimitLocation) > 25);
+    }
+
+    public void setForceLimitStale(boolean forceLimitStale) {
+        this.forceLimitStale = forceLimitStale;
+    }
+
+    public boolean isNetworkCheckStale() {
+        return prevNetworkCheckTime + UnitUtils.secondsToNanos(10) < System.nanoTime() //Check is network down at most every 10s
+                && prevLimitTime + UnitUtils.secondsToNanos(10) < System.nanoTime(); //Only check if a new speed limit hasn't been received in over 10s
+    }
+
+    public boolean isNetworkDown() {
+        return this.networkDown;
+    }
+
+    public void setNetworkDown(boolean networkDown) {
+        this.prevNetworkCheckTime = System.nanoTime();
+        this.networkDown = networkDown;
     }
 
     //When limit is set to null it means there is no speed limit data available so continue showing existing speed limit.
@@ -55,10 +79,7 @@ public class StatsCalculator {
         prevLimitLocation = new Location("fused");
         prevLimitLocation.setLatitude(lat);
         prevLimitLocation.setLongitude(lon);
-    }
-
-    public void setForceLimitStale(boolean forceLimitStale) {
-        this.forceLimitStale = forceLimitStale;
+        networkDown = false;
     }
 
     public double getTimeDiff() {
@@ -70,10 +91,10 @@ public class StatsCalculator {
     }
 
     public void calcTimeDiff() {
-        if (prevLimitTime == 0 || //Limit data not available yet
-            prevLocation == null || //Less than 2 speed data points have been captured
-            limit == null ||
-            limit == 0) return; //Avoiding divide by zero
+        if (prevLimitTime == 0 //Limit data not available yet
+            || prevLocation == null //Less than 2 speed data points have been captured
+            || limit == null
+            || limit == 0) return; //Avoiding divide by zero
 
         double currentDiff = ((location.getElapsedRealtimeNanos() - prevLocation.getElapsedRealtimeNanos())
                 * (location.getSpeed() - limit)) / limit;

@@ -1,9 +1,10 @@
 package com.jakehilborn.speedr;
 
-public class Stats {
+public class UIData {
     private Integer speed;
     private Integer limit;
     private Double timeDiff; //nanoseconds
+    private boolean networkDown;
 
     public Integer getSpeed() {
         return speed;
@@ -27,5 +28,13 @@ public class Stats {
 
     public void setTimeDiff(Double timeDiff) {
         this.timeDiff = timeDiff;
+    }
+
+    public boolean isNetworkDown() {
+        return networkDown;
+    }
+
+    public void setNetworkDown(boolean networkDown) {
+        this.networkDown = networkDown;
     }
 }

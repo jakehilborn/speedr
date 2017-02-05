@@ -280,12 +280,28 @@
             android:id="@+id/pending_here_activation_notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:padding="10dp"
             android:gravity="center"
             android:typeface="normal"
             android:textStyle="italic"
             android:textSize="10dp"
             android:text="@string/pending_here_activation_text"
+            tools:ignore="SpUsage"
+            />
+
+        <TextView
+            android:id="@+id/internet_down_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:typeface="normal"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:textColor="@color/pastelRed"
+            android:text="@string/internet_down_notice_text"
             tools:ignore="SpUsage"
             />
 

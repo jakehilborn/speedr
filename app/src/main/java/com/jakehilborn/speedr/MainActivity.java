@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView limit;
     private TextView limitUnit;
     private TextView pendingHereActivationNotice;
+    private TextView internetDownNotice;
 
     private AppCompatImageButton reset;
     private AppCompatImageButton limitProviderLogo;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         limit = (TextView) findViewById(R.id.limit);
         limitUnit = (TextView) findViewById(R.id.limit_unit);
         pendingHereActivationNotice = (TextView) findViewById(R.id.pending_here_activation_notice);
+        internetDownNotice = (TextView) findViewById(R.id.internet_down_notice);
 
         reset = (AppCompatImageButton) findViewById(R.id.reset_session);
         reset.setOnClickListener(new View.OnClickListener() { //xml defined onClick for AppCompatImageButton crashes on Android 4.2
@@ -181,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             //Sets UI values on MainActivity onStart() if MainService was already running
             styleStartStopButton(true);
-            setStatsInUI(mainService.pollStats());
+            updateUI(mainService.pollUIData());
         }
 
         @Override //Only called on service crashes, not called onDestroy or on unbindService
@@ -192,25 +194,25 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     };
 
     @Override
-    public void onStatsUpdate(Stats stats) {
-        setStatsInUI(stats);
+    public void onUIDataUpdate(UIData uiData) {
+        updateUI(uiData);
     }
 
-    private void setStatsInUI(Stats stats) {
-        if (stats.getTimeDiff() != null) {
-            timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(stats.getTimeDiff())));
-            timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(stats.getTimeDiff())));
+    private void updateUI(UIData uiData) {
+        if (uiData.getTimeDiff() != null) {
+            timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(uiData.getTimeDiff())));
+            timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(uiData.getTimeDiff())));
 
-            if (stats.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
-                timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(stats.getTimeDiff())));
+            if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
+                timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(uiData.getTimeDiff())));
                 timeDiffM.setVisibility(View.VISIBLE);
                 timeDiffMSymbol.setVisibility(View.VISIBLE);
             } else {
                 timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view is not rendered which lets timeDiff center correctly
                 timeDiffMSymbol.setVisibility(View.GONE);
             }
-            if (stats.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
-                timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(stats.getTimeDiff())));
+            if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
+                timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(uiData.getTimeDiff())));
                 timeDiffH.setVisibility(View.VISIBLE);
                 timeDiffHSymbol.setVisibility(View.VISIBLE);
             } else {
@@ -219,19 +221,19 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         }
 
-        if (stats.getLimit() == null || stats.getLimit() == 0) {
+        if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
             //If service is running and returns null limit for OpenStreetMap show badge about spotty coverage
             if (!useHereMaps && mainService != null) missingOpenStreetMapLimit.setVisibility(View.VISIBLE);
         } else {
-            limit.setText(String.valueOf(stats.getLimit()));
+            limit.setText(String.valueOf(uiData.getLimit()));
             missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
         }
 
-        if (stats.getSpeed() == null) {
+        if (uiData.getSpeed() == null) {
             speed.setText("--");
         } else {
-            speed.setText(String.valueOf(stats.getSpeed()));
+            speed.setText(String.valueOf(uiData.getSpeed()));
         }
 
         if (useHereMaps && mainService != null && Prefs.isPendingHereActivation(this)) {
@@ -239,42 +241,49 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         } else {
             pendingHereActivationNotice.setVisibility(View.GONE);
         }
+
+        if (uiData.isNetworkDown()) {
+            internetDownNotice.setVisibility(View.VISIBLE);
+        } else {
+            internetDownNotice.setVisibility(View.GONE);
+        }
     }
 
     private void restoreSessionInUI() { //Restores timeDiff from the completed MainService session and reset button if necessary
-        Stats stats;
+        UIData uiData;
         if (mainService != null) {
-            stats = mainService.pollStats();
+            uiData = mainService.pollUIData();
         } else { //If service is not running then read the timeDiff from storage
-            stats = new Stats();
-            stats.setTimeDiff(Prefs.getSessionTimeDiff(this));
+            uiData = new UIData();
+            uiData.setTimeDiff(Prefs.getSessionTimeDiff(this));
         }
 
-        setStatsInUI(stats);
+        updateUI(uiData);
 
-        if (stats.getTimeDiff() != 0 && !isMainServiceRunning()) { //MainService may not be bound yet so explicitly check if running
+        if (uiData.getTimeDiff() != 0 && !isMainServiceRunning()) { //MainService may not be bound yet so explicitly check if running
             reset.setVisibility(View.VISIBLE);
         }
     }
 
     private void finalizeSessionInUI() {
-        Stats stats;
+        UIData uiData;
         if (mainService != null) {
-            stats = mainService.pollStats();
+            uiData = mainService.pollUIData();
         } else { //If MainService was unexpectedly terminated this else block provides null safety and displays most recent timeDiff
-            stats = new Stats();
-            stats.setTimeDiff(Prefs.getSessionTimeDiff(this));
+            uiData = new UIData();
+            uiData.setTimeDiff(Prefs.getSessionTimeDiff(this));
         }
 
-        stats.setLimit(null);
-        stats.setSpeed(null);
-        setStatsInUI(stats);
+        uiData.setLimit(null);
+        uiData.setSpeed(null);
+        uiData.setNetworkDown(false);
+        updateUI(uiData);
 
         //Only show during active sessions
         missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
         pendingHereActivationNotice.setVisibility(View.GONE);
 
-        if (stats.getTimeDiff() != 0) {
+        if (uiData.getTimeDiff() != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.INVISIBLE);
@@ -368,9 +377,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     public void resetSessionOnClick(View view) {
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "resetSessionOnClick()");
 
-        Stats stats = new Stats();
-        stats.setTimeDiff(0D);
-        setStatsInUI(stats);
+        UIData uiData = new UIData();
+        uiData.setTimeDiff(0D);
+        updateUI(uiData);
 
         reset.setVisibility(View.INVISIBLE);
 
