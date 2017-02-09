@@ -14,3 +14,7 @@ gradle.*
 gradle/
 gradlew*
 README.md
+
+# GitHub Pages Generated Files #
+################################
+_site/
