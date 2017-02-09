@@ -1,0 +1,15 @@
+# All non GitHub Pages Files #
+##############################
+*.DS_Store
+*.gradle*
+*.iml
+*.jks
+*.properties
+.gradle/
+.idea/
+app/
+build/
+gradle.*
+gradle/
+gradlew*
+README.md
