@@ -9,6 +9,7 @@
 .idea/
 app/
 build/
+Gemfile.lock
 gradle.*
 gradle/
 gradlew*
