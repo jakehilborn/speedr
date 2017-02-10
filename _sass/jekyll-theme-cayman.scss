@@ -318,6 +318,9 @@ a {
 }
 
 .screen-shot {
+  display: block;
+  margin: auto;
+
   @media screen and (min-height: #{$full-height}) {
     max-height: $full-height;
   }
@@ -359,7 +362,6 @@ a {
 
 .site-footer-owner {
   display: block;
-  font-weight: bold;
 }
 
 .site-footer-credits {

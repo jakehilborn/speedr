@@ -14,6 +14,8 @@
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+        <a href="{{ site.github.repository_url }}" class="btn">Get it on Google Play</a>
+        <a href="{{ site.github.repository_url }}" class="btn">Download .apk</a>
       {% endif %}
       {% if site.show_downloads %}
         <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
@@ -28,9 +30,9 @@
 
       <footer class="site-footer">
         {% if site.github.is_project_page %}
-          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+          <span class="site-footer-owner">Developed by Jake Hilborn</span>
         {% endif %}
-        <span class="site-footer-credits">This page was customized by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+        <span class="site-footer-credits"><a href="https://www.linkedin.com/in/jakehilborn">LinkedIn</a> | <a href="mailto:jakehilborn@gmail.com">Email</a></span>
       </footer>
     </section>
 
