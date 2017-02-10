@@ -317,6 +317,28 @@ a {
   }
 }
 
+.screen-shot {
+  @media screen and (min-height: #{$full-height}) {
+    max-height: $full-height;
+  }
+
+  @media screen and (min-height: #{$large-height}) and (max-height: #{$full-height}) {
+    max-height: $large-height;
+  }
+
+  @media screen and (min-height: #{$medium-height}) and (max-height: #{$large-height}) {
+    max-height: $medium-height;
+  }
+
+  @media screen and (min-height: #{$small-height}) and (max-height: #{$medium-height}) {
+    max-height: $small-height;
+  }
+
+  @media screen and (max-height: #{$small-height}) {
+    max-height: $tiny-height;
+  }
+}
+
 .site-footer {
   padding-top: 2rem;
   margin-top: 2rem;
