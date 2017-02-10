@@ -14,7 +14,7 @@
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
-        <a href="{{ site.github.repository_url }}" class="btn">Get it on Google Play</a>
+        <a href="{{ site.github.repository_url }}"><img src="images/google-play-badge.png" class=btn-image></a>
         <a href="{{ site.github.repository_url }}" class="btn">Download .apk</a>
       {% endif %}
       {% if site.show_downloads %}

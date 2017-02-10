@@ -86,6 +86,27 @@ a {
   }
 }
 
+.btn-image {
+  width: auto;
+
+  @include large {
+    height: 3.25rem;
+    position: relative;
+    top: 1.25rem;
+  }
+
+  @include medium {
+    height: 2.75rem;
+    position: relative;
+    top: 1rem;
+  }
+
+  @include small {
+    height: 3rem;
+    margin-bottom: 0.66rem;
+  }
+}
+
 .page-header {
   color: $header-heading-color;
   text-align: center;
