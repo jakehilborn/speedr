@@ -77,7 +77,7 @@ public class MainService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_s)
+                .setSmallIcon(R.drawable.ic_stat)
                 .setContentTitle(getString(R.string.notification_init_title))
                 .setContentText(getString(R.string.notification_init_text))
                 .setContentIntent(pendingIntent)
