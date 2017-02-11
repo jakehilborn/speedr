@@ -74,8 +74,7 @@ a {
   }
 
   @include small {
-    display: block;
-    width: 100%;
+    display: inline-block;
     padding: 0.75rem;
     font-size: 0.9rem;
 
@@ -86,8 +85,16 @@ a {
   }
 }
 
+.vertical-btn-spacer {
+  @include small {
+    display: block;
+  }
+}
+
 .btn-image {
   width: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   @include large {
     height: 3.25rem;
@@ -103,7 +110,7 @@ a {
 
   @include small {
     height: 3rem;
-    margin-bottom: 0.66rem;
+    margin-bottom: 0.6rem;
   }
 }
 
