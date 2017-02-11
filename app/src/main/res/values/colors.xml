@@ -8,7 +8,7 @@
     <color name="pastelGreenDark">#26A47B</color>
     <color name="pastelRed">#F45531</color>
 
-    <color name="startButton">#21CE99</color>
+    <color name="startButton">@color/pastelGreen</color>
     <color name="stopButton">@color/pastelRed</color>
     <color name="unselectedButtonGray">#5A595B</color>
 </resources>
