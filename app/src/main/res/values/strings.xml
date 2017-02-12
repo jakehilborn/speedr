@@ -24,6 +24,7 @@
     <string name="minute_symbol">m</string>
     <string name="second_symbol">s</string>
     <string name="decimal_symbol">.</string>
+    <string name="total_time_ratio_string">% of </string>
 
     <string name="unit">unit</string> <!-- used for layout.xml Design tab only -->
     <string name="current_speed_limit_title">SPEED LIMIT</string>

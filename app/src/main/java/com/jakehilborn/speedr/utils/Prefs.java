@@ -15,6 +15,7 @@ public class Prefs {
     private static final String TIME_OF_HERE_CREDS = "time_of_here_creds";
     private static final String PENDING_HERE_ACTIVATION = "pending_here_activation";
     private static final String SESSION_TIME_DIFF = "session_time_diff";
+    private static final String SESSION_TIME_TOTAL = "session_time_total";
     private static final String TIME_DIFF_WEEK = "time_diff_week";
     private static final String TIME_DIFF_MONTH = "time_diff_month";
     private static final String TIME_DIFF_YEAR = "time_diff_year";
@@ -104,6 +105,14 @@ public class Prefs {
 
     public static Double getSessionTimeDiff(Context context) {
         return Double.longBitsToDouble(prefs(context).getLong(SESSION_TIME_DIFF, 0));
+    }
+
+    public static void setSessionTimeTotal(Context context, long time) {
+        editPrefs(context).putLong(SESSION_TIME_TOTAL, time).apply();
+    }
+
+    public static long getSessionTimeTotal(Context context) {
+        return prefs(context).getLong(SESSION_TIME_TOTAL, 0);
     }
 
     public static void setTimeDiffWeek(Context context, Double timeDiff) {

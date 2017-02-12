@@ -4,6 +4,7 @@ public class UIData {
     private Integer speed;
     private Integer limit;
     private Double timeDiff; //nanoseconds
+    private long firstLimitTime;
     private boolean networkDown;
 
     public Integer getSpeed() {
@@ -28,6 +29,14 @@ public class UIData {
 
     public void setTimeDiff(Double timeDiff) {
         this.timeDiff = timeDiff;
+    }
+
+    public long getFirstLimitTime() {
+        return firstLimitTime;
+    }
+
+    public void setFirstLimitTime(long firstLimitTime) {
+        this.firstLimitTime = firstLimitTime;
     }
 
     public boolean isNetworkDown() {

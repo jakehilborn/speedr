@@ -49,6 +49,18 @@ public class UnitUtils {
         return knots * 0.514444;
     }
 
+    public static Integer nanosToSeconds(Long nanos) {
+        if (nanos == null) return null;
+
+        return nanosToSeconds((double) nanos);
+    }
+
+    public static Integer nanosToSeconds(Double nanos) {
+        if (nanos == null) return null;
+
+        return (int) (nanos / 1000000000L);
+    }
+
     public static Integer nanosTo10thsModuloSeconds(Double nanos) {
         if (nanos == null) return null;
 

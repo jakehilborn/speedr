@@ -80,8 +80,10 @@ public class StatsCalculator {
     //When limit is set to 0 it means there is no speed limit data available, set speed limit to missing.
     public void setLimit(Double limit, Double lat, Double lon) {
         prevLimitTime = System.nanoTime();
-        if (firstLimitTime == 0) firstLimitTime = prevLimitTime;
-        if (limit != null) this.limit = limit;
+        if (limit != null) {
+            this.limit = limit;
+            if (firstLimitTime == 0) firstLimitTime = prevLimitTime;
+        }
         prevLimitLocation = new Location("fused");
         prevLimitLocation.setLatitude(lat);
         prevLimitLocation.setLongitude(lon);

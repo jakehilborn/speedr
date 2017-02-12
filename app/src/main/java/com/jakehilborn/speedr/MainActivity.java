@@ -15,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private GoogleApiClient googleApiClient;
 
     private boolean useHereMaps;
+    private long firstLimitTime;
+    private double curTimeDiff;
 
     private TextView timeDiffH;
     private TextView timeDiffHSymbol;
@@ -63,10 +66,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView timeDiffMSymbol;
     private TextView timeDiffS;
     private TextView timeDiffS10th;
+    private TextView percentOfTotalTime;
+    private TextView totalTimeRatioText;
+    private TextView totalTime;
+
     private TextView speed;
     private TextView speedUnit;
     private TextView limit;
     private TextView limitUnit;
+
     private TextView pendingHereActivationNotice;
     private TextView internetDownNotice;
 
@@ -80,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private Toast poweredByOpenStreetMapToast;
     private Toast poweredByHereMapsToast;
 
+    private Handler totalTimeHandler;
+    private Runnable totalTimeRunnable;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         timeDiffMSymbol = (TextView) findViewById(R.id.time_diff_m_symbol);
         timeDiffS = (TextView) findViewById(R.id.time_diff_s);
         timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
+        percentOfTotalTime = (TextView) findViewById(R.id.percent_of_total_time);
+        totalTimeRatioText = (TextView) findViewById(R.id.total_time_ratio_text);
+        totalTime = (TextView) findViewById(R.id.total_time);
+
         speed = (TextView) findViewById(R.id.speed);
         speedUnit = (TextView) findViewById(R.id.speed_unit);
         limit = (TextView) findViewById(R.id.limit);
@@ -156,8 +171,18 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         restoreSessionInUI();
 
+        totalTimeHandler = new Handler();
+        totalTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                refreshTotalTimeRatio();
+                totalTimeHandler.postDelayed(this, 1000);
+            }
+        };
+
         if (isMainServiceRunning()) {
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
+            totalTimeHandler.postDelayed(totalTimeRunnable, 1000);
         }
     }
 
@@ -199,27 +224,29 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void updateUI(UIData uiData) {
-        if (uiData.getTimeDiff() != null) {
-            timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(uiData.getTimeDiff())));
-            timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(uiData.getTimeDiff())));
+        timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(uiData.getTimeDiff())));
+        timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(uiData.getTimeDiff())));
 
-            if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
-                timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(uiData.getTimeDiff())));
-                timeDiffM.setVisibility(View.VISIBLE);
-                timeDiffMSymbol.setVisibility(View.VISIBLE);
-            } else {
-                timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view is not rendered which lets timeDiff center correctly
-                timeDiffMSymbol.setVisibility(View.GONE);
-            }
-            if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
-                timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(uiData.getTimeDiff())));
-                timeDiffH.setVisibility(View.VISIBLE);
-                timeDiffHSymbol.setVisibility(View.VISIBLE);
-            } else {
-                timeDiffH.setVisibility(View.GONE);
-                timeDiffHSymbol.setVisibility(View.GONE);
-            }
+        if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
+            timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(uiData.getTimeDiff())));
+            timeDiffM.setVisibility(View.VISIBLE);
+            timeDiffMSymbol.setVisibility(View.VISIBLE);
+        } else {
+            timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view is not rendered which lets timeDiff center correctly
+            timeDiffMSymbol.setVisibility(View.GONE);
         }
+        if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
+            timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(uiData.getTimeDiff())));
+            timeDiffH.setVisibility(View.VISIBLE);
+            timeDiffHSymbol.setVisibility(View.VISIBLE);
+        } else {
+            timeDiffH.setVisibility(View.GONE);
+            timeDiffHSymbol.setVisibility(View.GONE);
+        }
+
+        firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
+        curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
+        refreshTotalTimeRatio();
 
         if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
@@ -249,7 +276,47 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void restoreSessionInUI() { //Restores timeDiff from the completed MainService session and reset button if necessary
+    private void refreshTotalTimeRatio() {
+        if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
+            percentOfTotalTime.setVisibility(View.GONE);
+            totalTimeRatioText.setVisibility(View.GONE);
+            totalTime.setVisibility(View.INVISIBLE);
+            return;
+        } else {
+            percentOfTotalTime.setVisibility(View.VISIBLE);
+            totalTimeRatioText.setVisibility(View.VISIBLE);
+            totalTime.setVisibility(View.VISIBLE);
+        }
+
+        double totalNanos = Prefs.getSessionTimeTotal(this);
+        if (firstLimitTime != 0) totalNanos += (System.nanoTime() - firstLimitTime);
+
+        int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
+        percentOfTotalTime.setText(Integer.toString(percent));
+
+        int hours = UnitUtils.nanosToHoursModuloMinutes(totalNanos);
+        int minutes = UnitUtils.nanosToMinutesModuloHours(totalNanos);
+        int seconds = UnitUtils.nanosToSecondsModuloMinutes(totalNanos);
+
+        String formattedTime = "";
+        if (hours != 0) {
+            formattedTime += hours + ":";
+            if (minutes < 10) formattedTime += "0";
+            formattedTime += minutes + ":";
+            if (seconds < 10) formattedTime += "0";
+            formattedTime += seconds;
+        } else if (minutes != 0) {
+            formattedTime += minutes + ":";
+            if (seconds < 10) formattedTime += "0";
+            formattedTime += seconds;
+        } else {
+            formattedTime += seconds + "s";
+        }
+
+        totalTime.setText(formattedTime);
+    }
+
+    private void restoreSessionInUI() {
         UIData uiData;
         if (mainService != null) {
             uiData = mainService.pollUIData();
@@ -260,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         updateUI(uiData);
 
-        if (uiData.getTimeDiff() != 0 && !isMainServiceRunning()) { //MainService may not be bound yet so explicitly check if running
+        if (!isMainServiceRunning() && (uiData.getTimeDiff() != 0 || Prefs.getSessionTimeTotal(this) != 0)) { //MainService may not be bound yet so explicitly check if running
             reset.setVisibility(View.VISIBLE);
         }
     }
@@ -283,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
         pendingHereActivationNotice.setVisibility(View.GONE);
 
-        if (uiData.getTimeDiff() != 0) {
+        if (uiData.getTimeDiff() != 0 || firstLimitTime != 0 || Prefs.getSessionTimeTotal(this) != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.INVISIBLE);
@@ -319,6 +386,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
+            totalTimeHandler.postDelayed(totalTimeRunnable, 1000);
 
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
             Answers.getInstance().logCustom(new CustomEvent(useHereMaps ? "Using HERE" : "Using Overpass"));
@@ -335,6 +403,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         stopService(new Intent(this, MainService.class));
         mainService = null;
         showHereSuggestion();
+        totalTimeHandler.removeCallbacks(totalTimeRunnable);
     }
 
     private void styleStartStopButton(boolean start) {
@@ -377,13 +446,14 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     public void resetSessionOnClick(View view) {
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "resetSessionOnClick()");
 
+        Prefs.setSessionTimeDiff(this, 0D);
+        Prefs.setSessionTimeTotal(this, 0);
+
         UIData uiData = new UIData();
         uiData.setTimeDiff(0D);
         updateUI(uiData);
 
         reset.setVisibility(View.INVISIBLE);
-
-        Prefs.setSessionTimeDiff(this, 0D);
     }
 
     private void missingOpenStreetMapLimitOnClick() {
@@ -552,6 +622,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         poweredByOpenStreetMapToast.cancel();
         poweredByHereMapsToast.cancel();
 
+        if (totalTimeHandler != null) totalTimeHandler.removeCallbacks(totalTimeRunnable);
         if (mainService != null) unbindService(mainServiceConn);
         if (googleApiClient != null) googleApiClient.disconnect();
 
