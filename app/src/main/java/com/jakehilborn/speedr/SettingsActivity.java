@@ -368,7 +368,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .setCancelable(true)
                 .setNeutralButton(R.string.github_link_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        launchWebpage("https://github.com/jakehilborn");
+                        launchWebpage("https://github.com/jakehilborn/speedr");
                         Answers.getInstance().logCustom(new CustomEvent("Launched GitHub"));
                     }
                 })
