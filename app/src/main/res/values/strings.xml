@@ -40,7 +40,7 @@
     </string>
     <string name="dismiss_snackbar">OK</string>
 
-    <string name="pending_here_activation_text">HERE accounts may take up to 1 hour to activate. This text will disappear once activation completes. Using OpenStreetMap until activation complete.</string>
+    <string name="pending_here_activation_text">HERE accounts may take up to 1 hour to activate. This text will disappear once activation completes. Using OpenStreetMap until activation completes.</string>
     <string name="internet_down_notice_text">Lost Internet connection - speed limit may be out of date</string>
 
     <!-- Status bar notification -->
