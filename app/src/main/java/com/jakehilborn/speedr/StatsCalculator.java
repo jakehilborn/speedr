@@ -12,6 +12,7 @@ public class StatsCalculator {
     private Location prevLocation;
 
     private Double limit;
+    private long firstLimitTime;
     private long prevLimitTime;
     private Location prevLimitLocation; //The location when the most recent speed limit was fetched
     private boolean forceLimitStale;
@@ -34,6 +35,10 @@ public class StatsCalculator {
 
     public Double getLimit() {
         return this.limit;
+    }
+
+    public long getFirstLimitTime() {
+        return firstLimitTime;
     }
 
     public boolean isLimitStale() {
@@ -75,6 +80,7 @@ public class StatsCalculator {
     //When limit is set to 0 it means there is no speed limit data available, set speed limit to missing.
     public void setLimit(Double limit, Double lat, Double lon) {
         prevLimitTime = System.nanoTime();
+        if (firstLimitTime == 0) firstLimitTime = prevLimitTime;
         if (limit != null) this.limit = limit;
         prevLimitLocation = new Location("fused");
         prevLimitLocation.setLatitude(lat);

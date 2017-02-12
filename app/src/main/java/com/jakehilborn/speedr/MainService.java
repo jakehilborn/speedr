@@ -28,6 +28,8 @@ import com.jakehilborn.speedr.utils.UnitUtils;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 //MainService may run on the main thread shared by the UI. The only long running operations MainService does are network
 //calls. These calls are all async so there is no blocking. Using Service instead of IntentService for simplicity sake.
@@ -249,10 +251,47 @@ public class MainService extends Service {
         }.start();
     }
 
+    private void persistTimeDiff(Double timeDiff, long startTime) {
+        long elapsedTime = System.nanoTime() - startTime;
+        if (startTime == 0) elapsedTime = 0; //User stopped MainService before 1st speed limit was received
+        GregorianCalendar now = new GregorianCalendar();
+
+        Prefs.setSessionTimeDiff(this, timeDiff);
+
+        //redundant cast to int to suppress false positive IDE error
+        if (Prefs.getTimeDiffWeekNum(this) != (int) now.get(Calendar.WEEK_OF_YEAR)) {
+            Prefs.setTimeDiffWeekNum(this, now.get(Calendar.WEEK_OF_YEAR));
+            Prefs.setTimeDiffWeek(this, timeDiff);
+            Prefs.setTimeTotalWeek(this, elapsedTime);
+        } else {
+            Prefs.setTimeDiffWeek(this, timeDiff + Prefs.getTimeDiffWeek(this));
+            Prefs.setTimeTotalWeek(this, elapsedTime + Prefs.getTimeTotalWeek(this));
+        }
+
+        //Month is zero-indexed. Adding 1 since Prefs returns '0' as the default value if it has not yet been set
+        if (Prefs.getTimeDiffMonthNum(this) != (int) now.get(Calendar.MONTH) + 1) {
+            Prefs.setTimeDiffMonthNum(this, now.get(Calendar.MONTH) + 1);
+            Prefs.setTimeDiffMonth(this, timeDiff);
+            Prefs.setTimeTotalMonth(this, elapsedTime);
+        } else {
+            Prefs.setTimeDiffMonth(this, timeDiff + Prefs.getTimeDiffMonth(this));
+            Prefs.setTimeTotalMonth(this, elapsedTime + Prefs.getTimeTotalMonth(this));
+        }
+
+        if (Prefs.getTimeDiffYearNum(this) != (int) now.get(Calendar.YEAR)) {
+            Prefs.setTimeDiffYearNum(this, now.get(Calendar.YEAR));
+            Prefs.setTimeDiffYear(this, timeDiff);
+            Prefs.setTimeTotalYear(this, elapsedTime);
+        } else {
+            Prefs.setTimeDiffYear(this, timeDiff + Prefs.getTimeDiffYear(this));
+            Prefs.setTimeTotalYear(this, elapsedTime + Prefs.getTimeTotalYear(this));
+        }
+    }
+
     @Override
     public void onDestroy() {
         Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onDestroy()");
-        Prefs.setSessionTimeDiff(this, statsCalculator.getTimeDiff());
+        persistTimeDiff(statsCalculator.getTimeDiff(), statsCalculator.getFirstLimitTime());
         notificationManager.cancel(NOTIFICATION_ID);
         limitFetcher.destroy(this);
         if (googleApiClient != null) googleApiClient.disconnect();

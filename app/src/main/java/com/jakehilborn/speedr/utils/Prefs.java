@@ -15,6 +15,15 @@ public class Prefs {
     private static final String TIME_OF_HERE_CREDS = "time_of_here_creds";
     private static final String PENDING_HERE_ACTIVATION = "pending_here_activation";
     private static final String SESSION_TIME_DIFF = "session_time_diff";
+    private static final String TIME_DIFF_WEEK = "time_diff_week";
+    private static final String TIME_DIFF_MONTH = "time_diff_month";
+    private static final String TIME_DIFF_YEAR = "time_diff_year";
+    private static final String TIME_DIFF_WEEK_NUM = "time_diff_week_num";
+    private static final String TIME_DIFF_MONTH_NUM = "time_diff_month_num";
+    private static final String TIME_DIFF_YEAR_NUM = "time_diff_year_num";
+    private static final String TIME_TOTAL_WEEK = "time_total_week";
+    private static final String TIME_TOTAL_MONTH = "time_total_month";
+    private static final String TIME_TOTAL_YEAR = "time_total_year";
 
     private static SharedPreferences.Editor editPrefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
@@ -95,5 +104,77 @@ public class Prefs {
 
     public static Double getSessionTimeDiff(Context context) {
         return Double.longBitsToDouble(prefs(context).getLong(SESSION_TIME_DIFF, 0));
+    }
+
+    public static void setTimeDiffWeek(Context context, Double timeDiff) {
+        editPrefs(context).putLong(TIME_DIFF_WEEK, Double.doubleToRawLongBits(timeDiff)).apply();
+    }
+
+    public static Double getTimeDiffWeek(Context context) {
+        return Double.longBitsToDouble(prefs(context).getLong(TIME_DIFF_WEEK, 0));
+    }
+
+    public static void setTimeDiffMonth(Context context, Double timeDiff) {
+        editPrefs(context).putLong(TIME_DIFF_MONTH, Double.doubleToRawLongBits(timeDiff)).apply();
+    }
+
+    public static Double getTimeDiffMonth(Context context) {
+        return Double.longBitsToDouble(prefs(context).getLong(TIME_DIFF_MONTH, 0));
+    }
+
+    public static void setTimeDiffYear(Context context, Double timeDiff) {
+        editPrefs(context).putLong(TIME_DIFF_YEAR, Double.doubleToRawLongBits(timeDiff)).apply();
+    }
+
+    public static Double getTimeDiffYear(Context context) {
+        return Double.longBitsToDouble(prefs(context).getLong(TIME_DIFF_YEAR, 0));
+    }
+
+    public static void setTimeDiffWeekNum(Context context, int week) {
+        editPrefs(context).putInt(TIME_DIFF_WEEK_NUM, week).apply();
+    }
+
+    public static int getTimeDiffWeekNum(Context context) {
+        return prefs(context).getInt(TIME_DIFF_WEEK_NUM, 0);
+    }
+
+    public static void setTimeDiffMonthNum(Context context, int month) {
+        editPrefs(context).putInt(TIME_DIFF_MONTH_NUM, month).apply();
+    }
+
+    public static int getTimeDiffMonthNum(Context context) {
+        return prefs(context).getInt(TIME_DIFF_MONTH_NUM, 0);
+    }
+
+    public static void setTimeDiffYearNum(Context context, int year) {
+        editPrefs(context).putInt(TIME_DIFF_YEAR_NUM, year).apply();
+    }
+
+    public static int getTimeDiffYearNum(Context context) {
+        return prefs(context).getInt(TIME_DIFF_YEAR_NUM, 0);
+    }
+
+    public static void setTimeTotalWeek(Context context, long time) {
+        editPrefs(context).putLong(TIME_TOTAL_WEEK, time).apply();
+    }
+
+    public static long getTimeTotalWeek(Context context) {
+        return prefs(context).getLong(TIME_TOTAL_WEEK, 0);
+    }
+
+    public static void setTimeTotalMonth(Context context, long time) {
+        editPrefs(context).putLong(TIME_TOTAL_MONTH, time).apply();
+    }
+
+    public static long getTimeTotalMonth(Context context) {
+        return prefs(context).getLong(TIME_TOTAL_MONTH, 0);
+    }
+
+    public static void setTimeTotalYear(Context context, long time) {
+        editPrefs(context).putLong(TIME_TOTAL_YEAR, time).apply();
+    }
+
+    public static long getTimeTotalYear(Context context) {
+        return prefs(context).getLong(TIME_TOTAL_YEAR, 0);
     }
 }
