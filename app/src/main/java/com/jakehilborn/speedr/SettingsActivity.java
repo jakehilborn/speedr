@@ -87,14 +87,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dev_info, menu);
+        getMenuInflater().inflate(R.menu.appbar_settings, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.dev_info:
+            case R.id.dev_info_appbar_button:
                 devInfoOnClick();
                 return true;
             case android.R.id.home:

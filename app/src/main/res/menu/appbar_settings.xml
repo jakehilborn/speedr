@@ -5,9 +5,9 @@
     >
 
     <item
-        android:id="@+id/settings"
-        android:icon="@drawable/settings_cog"
-        android:title="@string/content_description_settings_button"
+        android:id="@+id/dev_info_appbar_button"
+        android:icon="@drawable/github"
+        android:title="@string/content_description_developer_info"
         app:showAsAction="always"
         android:orderInCategory="0"
         />

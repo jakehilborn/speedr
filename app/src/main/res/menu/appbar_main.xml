@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/stats_appbar_button"
+        android:icon="@drawable/chart_line"
+        android:title="@string/stats_title"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="0"
+        />
+
+    <item
+        android:id="@+id/settings_appbar_button"
+        android:icon="@drawable/settings_cog"
+        android:title="@string/content_description_settings_appbar_button"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        />
+</menu>

@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.jakehilborn.speedr.utils.FormatTime;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
@@ -185,7 +186,7 @@ public class MainService extends Service {
     }
 
     private void updateNotification(UIData uiData) {
-        String timeDiff = formatTimeDiff(uiData.getTimeDiff());
+        String timeDiff = FormatTime.nanosToLongHand(this, uiData.getTimeDiff());
 
         String speed = "  "; //Padding to prevent values from shifting too much in notification
         if (uiData.getSpeed() == null) {
@@ -210,22 +211,6 @@ public class MainService extends Service {
                 .setContentText(getString(R.string.notification_speed_limit) + ": " + limit + "   |   " + getString(R.string.notification_speed) + ": " + speed);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-    }
-
-    private String formatTimeDiff(Double timeDiff) {
-        StringBuilder timeDiffString = new StringBuilder(
-                UnitUtils.nanosToSecondsModuloMinutes(timeDiff) + getString(R.string.decimal_symbol) +
-                UnitUtils.nanosTo10thsModuloSeconds(timeDiff) + getString(R.string.second_symbol)
-        ); //always show seconds
-
-        if (timeDiff >= UnitUtils.NANO_ONE_MINUTE) {
-            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(timeDiff) + getString(R.string.minute_symbol) + "  ");
-        }
-        if (timeDiff >= UnitUtils.NANO_ONE_HOUR) {
-            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(timeDiff) + getString(R.string.hour_symbol) + "  ");
-        }
-
-        return timeDiffString.toString();
     }
 
     private void checkNetworkDown() {

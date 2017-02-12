@@ -9,7 +9,7 @@
     <string name="content_description_start_stop_button">start and stop</string>
     <string name="content_description_reset">reset time difference</string>
     <string name="content_description_spotty_speed_limits">are you experiencing spotty speed limits?</string>
-    <string name="content_description_settings_button">settings</string>
+    <string name="content_description_settings_appbar_button">Settings</string>
 
     <string name="content_description_speed_limit_provider">speed limit provider</string>
     <string name="powered_by_open_street_map_toast">Powered by OpenStreetMap</string>
@@ -43,6 +43,17 @@
 
     <string name="pending_here_activation_text">HERE accounts may take up to 1 hour to activate. This text will disappear once activation completes. Using OpenStreetMap until activation completes.</string>
     <string name="internet_down_notice_text">Lost Internet connection - speed limit may be out of date</string>
+
+    <!-- Stats dialog -->
+    <string name="stats_title">Stats</string>
+    <string name="stats_this_week">This week</string>
+    <string name="stats_this_month">This month</string>
+    <string name="stats_this_year">This year</string>
+    <string name="stats_total_drive_time">Total drive time</string>
+    <string name="stats_time_if_you_did_not_seepd">Time if you did not speed</string>
+    <string name="stats_time_difference">Time difference</string>
+    <string name="stats_percentage_sooner_start">Reached destinations</string>
+    <string name="stats_percentage_sooner_end">sooner</string>
 
     <!-- Status bar notification -->
     <string name="notification_init_title">Speed data not yet available</string>

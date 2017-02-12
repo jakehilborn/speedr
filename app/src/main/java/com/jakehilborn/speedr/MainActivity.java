@@ -26,6 +26,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +47,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.jakehilborn.speedr.utils.FormatTime;
 import com.jakehilborn.speedr.utils.Prefs;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
@@ -246,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
         curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
-        refreshTotalTimeRatio();
+//        refreshTotalTimeRatio();
 
         if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
@@ -294,25 +297,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
         percentOfTotalTime.setText(Integer.toString(percent));
 
-        int hours = UnitUtils.nanosToHoursModuloMinutes(totalNanos);
-        int minutes = UnitUtils.nanosToMinutesModuloHours(totalNanos);
-        int seconds = UnitUtils.nanosToSecondsModuloMinutes(totalNanos);
-
-        String formattedTime = "";
-        if (hours != 0) {
-            formattedTime += hours + ":";
-            if (minutes < 10) formattedTime += "0";
-            formattedTime += minutes + ":";
-            if (seconds < 10) formattedTime += "0";
-            formattedTime += seconds;
-        } else if (minutes != 0) {
-            formattedTime += minutes + ":";
-            if (seconds < 10) formattedTime += "0";
-            formattedTime += seconds;
-        } else {
-            formattedTime += seconds + "s";
-        }
-
+        String formattedTime = FormatTime.nanosToClock(totalNanos);
         totalTime.setText(formattedTime);
     }
 
@@ -359,15 +344,89 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings, menu);
+        getMenuInflater().inflate(R.menu.appbar_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //item ID is not checked since the only menu button is the settings cog
-        startActivity(new Intent(this, SettingsActivity.class));
-        return true;
+        switch (item.getItemId()) {
+            case R.id.stats_appbar_button:
+                statsButtonOnClick();
+                return true;
+            case R.id.settings_appbar_button:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void statsButtonOnClick() {
+        final View dialogView = getLayoutInflater().inflate(R.layout.stats_dialog, null);
+
+        Spanned statsWeekTotalTime = Html.fromHtml("<b>"
+                + FormatTime.nanosToClock(Prefs.getTimeTotalWeek(this)) + "</b> - "
+                + this.getString(R.string.stats_total_drive_time));
+        Spanned statsWeekTotalTimeNoSpeed = Html.fromHtml("<b>"
+                + FormatTime.nanosToClock(Prefs.getTimeTotalWeek(this) + Prefs.getTimeDiffWeek(this))
+                + "</b> - " + getString(R.string.stats_time_if_you_did_not_seepd));
+        Spanned statsWeekTimeDiff = Html.fromHtml("<b>"
+                + FormatTime.nanosToLongHand(this, Prefs.getTimeDiffWeek(this)) + "</b> - "
+                + this.getString(R.string.stats_time_difference));
+        Spanned statsWeekRatio = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
+                + Math.round(Prefs.getTimeDiffWeek(this) / Prefs.getTimeTotalWeek(this)) + "%</b> "
+                + this.getString(R.string.stats_percentage_sooner_end));
+
+        ((TextView) dialogView.findViewById(R.id.stats_week_total_time)).setText(statsWeekTotalTime);
+        ((TextView) dialogView.findViewById(R.id.stats_week_total_time_no_speed)).setText(statsWeekTotalTimeNoSpeed);
+        ((TextView) dialogView.findViewById(R.id.stats_week_time_diff)).setText(statsWeekTimeDiff);
+        ((TextView) dialogView.findViewById(R.id.stats_week_ratio)).setText(statsWeekRatio);
+
+        Spanned statsMonthTotalTime = Html.fromHtml("<b>"
+                + FormatTime.nanosToClock(Prefs.getTimeTotalMonth(this)) + "</b> - "
+                + this.getString(R.string.stats_total_drive_time));
+        Spanned statsMonthTotalTimeNoSpeed = Html.fromHtml("<b>"
+                + FormatTime.nanosToClock(Prefs.getTimeTotalMonth(this) + Prefs.getTimeDiffMonth(this))
+                + "</b> - " + getString(R.string.stats_time_if_you_did_not_seepd));
+        Spanned statsMonthTimeDiff = Html.fromHtml("<b>"
+                + FormatTime.nanosToLongHand(this, Prefs.getTimeDiffMonth(this)) + "</b> - "
+                + this.getString(R.string.stats_time_difference));
+        Spanned statsMonthRatio = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
+                + Math.round(Prefs.getTimeDiffMonth(this) / Prefs.getTimeTotalMonth(this)) + "%</b> "
+                + this.getString(R.string.stats_percentage_sooner_end));
+
+        ((TextView) dialogView.findViewById(R.id.stats_month_total_time)).setText(statsMonthTotalTime);
+        ((TextView) dialogView.findViewById(R.id.stats_month_total_time_no_speed)).setText(statsMonthTotalTimeNoSpeed);
+        ((TextView) dialogView.findViewById(R.id.stats_month_time_diff)).setText(statsMonthTimeDiff);
+        ((TextView) dialogView.findViewById(R.id.stats_month_ratio)).setText(statsMonthRatio);
+
+        Spanned statsYearTotalTime = Html.fromHtml("<b>"
+                + FormatTime.nanosToClock(Prefs.getTimeTotalYear(this)) + "</b> - "
+                + this.getString(R.string.stats_total_drive_time));
+        Spanned statsYearTotalTimeNoSpeed = Html.fromHtml("<b>"
+                + FormatTime.nanosToClock(Prefs.getTimeTotalYear(this) + Prefs.getTimeDiffYear(this))
+                + "</b> - " + getString(R.string.stats_time_if_you_did_not_seepd));
+        Spanned statsYearTimeDiff = Html.fromHtml("<b>"
+                + FormatTime.nanosToLongHand(this, Prefs.getTimeDiffYear(this)) + "</b> - "
+                + this.getString(R.string.stats_time_difference));
+        Spanned statsYearRatio = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
+                + Math.round(Prefs.getTimeDiffYear(this) / Prefs.getTimeTotalYear(this)) + "%</b> "
+                + this.getString(R.string.stats_percentage_sooner_end));
+
+        ((TextView) dialogView.findViewById(R.id.stats_year_total_time)).setText(statsYearTotalTime);
+        ((TextView) dialogView.findViewById(R.id.stats_year_total_time_no_speed)).setText(statsYearTotalTimeNoSpeed);
+        ((TextView) dialogView.findViewById(R.id.stats_year_time_diff)).setText(statsYearTimeDiff);
+        ((TextView) dialogView.findViewById(R.id.stats_year_ratio)).setText(statsYearRatio);
+
+        new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setTitle(R.string.stats_title)
+                .setCancelable(true)
+                .setPositiveButton(R.string.close_dialog_button, null)
+                .show();
+
+        Answers.getInstance().logCustom(new CustomEvent("Viewed stats"));
     }
 
     public void startStopButtonOnClick(View view) {
