@@ -110,10 +110,11 @@
     <string name="privacy_policy_terms_and_conditions">Privacy Policy / Terms and Conditions</string>
     <string name="privacy_policy_title">Speedr Privacy Policy</string>
     <string name="privacy_policy_content"><![CDATA[
-        Crash reports, device info, and usage statistics are sent to the Speedr developer to help make the app better. No location data, speed data, speed limit data, or unique identifiers are logged. No data is harvested for advertising purposes and nothing is sold to 3rd parties. Feel free to audit the source code on <a href="https://github.com/jakehilborn/speedr">GitHub</a>.<br>
+        Crash reports, device info, and anonymous usage statistics are sent to the Speedr developer to help make the app better. No location data, speed data, speed limit data, or personal info is logged. Feel free to browse the source code on <a href="https://github.com/jakehilborn/speedr">GitHub</a>.<br>
         <br>
-        3rd party speed limit providers
+        <a href="http://try.crashlytics.com/terms">Crash report tool terms</a><br>
         <br>
+        3rd party speed limit providers<br>
         <a href="HERE_TERMS_PLACEHOLDER">HERE Service Terms</a><br>
         <a href="https://www.openstreetmap.org/copyright">OpenStreetMap Copyright</a>
     ]]></string> <!-- HERE_TERMS_PLACEHOLDER is replaced with @string/here_maps_terms_url at runtime -->
