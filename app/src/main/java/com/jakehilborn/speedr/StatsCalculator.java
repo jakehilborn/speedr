@@ -82,7 +82,12 @@ public class StatsCalculator {
         prevLimitTime = System.nanoTime();
         if (limit != null) {
             this.limit = limit;
-            if (firstLimitTime == 0) firstLimitTime = prevLimitTime;
+            if (firstLimitTime == 0)  {
+                firstLimitTime = prevLimitTime;
+                //Hack to make UI totalTime clock start asap. This value is only set once
+                //per session so it's unnecessary to set up callbacks or broadcast a message
+                MainActivity.firstLimitTime = firstLimitTime;
+            }
         }
         prevLimitLocation = new Location("fused");
         prevLimitLocation.setLatitude(lat);

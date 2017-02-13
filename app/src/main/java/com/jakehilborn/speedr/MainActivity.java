@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private GoogleApiClient googleApiClient;
 
     private boolean useHereMaps;
-    private long firstLimitTime;
+    public static long firstLimitTime;
     private double curTimeDiff;
 
     private TextView timeDiffH;
@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private Handler totalTimeHandler;
     private Runnable totalTimeRunnable;
+    private boolean totalTimeInit;
+    private static final int TOTAL_TIME_REFRESH_FREQ = 1000; //milliseconds
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -172,20 +174,21 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
         }
 
+        totalTimeInit = true; //Let a non-handler method update the totalTime clock at first for immediate results
         restoreSessionInUI();
 
         totalTimeHandler = new Handler();
         totalTimeRunnable = new Runnable() {
             @Override
             public void run() {
-                refreshTotalTimeRatio();
-                totalTimeHandler.postDelayed(this, 1000);
+                refreshTotalTimeRatio(true);
+                totalTimeHandler.postDelayed(this, TOTAL_TIME_REFRESH_FREQ);
             }
         };
 
         if (isMainServiceRunning()) {
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
-            totalTimeHandler.postDelayed(totalTimeRunnable, 1000);
+            totalTimeHandler.postDelayed(totalTimeRunnable, TOTAL_TIME_REFRESH_FREQ);
         }
     }
 
@@ -235,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             timeDiffM.setVisibility(View.VISIBLE);
             timeDiffMSymbol.setVisibility(View.VISIBLE);
         } else {
-            timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view is not rendered which lets timeDiff center correctly
+            timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view still takes space which lets timeDiff center correctly
             timeDiffMSymbol.setVisibility(View.GONE);
         }
         if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
@@ -249,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
         curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
-//        refreshTotalTimeRatio();
+        refreshTotalTimeRatio(false);
 
         if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
@@ -279,16 +282,12 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void refreshTotalTimeRatio() {
+    private void refreshTotalTimeRatio(boolean viaHandler) {
         if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
             percentOfTotalTime.setVisibility(View.GONE);
             totalTimeRatioText.setVisibility(View.GONE);
             totalTime.setVisibility(View.INVISIBLE);
             return;
-        } else {
-            percentOfTotalTime.setVisibility(View.VISIBLE);
-            totalTimeRatioText.setVisibility(View.VISIBLE);
-            totalTime.setVisibility(View.VISIBLE);
         }
 
         double totalNanos = Prefs.getSessionTimeTotal(this);
@@ -297,8 +296,17 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
         percentOfTotalTime.setText(Integer.toString(percent));
 
-        String formattedTime = FormatTime.nanosToClock(totalNanos);
-        totalTime.setText(formattedTime);
+        //Only refresh time via handler so that it increments evenly second to second
+        //Allow first refresh onLocationChange for immediate data at startup
+        if (viaHandler || totalTimeInit) {
+            totalTimeInit = false;
+            String formattedTime = FormatTime.nanosToClock(totalNanos);
+            totalTime.setText(formattedTime);
+
+            percentOfTotalTime.setVisibility(View.VISIBLE);
+            totalTimeRatioText.setVisibility(View.VISIBLE);
+            totalTime.setVisibility(View.VISIBLE);
+        }
     }
 
     private void restoreSessionInUI() {
@@ -445,7 +453,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
-            totalTimeHandler.postDelayed(totalTimeRunnable, 1000);
+            totalTimeInit = true;
+            totalTimeHandler.postDelayed(totalTimeRunnable, TOTAL_TIME_REFRESH_FREQ);
 
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
             Answers.getInstance().logCustom(new CustomEvent(useHereMaps ? "Using HERE" : "Using Overpass"));
@@ -461,8 +470,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
-        showHereSuggestion();
         totalTimeHandler.removeCallbacks(totalTimeRunnable);
+        showHereSuggestion();
     }
 
     private void styleStartStopButton(boolean start) {
