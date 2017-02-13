@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 + FormatTime.nanosToLongHand(this, Prefs.getTimeDiffWeek(this)) + "</b> - "
                 + this.getString(R.string.stats_time_difference));
         Spanned statsWeekRatio = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round(Prefs.getTimeDiffWeek(this) / Prefs.getTimeTotalWeek(this)) + "%</b> "
+                + Math.round((Prefs.getTimeDiffWeek(this) / Prefs.getTimeTotalWeek(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
         ((TextView) dialogView.findViewById(R.id.stats_week_total_time)).setText(statsWeekTotalTime);
@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 + FormatTime.nanosToLongHand(this, Prefs.getTimeDiffMonth(this)) + "</b> - "
                 + this.getString(R.string.stats_time_difference));
         Spanned statsMonthRatio = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round(Prefs.getTimeDiffMonth(this) / Prefs.getTimeTotalMonth(this)) + "%</b> "
+                + Math.round((Prefs.getTimeDiffMonth(this) / Prefs.getTimeTotalMonth(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
         ((TextView) dialogView.findViewById(R.id.stats_month_total_time)).setText(statsMonthTotalTime);
@@ -424,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 + FormatTime.nanosToLongHand(this, Prefs.getTimeDiffYear(this)) + "</b> - "
                 + this.getString(R.string.stats_time_difference));
         Spanned statsYearRatio = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round(Prefs.getTimeDiffYear(this) / Prefs.getTimeTotalYear(this)) + "%</b> "
+                + Math.round((Prefs.getTimeDiffYear(this) / Prefs.getTimeTotalYear(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
         ((TextView) dialogView.findViewById(R.id.stats_year_total_time)).setText(statsYearTotalTime);
