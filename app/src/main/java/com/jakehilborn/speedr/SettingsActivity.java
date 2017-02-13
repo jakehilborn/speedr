@@ -45,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
     private AppCompatButton openStreetMapButton;
     private Spinner speedUnitSpinner;
     private GoogleApiClient googleApiClient;
+    private TextView version;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         speedUnitSpinner = (Spinner) findViewById(R.id.speed_unit);
         speedUnitSpinner.setSelection(Prefs.isUseKph(this) ? 1 : 0); //defaults to mph - 0 is mph, 1 is km/h
+
+        version = (TextView) findViewById(R.id.version_button);
+    }
+
+    @Override
+    protected void onStart() {
+        String versionString = getString(R.string.version_text) + " " + BuildConfig.VERSION_NAME;
+        version.setText(versionString);
+        super.onStart();
     }
 
     @Override

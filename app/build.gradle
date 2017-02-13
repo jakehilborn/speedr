@@ -14,7 +14,7 @@ android {
         minSdkVersion 17 //Minimum version supporting Location.getElapsedRealtimeNanos() which is needed for accurate time diffing
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "beta-1"
     }
 }
 

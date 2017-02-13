@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">speedr</string>
+    <string name="app_name">Speedr</string>
 
     <!-- MainActivity -->
     <string name="no_gps_permission_toast">Location permission needed to track driving speed</string>
@@ -124,12 +124,12 @@
     <string name="email_link_text">Email</string>
     <string name="email_speedr_developer_chooser_text">Email Speedr developer</string>
 
-    <string name="version_text">Version 0.1</string>
+    <string name="version_text">Version</string>
     <string name="changelog_dialog_title">Changelog</string>
     <string name="close_dialog_button">Close</string>
 
     <string name="changelog_content">
-        <b>v0.1</b>\n
+        <b>beta-1</b>\n
         <ul>
             <li>Still developing</li>
         </ul>
