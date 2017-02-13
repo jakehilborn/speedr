@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView timeDiffMSymbol;
     private TextView timeDiffS;
     private TextView timeDiffS10th;
-    private TextView percentOfTotalTime;
-    private TextView totalTimeRatioText;
+
+    private View totalTimeGroup;
     private TextView totalTime;
+    private TextView totalTimeNoSpeed;
+    private TextView percentFaster;
 
     private TextView speed;
     private TextView speedUnit;
@@ -108,9 +110,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         timeDiffMSymbol = (TextView) findViewById(R.id.time_diff_m_symbol);
         timeDiffS = (TextView) findViewById(R.id.time_diff_s);
         timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
-        percentOfTotalTime = (TextView) findViewById(R.id.percent_of_total_time);
-        totalTimeRatioText = (TextView) findViewById(R.id.total_time_ratio_text);
+
+        totalTimeGroup = findViewById(R.id.total_time_group);
         totalTime = (TextView) findViewById(R.id.total_time);
+        totalTimeNoSpeed = (TextView) findViewById(R.id.total_time_no_speed);
+        percentFaster = (TextView) findViewById(R.id.percent_faster);
 
         speed = (TextView) findViewById(R.id.speed);
         speedUnit = (TextView) findViewById(R.id.speed_unit);
@@ -181,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         totalTimeRunnable = new Runnable() {
             @Override
             public void run() {
-                refreshTotalTimeRatio(true);
+                refreshTotalTime(true);
                 totalTimeHandler.postDelayed(this, TOTAL_TIME_REFRESH_FREQ);
             }
         };
@@ -252,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
         curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
-        refreshTotalTimeRatio(false);
+        refreshTotalTime(false);
 
         if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
@@ -282,11 +286,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void refreshTotalTimeRatio(boolean viaHandler) {
+    private void refreshTotalTime(boolean viaHandler) {
         if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
-            percentOfTotalTime.setVisibility(View.GONE);
-            totalTimeRatioText.setVisibility(View.GONE);
-            totalTime.setVisibility(View.INVISIBLE);
+            totalTimeGroup.setVisibility(View.INVISIBLE);
+            percentFaster.setVisibility(View.INVISIBLE);
             return;
         }
 
@@ -294,18 +297,20 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (firstLimitTime != 0) totalNanos += (System.nanoTime() - firstLimitTime);
 
         int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
-        percentOfTotalTime.setText(Integer.toString(percent));
+        percentFaster.setText(percent + getString(R.string.percent_faster));
 
         //Only refresh time via handler so that it increments evenly second to second
         //Allow first refresh onLocationChange for immediate data at startup
         if (viaHandler || totalTimeInit) {
             totalTimeInit = false;
-            String formattedTime = FormatTime.nanosToClock(totalNanos);
-            totalTime.setText(formattedTime);
+            String formattedTotalTime = FormatTime.nanosToClock(totalNanos);
+            String formattedTotalTimeNoSpeed = FormatTime.nanosToClock(totalNanos + curTimeDiff);
 
-            percentOfTotalTime.setVisibility(View.VISIBLE);
-            totalTimeRatioText.setVisibility(View.VISIBLE);
-            totalTime.setVisibility(View.VISIBLE);
+            totalTime.setText(formattedTotalTime);
+            totalTimeNoSpeed.setText(formattedTotalTimeNoSpeed);
+
+            totalTimeGroup.setVisibility(View.VISIBLE);
+            percentFaster.setVisibility(View.VISIBLE);
         }
     }
 

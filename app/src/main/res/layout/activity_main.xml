@@ -19,7 +19,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal"
             >
 
@@ -147,65 +147,119 @@
             />
 
         <LinearLayout
+            android:id="@+id/total_time_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="30dp"
             android:layout_gravity="center"
             >
-
-            <TextView
-                android:id="@+id/percent_of_total_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="12dp"
-                android:text="--"
-                tools:ignore="SpUsage"
-                android:visibility="gone"
-                />
-
-            <TextView
-                android:id="@+id/total_time_ratio_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="12dp"
-                android:text="@string/total_time_ratio_string"
-                tools:ignore="SpUsage"
-                android:visibility="gone"
-                />
 
             <TextView
                 android:id="@+id/total_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="12dp"
-                android:text="--"
-                tools:ignore="SpUsage"
-                android:visibility="invisible"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="--:--:--"
+                tools:ignore="HardcodedText,SpUsage"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text=" - "
+                tools:ignore="HardcodedText,SpUsage"
+                />
+
+            <TextView
+                android:id="@+id/total_time_no_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:typeface="monospace"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="--:--:--"
+                tools:ignore="HardcodedText,SpUsage"
                 />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/percent_faster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:typeface="sans"
+            android:textStyle="normal"
+            android:textSize="12dp"
+            android:text="0%  FASTER"
+            tools:ignore="SpUsage"
+            />
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_gravity="center"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/percent_of_total_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:typeface="sans"-->
+                <!--android:textStyle="normal"-->
+                <!--android:textSize="12dp"-->
+                <!--android:text="&#45;&#45;"-->
+                <!--tools:ignore="SpUsage"-->
+                <!--android:visibility="gone"-->
+                <!--/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/total_time_ratio_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:typeface="sans"-->
+                <!--android:textStyle="normal"-->
+                <!--android:textSize="12dp"-->
+                <!--android:text="@string/total_time_ratio_string"-->
+                <!--tools:ignore="SpUsage"-->
+                <!--android:visibility="gone"-->
+                <!--/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/total_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:typeface="sans"-->
+                <!--android:textStyle="normal"-->
+                <!--android:textSize="12dp"-->
+                <!--android:text="&#45;&#45;"-->
+                <!--tools:ignore="SpUsage"-->
+                <!--android:visibility="invisible"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:background="@color/colorAccent"
             />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal"
             >
 
@@ -281,7 +335,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
             >
