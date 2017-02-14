@@ -22,6 +22,16 @@ public class StatsCalculator {
 
     private double timeDiff;
 
+    public interface Callback {
+        void handleLimitChange();
+    }
+
+    //Callback for StatsCalculator to push speed limit updates to MainService
+    public Callback callback;
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
     public void setLocation(Location location) {
         prevLocation = this.location;
         this.location = location;
@@ -82,17 +92,14 @@ public class StatsCalculator {
         prevLimitTime = System.nanoTime();
         if (limit != null) {
             this.limit = limit;
-            if (firstLimitTime == 0)  {
-                firstLimitTime = prevLimitTime;
-                //Hack to make UI totalTime clock start asap. This value is only set once
-                //per session so it's unnecessary to set up callbacks or broadcast a message
-                MainActivity.firstLimitTime = firstLimitTime;
-            }
+            if (limit != 0 && firstLimitTime == 0) firstLimitTime = prevLimitTime;
         }
         prevLimitLocation = new Location("fused");
         prevLimitLocation.setLatitude(lat);
         prevLimitLocation.setLongitude(lon);
         networkDown = false;
+
+        callback.handleLimitChange();
     }
 
     public double getTimeDiff() {

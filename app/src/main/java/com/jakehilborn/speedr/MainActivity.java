@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private GoogleApiClient googleApiClient;
 
     private boolean useHereMaps;
-    public static long firstLimitTime;
+    private long firstLimitTime;
     private double curTimeDiff;
 
     private TextView timeDiffH;

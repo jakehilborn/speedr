@@ -34,7 +34,7 @@ import java.util.GregorianCalendar;
 
 //MainService may run on the main thread shared by the UI. The only long running operations MainService does are network
 //calls. These calls are all async so there is no blocking. Using Service instead of IntentService for simplicity sake.
-public class MainService extends Service {
+public class MainService extends Service implements StatsCalculator.Callback {
 
     private LocationListener locationListener;
     private GoogleApiClient googleApiClient;
@@ -59,8 +59,8 @@ public class MainService extends Service {
     }
 
     //Callback for MainService to push data to MainActivity
-    Callback callback;
-    Handler handler = new Handler(Looper.getMainLooper());
+    private Callback callback;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public interface Callback {
         void onUIDataUpdate(UIData uiData);
@@ -95,6 +95,7 @@ public class MainService extends Service {
         Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onStartCommand()");
 
         statsCalculator = new StatsCalculator();
+        statsCalculator.setCallback(this);
         statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
         limitFetcher = new LimitFetcher(statsCalculator);
 
@@ -152,6 +153,13 @@ public class MainService extends Service {
             }
         }
 
+        UIData uiData = buildUIData();
+        updateMainActivity(uiData);
+        updateNotification(uiData);
+    }
+
+    @Override
+    public void handleLimitChange() {
         UIData uiData = buildUIData();
         updateMainActivity(uiData);
         updateNotification(uiData);
