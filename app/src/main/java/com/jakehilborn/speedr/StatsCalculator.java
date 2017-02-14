@@ -92,7 +92,7 @@ public class StatsCalculator {
         prevLimitTime = System.nanoTime();
         if (limit != null) {
             this.limit = limit;
-            if (limit != 0 && firstLimitTime == 0) firstLimitTime = prevLimitTime;
+            if (firstLimitTime == 0 && limit != 0) firstLimitTime = prevLimitTime;
         }
         prevLimitLocation = new Location("fused");
         prevLimitLocation.setLatitude(lat);
