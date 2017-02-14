@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         double totalNanos = Prefs.getSessionTimeTotal(this);
         if (firstLimitTime != 0) { //User resuming session, first limit has not yet been received
-            if (mainService.stopTime != 0) { //MainService stopping, use shared stop time to keep time values in sync
+            if (mainService != null && mainService.stopTime != 0) { //MainService stopping, use shared stop time to keep time values in sync
                 totalNanos += (mainService.stopTime - firstLimitTime);
             }
             else {
