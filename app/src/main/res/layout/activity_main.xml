@@ -172,7 +172,7 @@
                 android:typeface="monospace"
                 android:textStyle="bold"
                 android:textSize="18dp"
-                android:text=" - "
+                android:text="@string/total_time_versus"
                 tools:ignore="HardcodedText,SpUsage"
                 />
 

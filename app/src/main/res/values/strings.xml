@@ -24,7 +24,8 @@
     <string name="minute_symbol">m</string>
     <string name="second_symbol">s</string>
     <string name="decimal_symbol">.</string>
-    <string name="percent_faster">%\u0020\u0020FASTER</string> <!-- "%  FASTER" 2 unicode spaces, multiple regular spaces are auto trimmed to a single space -->
+    <string name="total_time_versus">\u0020vs\u0020</string> <!-- " vs " 2 unicode spaces, multiple regular spaces are auto trimmed to a single space -->
+    <string name="percent_faster">%\u0020\u0020FASTER</string> <!-- "%  FASTER" 2 unicode spaces since strings are auto-trimmed -->
 
     <string name="unit">unit</string> <!-- used for layout.xml Design tab only -->
     <string name="current_speed_limit_title">SPEED LIMIT</string>
