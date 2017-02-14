@@ -249,14 +249,17 @@ public class MainService extends Service implements StatsCalculator.Callback {
 
     private void persistTimeDiff(Double timeDiff, long firstLimitTime) {
         long totalTime;
-        if (stopTime == 0) {
-            totalTime = System.nanoTime() - firstLimitTime;
+        if (firstLimitTime == 0) {
+            totalTime = 0; //User stopped MainService before 1st speed limit was received
+        } else if (stopTime == 0) {
+            totalTime = System.nanoTime() - firstLimitTime; //Service shutting down despite user not clicking the stop button in MainActivity
         } else {
             totalTime = stopTime - firstLimitTime;
         }
 
-        if (firstLimitTime == 0) totalTime = 0; //User stopped MainService before 1st speed limit was received
         GregorianCalendar now = new GregorianCalendar();
+
+        Double sessionTimeDiffDelta = timeDiff - Prefs.getSessionTimeDiff(this);
 
         Prefs.setSessionTimeDiff(this, timeDiff);
         Prefs.setSessionTimeTotal(this, totalTime + Prefs.getSessionTimeTotal(this));
@@ -264,29 +267,29 @@ public class MainService extends Service implements StatsCalculator.Callback {
         //redundant cast to int to suppress false positive IDE error
         if (Prefs.getTimeDiffWeekNum(this) != (int) now.get(Calendar.WEEK_OF_YEAR)) {
             Prefs.setTimeDiffWeekNum(this, now.get(Calendar.WEEK_OF_YEAR));
-            Prefs.setTimeDiffWeek(this, timeDiff);
+            Prefs.setTimeDiffWeek(this, sessionTimeDiffDelta);
             Prefs.setTimeTotalWeek(this, totalTime);
         } else {
-            Prefs.setTimeDiffWeek(this, timeDiff + Prefs.getTimeDiffWeek(this));
+            Prefs.setTimeDiffWeek(this, sessionTimeDiffDelta + Prefs.getTimeDiffWeek(this));
             Prefs.setTimeTotalWeek(this, totalTime + Prefs.getTimeTotalWeek(this));
         }
 
         //Month is zero-indexed. Adding 1 since Prefs returns '0' as the default value if it has not yet been set
         if (Prefs.getTimeDiffMonthNum(this) != (int) now.get(Calendar.MONTH) + 1) {
             Prefs.setTimeDiffMonthNum(this, now.get(Calendar.MONTH) + 1);
-            Prefs.setTimeDiffMonth(this, timeDiff);
+            Prefs.setTimeDiffMonth(this, sessionTimeDiffDelta);
             Prefs.setTimeTotalMonth(this, totalTime);
         } else {
-            Prefs.setTimeDiffMonth(this, timeDiff + Prefs.getTimeDiffMonth(this));
+            Prefs.setTimeDiffMonth(this, sessionTimeDiffDelta + Prefs.getTimeDiffMonth(this));
             Prefs.setTimeTotalMonth(this, totalTime + Prefs.getTimeTotalMonth(this));
         }
 
         if (Prefs.getTimeDiffYearNum(this) != (int) now.get(Calendar.YEAR)) {
             Prefs.setTimeDiffYearNum(this, now.get(Calendar.YEAR));
-            Prefs.setTimeDiffYear(this, timeDiff);
+            Prefs.setTimeDiffYear(this, sessionTimeDiffDelta);
             Prefs.setTimeTotalYear(this, totalTime);
         } else {
-            Prefs.setTimeDiffYear(this, timeDiff + Prefs.getTimeDiffYear(this));
+            Prefs.setTimeDiffYear(this, sessionTimeDiffDelta + Prefs.getTimeDiffYear(this));
             Prefs.setTimeTotalYear(this, totalTime + Prefs.getTimeTotalYear(this));
         }
     }
