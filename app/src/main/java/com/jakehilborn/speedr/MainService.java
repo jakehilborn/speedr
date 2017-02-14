@@ -46,6 +46,8 @@ public class MainService extends Service implements StatsCalculator.Callback {
     private StatsCalculator statsCalculator;
     private LimitFetcher limitFetcher;
 
+    public long stopTime;
+
     //Binder for MainActivity to poll data from MainService
     private final IBinder binder = new LocalBinder();
     public class LocalBinder extends Binder {
@@ -246,7 +248,13 @@ public class MainService extends Service implements StatsCalculator.Callback {
     }
 
     private void persistTimeDiff(Double timeDiff, long firstLimitTime) {
-        long totalTime = System.nanoTime() - firstLimitTime;
+        long totalTime;
+        if (stopTime == 0) {
+            totalTime = System.nanoTime() - firstLimitTime;
+        } else {
+            totalTime = stopTime - firstLimitTime;
+        }
+
         if (firstLimitTime == 0) totalTime = 0; //User stopped MainService before 1st speed limit was received
         GregorianCalendar now = new GregorianCalendar();
 

@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private Handler totalTimeHandler;
     private Runnable totalTimeRunnable;
-    private boolean totalTimeInit;
+    private boolean totalTimeStartOrStop; //Let non-handler methods update the totalTime clock at first location update or service stop for immediate results
     private static final int TOTAL_TIME_REFRESH_FREQ = 1000; //milliseconds
 
     @Override
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
         }
 
-        totalTimeInit = true; //Let a non-handler method update the totalTime clock at first for immediate results
+        totalTimeStartOrStop = true;
         restoreSessionInUI();
 
         totalTimeHandler = new Handler();
@@ -294,15 +294,22 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
 
         double totalNanos = Prefs.getSessionTimeTotal(this);
-        if (firstLimitTime != 0) totalNanos += (System.nanoTime() - firstLimitTime);
+        if (firstLimitTime != 0) { //User resuming session, first limit has not yet been received
+            if (mainService.stopTime != 0) { //MainService stopping, use shared stop time to keep time values in sync
+                totalNanos += (mainService.stopTime - firstLimitTime);
+            }
+            else {
+                totalNanos += (System.nanoTime() - firstLimitTime);
+            }
+        }
 
         int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
         percentFaster.setText(percent + getString(R.string.percent_faster));
 
         //Only refresh time via handler so that it increments evenly second to second
         //Allow first refresh onLocationChange for immediate data at startup
-        if (viaHandler || totalTimeInit) {
-            totalTimeInit = false;
+        if (viaHandler || totalTimeStartOrStop) {
+            totalTimeStartOrStop = false;
             String formattedTotalTime = FormatTime.nanosToClock(totalNanos);
             String formattedTotalTimeNoSpeed = FormatTime.nanosToClock(totalNanos + curTimeDiff);
 
@@ -342,6 +349,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         uiData.setLimit(null);
         uiData.setSpeed(null);
         uiData.setNetworkDown(false);
+
+        totalTimeStartOrStop = true;
         updateUI(uiData);
 
         //Only show during active sessions
@@ -437,6 +446,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 .setTitle(R.string.stats_title)
                 .setCancelable(true)
                 .setPositiveButton(R.string.close_dialog_button, null)
+                .setNeutralButton("clear week", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        Prefs.setTimeDiffWeek(MainActivity.this, 0D);
+                        Prefs.setTimeTotalWeek(MainActivity.this, 0);
+                        Prefs.setTimeDiffWeekNum(MainActivity.this, 0);
+                    }
+                })
                 .show();
 
         Answers.getInstance().logCustom(new CustomEvent("Viewed stats"));
@@ -458,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
-            totalTimeInit = true;
+            totalTimeStartOrStop = true;
             totalTimeHandler.postDelayed(totalTimeRunnable, TOTAL_TIME_REFRESH_FREQ);
 
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
@@ -469,6 +485,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void stopMainService() {
+        if (mainService != null) mainService.stopTime = System.nanoTime();
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Stopping MainService");
         styleStartStopButton(false);
         finalizeSessionInUI();
