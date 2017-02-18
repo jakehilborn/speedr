@@ -190,7 +190,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
     private void updateMainActivity(final UIData uiData) {
         handler.post(new Runnable() {
             public void run() {
-                callback.onUIDataUpdate(uiData);
+                if (callback != null) callback.onUIDataUpdate(uiData);
             }
         });
     }
