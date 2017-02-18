@@ -479,6 +479,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
             Answers.getInstance().logCustom(new CustomEvent(useHereMaps ? "Using HERE" : "Using Overpass"));
+            Answers.getInstance().logCustom(new CustomEvent(Prefs.isUseKph(this) ? "Using kph" : "Using mph"));
         } else {
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService not started");
         }
