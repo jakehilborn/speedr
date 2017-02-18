@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private TextView timeSaved;
 
-    private View totalTimeGroup;
+    private View driveTimeGroup;
     private TextView totalTime;
     private TextView totalTimeNoSpeed;
     private TextView percentFaster;
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         timeSaved = (TextView) findViewById(R.id.time_saved);
 
-        totalTimeGroup = findViewById(R.id.total_time_group);
+        driveTimeGroup = findViewById(R.id.drive_time_group);
         totalTime = (TextView) findViewById(R.id.total_time);
         totalTimeNoSpeed = (TextView) findViewById(R.id.total_time_no_speed);
         percentFaster = (TextView) findViewById(R.id.percent_faster);
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private void refreshTotalTime(boolean viaHandler) {
         if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
-            totalTimeGroup.setVisibility(View.INVISIBLE);
+            driveTimeGroup.setVisibility(View.INVISIBLE);
             percentFaster.setVisibility(View.INVISIBLE);
             return;
         }
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             totalTime.setText(Html.fromHtml(stylizedTotalTime));
             totalTimeNoSpeed.setText(Html.fromHtml(stylizedTotalTimeNoSpeed));
 
-            totalTimeGroup.setVisibility(View.VISIBLE);
+            driveTimeGroup.setVisibility(View.VISIBLE);
             percentFaster.setVisibility(View.VISIBLE);
         }
     }

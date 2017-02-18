@@ -59,7 +59,7 @@
             />
 
         <RelativeLayout
-            android:id="@+id/total_time_group"
+            android:id="@+id/drive_time_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -97,6 +97,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/drive_time_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -140,6 +141,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/drive_time_no_speed_label_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -151,6 +153,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/drive_time_no_speed_label_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

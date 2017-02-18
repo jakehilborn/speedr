@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -13,6 +14,154 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/time_saved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
+                android:typeface="monospace"
+                android:textSize="24dp"
+                android:text="-h --m --.-s"
+                tools:ignore="HardcodedText,SpUsage"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:typeface="sans"
+                android:textStyle="normal"
+                android:textSize="12dp"
+                android:text="@string/time_difference_text"
+                tools:ignore="SpUsage"
+                />
+
+            <LinearLayout
+                android:id="@+id/drive_time_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_gravity="center"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="14dp"
+                    android:text="--"
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerHorizontal="true"
+                        >
+
+                        <TextView
+                            android:id="@+id/drive_time_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:typeface="sans"
+                            android:textStyle="normal"
+                            android:textSize="12dp"
+                            android:text="@string/drive_time"
+                            tools:ignore="SpUsage"
+                            />
+
+                        <TextView
+                            android:id="@+id/percent_faster"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:typeface="sans"
+                            android:textStyle="normal"
+                            android:textSize="12dp"
+                            android:text="0%  FASTER"
+                            tools:ignore="SpUsage"
+                            />
+                    </LinearLayout>
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/reset_session"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:layout_alignParentEnd="true"
+                        android:visibility="visible"
+                        android:background="@drawable/reset"
+                        android:contentDescription="@string/content_description_reset"
+                        />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/total_time_no_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_gravity="center"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="14dp"
+                    android:text="--"
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
+
+                <TextView
+                    android:id="@+id/drive_time_no_speed_label_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:text="@string/estimated_time"
+                    tools:ignore="SpUsage"
+                    />
+
+                <TextView
+                    android:id="@+id/drive_time_no_speed_label_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:text="@string/without_speeding"
+                    tools:ignore="SpUsage"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorAccent"
+            />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -169,199 +318,6 @@
                 android:textColor="@color/pastelRed"
                 android:text="@string/internet_down_notice_text"
                 tools:ignore="SpUsage"
-                />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/colorAccent"
-            />
-
-        <LinearLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                tools:ignore="RelativeOverlap"
-                >
-
-                <TextView
-                    android:id="@+id/time_diff_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="-"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <!--margin on end instead of start so that setVisibility.GONE hides margin correctly-->
-                <TextView
-                    android:id="@+id/time_diff_h_symbol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="10dp"
-                    android:text="@string/hour_symbol"
-                    tools:ignore="SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/time_diff_m"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="--"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <!--margin on end instead of start so that setVisibility.GONE hides margin correctly-->
-                <TextView
-                    android:id="@+id/time_diff_m_symbol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="10dp"
-                    android:text="@string/minute_symbol"
-                    tools:ignore="SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/time_diff_s"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="--"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="30dp"
-                    android:text="@string/decimal_symbol"
-                    tools:ignore="SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/time_diff_s10th"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="-"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="10dp"
-                    android:text="@string/second_symbol"
-                    tools:ignore="SpUsage"
-                    />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="12dp"
-                android:text="@string/time_difference_text"
-                tools:ignore="SpUsage"
-                />
-
-            <LinearLayout
-                android:id="@+id/total_time_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="33dp"
-                android:layout_gravity="center"
-                >
-
-                <TextView
-                    android:id="@+id/total_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:text="--:--:--"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:text="@string/total_time_versus"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/total_time_no_speed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:text="--:--:--"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/percent_faster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:typeface="sans"
-                android:textStyle="normal"
-                android:textSize="12dp"
-                android:text="0%  FASTER"
-                tools:ignore="SpUsage"
-                />
-
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/reset_session"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:visibility="invisible"
-                android:background="@drawable/reset"
-                android:contentDescription="@string/content_description_reset"
                 />
 
             <!-- Items below this tag are placed on the bottom of the screen -->
