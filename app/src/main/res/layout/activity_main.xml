@@ -53,7 +53,7 @@
             android:layout_gravity="center"
             android:typeface="sans"
             android:textStyle="normal"
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:text="@string/time_difference_text"
             tools:ignore="SpUsage"
             />
@@ -243,7 +243,7 @@
             android:layout_gravity="center"
             android:typeface="sans"
             android:textStyle="normal"
-            android:textSize="10dp"
+            android:textSize="12dp"
             android:text="@string/current_speed_limit_title"
             tools:ignore="SpUsage"
             />
@@ -288,7 +288,7 @@
             android:layout_gravity="center"
             android:typeface="sans"
             android:textStyle="normal"
-            android:textSize="10dp"
+            android:textSize="12dp"
             android:text="@string/current_speed_title"
             tools:ignore="SpUsage"
             />
