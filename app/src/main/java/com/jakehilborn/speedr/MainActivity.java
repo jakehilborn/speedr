@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private Handler totalTimeHandler;
     private Runnable totalTimeRunnable;
     private boolean totalTimeStartOrStop; //Let non-handler methods update the totalTime clock at first location update or service stop for immediate results
-    private static final int TOTAL_TIME_REFRESH_FREQ = 1000; //milliseconds
+    private static final int TOTAL_TIME_REFRESH_FREQ = 500; //milliseconds
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
