@@ -7,7 +7,7 @@
     <string name="play_services_error_toast">This app is not compatible with this device due to a Google Play Services error</string>
 
     <string name="content_description_start_stop_button">start and stop</string>
-    <string name="content_description_reset">reset time difference</string>
+    <string name="content_description_reset">reset time saved</string>
     <string name="content_description_spotty_speed_limits">are you experiencing spotty speed limits?</string>
     <string name="content_description_settings_appbar_button">Settings</string>
 
@@ -19,17 +19,21 @@
     <string name="gps_disabled_message_4_4up">Please change location mode to <b>Device only</b> or <b>High accuracy</b> in settings.</string>
     <string name="go_to_location_settings_alert_button_text">Go to Location Settings</string>
 
-    <string name="time_difference_text">TIME DIFFERENCE</string>
+    <string name="time_difference_text">TIME SAVED</string>
     <string name="hour_symbol">h</string>
     <string name="minute_symbol">m</string>
     <string name="second_symbol">s</string>
     <string name="decimal_symbol">.</string>
-    <string name="total_time_versus">\u0020vs\u0020</string> <!-- " vs " 2 unicode spaces, multiple regular spaces are auto trimmed to a single space -->
-    <string name="percent_faster">%\u0020\u0020FASTER</string> <!-- "%  FASTER" 2 unicode spaces since strings are auto-trimmed -->
+
+    <string name="drive_time">DRIVE TIME</string>
+    <string name="percent_faster">FASTER</string>
+    <string name="total_time_versus">vs</string>
+    <string name="estimated_time">ESTIMATED TIME</string>
+    <string name="without_speeding">WITHOUT SPEEDING</string>
 
     <string name="unit">unit</string> <!-- used for layout.xml Design tab only -->
     <string name="current_speed_limit_title">SPEED LIMIT</string>
-    <string name="current_speed_title">SPEED</string>
+    <string name="current_speed_title">CURRENT SPEED</string>
 
     <string name="missing_open_street_map_limit_dialog_title">Spotty speed limits?</string>
     <string name="missing_open_street_map_limit_dialog_content">HERE Maps offers more accurate speed limits and better coverage. Open settings to create a free HERE Maps account.</string>
@@ -52,7 +56,7 @@
     <string name="stats_this_year">This year</string>
     <string name="stats_total_drive_time">Total drive time</string>
     <string name="stats_time_if_you_did_not_seepd">Time if you did not speed</string>
-    <string name="stats_time_difference">Time difference</string>
+    <string name="stats_time_difference">Time saved</string>
     <string name="stats_percentage_sooner_start">Reached destinations</string>
     <string name="stats_percentage_sooner_end">sooner</string>
 
@@ -60,8 +64,8 @@
     <string name="notification_init_title">Speed data not yet available</string>
     <string name="notification_init_text">Are GPS and Internet enabled?</string>
     <string name="notification_time">Time</string>
-    <string name="notification_speed_limit">Speed Limit</string>
-    <string name="notification_speed">Speed</string>
+    <string name="notification_speed_limit">Speed limit</string>
+    <string name="notification_speed">Current speed</string>
 
     <!-- SettingsActivity -->
     <string name="speedr_settings_app_bar_title">speedr settings</string>

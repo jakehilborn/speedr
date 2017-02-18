@@ -304,7 +304,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
 
         int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
-        percentFaster.setText(percent + getString(R.string.percent_faster));
+        Spanned percentFasterText = Html.fromHtml("<b>" + percent + "%</b>  " + getString(R.string.percent_faster));
+        percentFaster.setText(percentFasterText);
 
         //Only refresh time via handler so that it increments evenly second to second
         //Allow first refresh onLocationChange for immediate data at startup

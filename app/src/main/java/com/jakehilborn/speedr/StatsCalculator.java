@@ -64,7 +64,7 @@ public class StatsCalculator {
             return true;
         }
 
-        //Stale if previous Limit request was over 5 seconds ago and the user has traveled over 40 meters since the previous Limit request
+        //Stale if previous Limit request was over 5 seconds ago and the user has traveled over 25 meters since the previous Limit request
         return (prevLimitTime + UnitUtils.secondsToNanos(5) < System.nanoTime() && location.distanceTo(prevLimitLocation) > 25);
     }
 

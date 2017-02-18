@@ -146,59 +146,110 @@
             tools:ignore="SpUsage"
             />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/total_time_group"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="30dp"
-            android:layout_gravity="center"
             >
 
             <TextView
-                android:id="@+id/total_time"
+                android:id="@+id/drive_time_versus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:typeface="monospace"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:text="--:--:--"
-                tools:ignore="HardcodedText,SpUsage"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:typeface="monospace"
-                android:textStyle="bold"
                 android:textSize="18dp"
                 android:text="@string/total_time_versus"
                 tools:ignore="HardcodedText,SpUsage"
                 />
 
-            <TextView
-                android:id="@+id/total_time_no_speed"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:typeface="monospace"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:text="--:--:--"
-                tools:ignore="HardcodedText,SpUsage"
-                />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:layout_toStartOf="@id/drive_time_versus"
+                >
 
-        <TextView
-            android:id="@+id/percent_faster"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:typeface="sans"
-            android:textStyle="normal"
-            android:textSize="12dp"
-            android:text="0%  FASTER"
-            tools:ignore="SpUsage"
-            />
+                <TextView
+                    android:id="@+id/total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="--"
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:text="@string/drive_time"
+                    tools:ignore="SpUsage"
+                    />
+
+                <TextView
+                    android:id="@+id/percent_faster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:text="0%  FASTER"
+                    tools:ignore="SpUsage"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toEndOf="@id/drive_time_versus"
+                >
+
+                <TextView
+                    android:id="@+id/total_time_no_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="--"
+                    tools:ignore="HardcodedText,SpUsage"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:text="@string/estimated_time"
+                    tools:ignore="SpUsage"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:typeface="sans"
+                    android:textStyle="normal"
+                    android:textSize="12dp"
+                    android:text="@string/without_speeding"
+                    tools:ignore="SpUsage"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
