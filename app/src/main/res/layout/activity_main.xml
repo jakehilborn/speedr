@@ -66,19 +66,15 @@
             android:layout_marginTop="30dp"
             >
 
-            <TextView
+            <View
                 android:id="@+id/drive_time_versus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_centerHorizontal="true"
-                android:typeface="monospace"
-                android:textSize="18dp"
-                android:text="@string/total_time_versus"
-                tools:ignore="HardcodedText,SpUsage"
                 />
 
             <LinearLayout
-                android:layout_width="150dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_toStartOf="@id/drive_time_versus"
@@ -122,7 +118,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="150dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_toEndOf="@id/drive_time_versus"

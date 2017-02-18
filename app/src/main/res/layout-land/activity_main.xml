@@ -22,14 +22,15 @@
             android:orientation="vertical"
             >
 
+            <!-- Text size after HTML large tag is applied is 20dp instead of 16dp -->
             <TextView
                 android:id="@+id/time_saved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="32dp"
                 android:typeface="monospace"
-                android:textSize="24dp"
+                android:textSize="16dp"
                 android:text="-h --m --.-s"
                 tools:ignore="HardcodedText,SpUsage"
                 />
@@ -57,11 +58,11 @@
                     android:id="@+id/total_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="32dp"
                     android:layout_gravity="center"
                     android:typeface="monospace"
                     android:textStyle="bold"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:text="--"
                     tools:ignore="HardcodedText,SpUsage"
                     />
@@ -120,11 +121,11 @@
                     android:id="@+id/total_time_no_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="32dp"
                     android:layout_gravity="center"
                     android:typeface="monospace"
                     android:textStyle="bold"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:text="--"
                     tools:ignore="HardcodedText,SpUsage"
                     />
@@ -173,7 +174,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 android:orientation="horizontal"
                 >
 
@@ -249,7 +250,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 >
