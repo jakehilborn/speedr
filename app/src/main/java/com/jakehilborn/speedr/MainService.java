@@ -161,7 +161,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
     }
 
     @Override
-    public void handleLimitChange() {
+    public void handleNetworkUpdate() {
         UIData uiData = buildUIData();
         updateMainActivity(uiData);
         updateNotification(uiData);
@@ -243,6 +243,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
                 }
 
                 statsCalculator.setNetworkDown(isNetworkDown);
+                handleNetworkUpdate();
             }
         }.start();
     }

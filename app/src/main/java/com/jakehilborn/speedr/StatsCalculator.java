@@ -23,7 +23,7 @@ public class StatsCalculator {
     private double timeDiff;
 
     public interface Callback {
-        void handleLimitChange();
+        void handleNetworkUpdate();
     }
 
     //Callback for StatsCalculator to push speed limit updates to MainService
@@ -99,7 +99,7 @@ public class StatsCalculator {
         prevLimitLocation.setLongitude(lon);
         networkDown = false;
 
-        callback.handleLimitChange();
+        callback.handleNetworkUpdate();
     }
 
     public double getTimeDiff() {
