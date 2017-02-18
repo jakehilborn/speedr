@@ -61,6 +61,12 @@ public class UnitUtils {
         return (int) (nanos / 1000000000L);
     }
 
+    public static Double roundNanosToNearestSecond(Double nanos) {
+        if (nanos == null) return null;
+
+        return (Math.round(nanos / 1000000000D) * 1000000000D);
+    }
+
     public static Integer nanosTo10thsModuloSeconds(Double nanos) {
         if (nanos == null) return null;
 

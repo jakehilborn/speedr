@@ -1,6 +1,8 @@
 package com.jakehilborn.speedr.utils;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 
 import com.jakehilborn.speedr.R;
 
@@ -60,5 +62,65 @@ public class FormatTime {
         }
 
         return timeDiffString.toString();
+    }
+
+    //Hours, minutes, seconds, tenths of a second separated by symbols.
+    //'h', 'm', 's' symbols are localized
+    //1h 23m 45s
+    //1m 23s
+    //0s
+    public static String nanosToShortHand(Context context, Double nanos) {
+        if (context == null || nanos == null) return null;
+
+        nanos = UnitUtils.roundNanosToNearestSecond(nanos);
+
+        StringBuilder timeDiffString = new StringBuilder(
+                UnitUtils.nanosToSecondsModuloMinutes(nanos) + context.getString(R.string.second_symbol)
+        ); //always show seconds
+
+        if (nanos >= UnitUtils.NANO_ONE_MINUTE) {
+            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(nanos) + context.getString(R.string.minute_symbol) + "  ");
+        }
+        if (nanos >= UnitUtils.NANO_ONE_HOUR) {
+            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(nanos) + context.getString(R.string.hour_symbol) + "  ");
+        }
+
+        return timeDiffString.toString();
+    }
+
+    //Accepts longHand or shortHand input
+    public static Spanned stylizedTimeSaved(Context context, String time) {
+        if (context == null || time == null) return null;
+
+        time = insertPlaceholders(context, time);
+        time = ("<b><big>" + time + "</big></b>")
+                .replace("SECOND", "</b></big><small>s</small>")
+                .replace("DECIMAL", "</big><small>.</small><big>")
+                .replace("MINUTE", "</b></big><small>m</small><big><b>")
+                .replace("HOUR", "</b></big><small>h</small><big><b>");
+
+        return Html.fromHtml(time);
+    }
+
+    //Accepts longHand or shortHand input
+    public static Spanned stylizeDriveTime(Context context, String time) {
+        if (time == null) return null;
+
+        time = insertPlaceholders(context, time);
+        time = ("<b><big>" + time + "</big></b>")
+                .replace("SECOND", "</b></big><small>s</small>")
+                .replace("DECIMAL", "</big><small>.</small><big>")
+                .replace("MINUTE", "</b></big><small>m</small><big><b>")
+                .replace("HOUR", "</b></big><small>h</small><big><b>");
+
+        return Html.fromHtml(time);
+    }
+
+    private static String insertPlaceholders(Context context, String time) {
+        //Replace 's', '.', 'm', 'h' with identifiers in case any localized symbols share letters with HTML tags
+        return time.replace(context.getString(R.string.second_symbol), "SECOND")
+                .replace(context.getString(R.string.decimal_symbol), "DECIMAL")
+                .replace(context.getString(R.string.minute_symbol), "MINUTE")
+                .replace(context.getString(R.string.hour_symbol), "HOUR");
     }
 }

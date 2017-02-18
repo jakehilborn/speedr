@@ -23,104 +23,16 @@
             android:orientation="horizontal"
             >
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/time_saved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_centerInParent="true"
-                tools:ignore="RelativeOverlap"
-                >
-
-                <TextView
-                    android:id="@+id/time_diff_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="-"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <!--margin on end instead of start so that setVisibility.GONE hides margin correctly-->
-                <TextView
-                    android:id="@+id/time_diff_h_symbol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="10dp"
-                    android:text="@string/hour_symbol"
-                    tools:ignore="SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/time_diff_m"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="--"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <!--margin on end instead of start so that setVisibility.GONE hides margin correctly-->
-                <TextView
-                    android:id="@+id/time_diff_m_symbol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="10dp"
-                    android:text="@string/minute_symbol"
-                    tools:ignore="SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/time_diff_s"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="--"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="30dp"
-                    android:text="@string/decimal_symbol"
-                    tools:ignore="SpUsage"
-                    />
-
-                <TextView
-                    android:id="@+id/time_diff_s10th"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textStyle="bold"
-                    android:textSize="30dp"
-                    android:text="-"
-                    tools:ignore="HardcodedText,SpUsage"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:typeface="sans"
-                    android:textStyle="normal"
-                    android:textSize="10dp"
-                    android:text="@string/second_symbol"
-                    tools:ignore="SpUsage"
-                    />
-            </LinearLayout>
+                android:typeface="monospace"
+                android:textSize="24dp"
+                android:text="-h --m --.-s"
+                tools:ignore="HardcodedText,SpUsage"
+                />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/reset_session"
@@ -179,7 +91,7 @@
                     android:layout_gravity="center"
                     android:typeface="monospace"
                     android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:text="--"
                     tools:ignore="HardcodedText,SpUsage"
                     />
@@ -222,7 +134,7 @@
                     android:layout_gravity="center"
                     android:typeface="monospace"
                     android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:textSize="14dp"
                     android:text="--"
                     tools:ignore="HardcodedText,SpUsage"
                     />

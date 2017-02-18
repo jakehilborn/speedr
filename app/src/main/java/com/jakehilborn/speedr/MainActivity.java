@@ -49,7 +49,6 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.jakehilborn.speedr.utils.FormatTime;
 import com.jakehilborn.speedr.utils.Prefs;
-import com.jakehilborn.speedr.utils.UnitUtils;
 
 public class MainActivity extends AppCompatActivity implements MainService.Callback {
 
@@ -63,12 +62,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private long firstLimitTime;
     private double curTimeDiff;
 
-    private TextView timeDiffH;
-    private TextView timeDiffHSymbol;
-    private TextView timeDiffM;
-    private TextView timeDiffMSymbol;
-    private TextView timeDiffS;
-    private TextView timeDiffS10th;
+    private TextView timeSaved;
 
     private View totalTimeGroup;
     private TextView totalTime;
@@ -104,12 +98,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onCreate()");
         setContentView(R.layout.activity_main);
 
-        timeDiffH = (TextView) findViewById(R.id.time_diff_h);
-        timeDiffHSymbol = (TextView) findViewById(R.id.time_diff_h_symbol);
-        timeDiffM = (TextView) findViewById(R.id.time_diff_m);
-        timeDiffMSymbol = (TextView) findViewById(R.id.time_diff_m_symbol);
-        timeDiffS = (TextView) findViewById(R.id.time_diff_s);
-        timeDiffS10th = (TextView) findViewById(R.id.time_diff_s10th);
+        timeSaved = (TextView) findViewById(R.id.time_saved);
 
         totalTimeGroup = findViewById(R.id.total_time_group);
         totalTime = (TextView) findViewById(R.id.total_time);
@@ -234,25 +223,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void updateUI(UIData uiData) {
-        timeDiffS10th.setText(String.valueOf(UnitUtils.nanosTo10thsModuloSeconds(uiData.getTimeDiff())));
-        timeDiffS.setText(String.valueOf(UnitUtils.nanosToSecondsModuloMinutes(uiData.getTimeDiff())));
-
-        if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_MINUTE) {
-            timeDiffM.setText(String.valueOf(UnitUtils.nanosToMinutesModuloHours(uiData.getTimeDiff())));
-            timeDiffM.setVisibility(View.VISIBLE);
-            timeDiffMSymbol.setVisibility(View.VISIBLE);
-        } else {
-            timeDiffM.setVisibility(View.GONE); //GONE used instead of INVISIBLE so that this view still takes space which lets timeDiff center correctly
-            timeDiffMSymbol.setVisibility(View.GONE);
-        }
-        if (uiData.getTimeDiff() >= UnitUtils.NANO_ONE_HOUR) {
-            timeDiffH.setText(String.valueOf(UnitUtils.nanosToHoursModuloMinutes(uiData.getTimeDiff())));
-            timeDiffH.setVisibility(View.VISIBLE);
-            timeDiffHSymbol.setVisibility(View.VISIBLE);
-        } else {
-            timeDiffH.setVisibility(View.GONE);
-            timeDiffHSymbol.setVisibility(View.GONE);
-        }
+        String formattedTime = FormatTime.nanosToLongHand(this, uiData.getTimeDiff());
+        Spanned stylizedTime = FormatTime.stylizedTimeSaved(this, formattedTime);
+        timeSaved.setText(stylizedTime);
 
         firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
         curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
@@ -311,11 +284,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         //Allow first refresh onLocationChange for immediate data at startup
         if (viaHandler || totalTimeStartOrStop) {
             totalTimeStartOrStop = false;
-            String formattedTotalTime = FormatTime.nanosToClock(totalNanos);
-            String formattedTotalTimeNoSpeed = FormatTime.nanosToClock(totalNanos + curTimeDiff);
+            String formattedTotalTime = FormatTime.nanosToShortHand(this, totalNanos);
+            Spanned stylizedTotalTime = FormatTime.stylizedTimeSaved(this, formattedTotalTime);
+            String formattedTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, totalNanos + curTimeDiff);
+            Spanned stylizedTotalTimeNoSpeed = FormatTime.stylizeDriveTime(this, formattedTotalTimeNoSpeed);
 
-            totalTime.setText(formattedTotalTime);
-            totalTimeNoSpeed.setText(formattedTotalTimeNoSpeed);
+            totalTime.setText(stylizedTotalTime);
+            totalTimeNoSpeed.setText(stylizedTotalTimeNoSpeed);
 
             totalTimeGroup.setVisibility(View.VISIBLE);
             percentFaster.setVisibility(View.VISIBLE);
