@@ -68,8 +68,8 @@
     <string name="notification_speed">Current speed</string>
 
     <!-- SettingsActivity -->
-    <string name="speedr_settings_app_bar_title">speedr settings</string>
-    <string name="content_description_developer_info">info about speedr developer</string>
+    <string name="speedr_settings_app_bar_title">Speedr settings</string>
+    <string name="content_description_developer_info">Info about Speedr developer</string>
 
     <string name="speed_limit_provider_section">Speed limit provider</string>
     <string name="open_street_map_limit_provider_button_text">Open Street Map</string>
