@@ -89,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private Handler totalTimeHandler;
     private Runnable totalTimeRunnable;
-    private boolean totalTimeStartOrStop; //Let non-handler methods update the totalTime clock at first location update or service stop for immediate results
-    private static final int TOTAL_TIME_REFRESH_FREQ = 1000; //milliseconds
+    private static final int TOTAL_TIME_REFRESH_FREQ = 1000; //1 second
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,14 +166,13 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.open_street_map_logo));
         }
 
-        totalTimeStartOrStop = true;
         restoreSessionInUI();
 
         totalTimeHandler = new Handler();
         totalTimeRunnable = new Runnable() {
             @Override
             public void run() {
-                refreshTotalTime(true);
+                refreshTotalTime(null);
                 totalTimeHandler.postDelayed(this, TOTAL_TIME_REFRESH_FREQ);
             }
         };
@@ -207,7 +205,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             //Sets UI values on MainActivity onStart() if MainService was already running
             styleStartStopButton(true);
-            updateUI(mainService.pollUIData());
+            UIData uiData = mainService.pollUIData();
+            uiData.setForceDriveTimeUpdate(true);
+            updateUI(uiData);
         }
 
         @Override //Only called on service crashes, not called onDestroy or on unbindService
@@ -227,9 +227,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         String stylizedTime = FormatTime.stylizedMainActivity(this, formattedTime);
         timeSaved.setText(Html.fromHtml(stylizedTime));
 
-        firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
-        curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
-        refreshTotalTime(false);
+        refreshTotalTime(uiData);
 
         if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
@@ -259,7 +257,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void refreshTotalTime(boolean viaHandler) {
+    private void refreshTotalTime(UIData uiData) {
+        if (uiData != null) {
+            if (firstLimitTime == 0 && uiData.getFirstLimitTime() != 0) {
+                uiData.setForceDriveTimeUpdate(true); //First speed limit received, set force to true so we can show the value below
+            }
+            firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
+            curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
+        }
+
         if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
             driveTimeGroup.setVisibility(View.INVISIBLE);
             percentFaster.setVisibility(View.INVISIBLE);
@@ -280,10 +286,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         Spanned percentFasterText = Html.fromHtml("<b>" + percent + "%</b>  " + getString(R.string.percent_faster));
         percentFaster.setText(percentFasterText);
 
-        //Only refresh time via handler so that it increments evenly second to second
-        //Allow first refresh onLocationChange for immediate data at startup
-        if (viaHandler || totalTimeStartOrStop) {
-            totalTimeStartOrStop = false;
+        //Only refresh time via handler so that it increments evenly second to second. uiData is null when handler calls.
+        //Allow force refetch on start, resume, stop, and first limit update via isForceDriveTimeUpdate
+        if (uiData == null || uiData.isForceDriveTimeUpdate()) {
             String formattedTotalTime = FormatTime.nanosToShortHand(this, totalNanos);
             String stylizedTotalTime = FormatTime.stylizedMainActivity(this, formattedTotalTime);
             String formattedTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, totalNanos + curTimeDiff);
@@ -306,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             uiData.setTimeDiff(Prefs.getSessionTimeDiff(this));
         }
 
+        uiData.setForceDriveTimeUpdate(true);
         updateUI(uiData);
 
         if (!isMainServiceRunning() && (uiData.getTimeDiff() != 0 || Prefs.getSessionTimeTotal(this) != 0)) { //MainService may not be bound yet so explicitly check if running
@@ -325,8 +331,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         uiData.setLimit(null);
         uiData.setSpeed(null);
         uiData.setNetworkDown(false);
+        uiData.setForceDriveTimeUpdate(true);
 
-        totalTimeStartOrStop = true;
         updateUI(uiData);
 
         //Only show during active sessions
@@ -456,7 +462,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
-            totalTimeStartOrStop = true;
             totalTimeHandler.postDelayed(totalTimeRunnable, TOTAL_TIME_REFRESH_FREQ);
 
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");

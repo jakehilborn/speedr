@@ -7,6 +7,10 @@ public class UIData {
     private long firstLimitTime;
     private boolean networkDown;
 
+    //DriveTime usually updates once per second. On start up, resume, shutdown, and first speed limit received
+    //we want to update the drive time outside of the regular 1 second cadence for immediate visibility of new data
+    private boolean forceDriveTimeUpdate;
+
     public Integer getSpeed() {
         return speed;
     }
@@ -45,5 +49,13 @@ public class UIData {
 
     public void setNetworkDown(boolean networkDown) {
         this.networkDown = networkDown;
+    }
+
+    public boolean isForceDriveTimeUpdate() {
+        return forceDriveTimeUpdate;
+    }
+
+    public void setForceDriveTimeUpdate(boolean forceDriveTimeUpdate) {
+        this.forceDriveTimeUpdate = forceDriveTimeUpdate;
     }
 }
