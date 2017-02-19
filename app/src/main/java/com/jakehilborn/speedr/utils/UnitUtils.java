@@ -58,13 +58,13 @@ public class UnitUtils {
     public static Integer nanosToSeconds(Double nanos) {
         if (nanos == null) return null;
 
-        return (int) (nanos / 1000000000L);
+        return (int) (nanos / NANO_ONE_SECOND);
     }
 
     public static Double roundNanosToNearestSecond(Double nanos) {
         if (nanos == null) return null;
 
-        return (Math.round(nanos / 1000000000D) * 1000000000D);
+        return (double) (Math.round(nanos / NANO_ONE_SECOND) * NANO_ONE_SECOND);
     }
 
     public static Integer nanosTo10thsModuloSeconds(Double nanos) {
@@ -94,7 +94,7 @@ public class UnitUtils {
     public static Long secondsToNanos(Integer seconds) {
         if (seconds == null) return null;
 
-        return (long) seconds * 1000000000;
+        return (long) seconds * NANO_ONE_SECOND;
     }
 
     public static Long secondsToMillis(Integer seconds) {

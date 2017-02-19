@@ -43,10 +43,6 @@ public class StatsCalculator {
         return (double) this.location.getSpeed();
     }
 
-    public Double getLimit() {
-        return this.limit;
-    }
-
     public long getFirstLimitTime() {
         return firstLimitTime;
     }
@@ -84,6 +80,10 @@ public class StatsCalculator {
     public void setNetworkDown(boolean networkDown) {
         this.prevNetworkCheckTime = System.nanoTime();
         this.networkDown = networkDown;
+    }
+
+    public Double getLimit() {
+        return this.limit;
     }
 
     //When limit is set to null it means there is no speed limit data available so continue showing existing speed limit.

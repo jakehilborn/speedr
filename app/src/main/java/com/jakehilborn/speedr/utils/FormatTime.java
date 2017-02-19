@@ -29,7 +29,7 @@ public class FormatTime {
         return timeSavedString.toString();
     }
 
-    //Hours, minutes, seconds, tenths of a second separated by symbols.
+    //Hours, minutes, seconds separated by symbols.
     //'h', 'm', 's' symbols are localized
     //1h  23m  45s
     //1m  23s

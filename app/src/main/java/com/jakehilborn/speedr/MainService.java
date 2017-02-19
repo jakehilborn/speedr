@@ -36,7 +36,6 @@ import java.util.GregorianCalendar;
 //calls. These calls are all async so there is no blocking. Using Service instead of IntentService for simplicity sake.
 public class MainService extends Service implements StatsCalculator.Callback {
 
-    private LocationListener locationListener;
     private GoogleApiClient googleApiClient;
 
     private static final int NOTIFICATION_ID = 1;
@@ -101,7 +100,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
         statsCalculator.setTimeSaved(Prefs.getSessionTimeSaved(this));
         limitFetcher = new LimitFetcher(statsCalculator);
 
-        locationListener = new LocationListener() {
+        final LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
                 handleLocationChange(location);
@@ -146,8 +145,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
         statsCalculator.setLocation(location);
         statsCalculator.calcTimeSaved();
 
-        boolean forceFetch = false;
-        if (statsCalculator.isLimitStale() || forceFetch) {
+        if (statsCalculator.isLimitStale()) {
             limitFetcher.fetchLimit(this, location.getLatitude(), location.getLongitude());
 
             if (statsCalculator.isNetworkCheckStale()) {

@@ -58,17 +58,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private MainService mainService;
     private GoogleApiClient googleApiClient;
 
-    private boolean useHereMaps;
-    private long firstLimitTime;
-    private double curTimeSaved;
-
     private TextView timeSaved;
-
     private View driveTimeGroup;
     private TextView driveTime;
     private TextView driveTimeNoSpeed;
     private TextView percentFaster;
-
     private TextView speed;
     private TextView speedUnit;
     private TextView limit;
@@ -87,6 +81,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private Toast poweredByOpenStreetMapToast;
     private Toast poweredByHereMapsToast;
 
+    private boolean useHereMaps;
+    private long firstLimitTime;
+    private double curTimeSaved;
+
     private Handler driveTimeHandler;
     private Runnable driveTimeRunnable;
     private static final int DRIVE_TIME_REFRESH_FREQ = 1000; //1 second
@@ -98,12 +96,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         setContentView(R.layout.activity_main);
 
         timeSaved = (TextView) findViewById(R.id.time_saved);
-
         driveTimeGroup = findViewById(R.id.drive_time_group);
         driveTime = (TextView) findViewById(R.id.drive_time);
         driveTimeNoSpeed = (TextView) findViewById(R.id.drive_time_no_speed);
         percentFaster = (TextView) findViewById(R.id.percent_faster);
-
         speed = (TextView) findViewById(R.id.speed);
         speedUnit = (TextView) findViewById(R.id.speed_unit);
         limit = (TextView) findViewById(R.id.limit);
@@ -185,8 +181,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private boolean isMainServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if(MainService.class.getCanonicalName().equals(service.service.getClassName())) {
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (MainService.class.getCanonicalName().equals(service.service.getClassName())) {
                 Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService running");
                 return true;
             }
@@ -283,11 +279,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
 
         int percent = (int) Math.round((curTimeSaved / driveTimeNanos) * 100);
-        Spanned percentFasterText = Html.fromHtml("<b>" + percent + "%</b>  " + getString(R.string.percent_faster));
+        Spanned percentFasterText = Html.fromHtml("<b>" + percent + "%</b>&nbsp;&nbsp;" + getString(R.string.percent_faster)); //2 spaces after percent symbol
         percentFaster.setText(percentFasterText);
 
         //Only refresh time via handler so that it increments evenly second to second. uiData is null when handler calls.
-        //Allow force refetch on start, resume, stop, and first limit update via isForceDriveTimeUpdate
+        //Allow force update on start, resume, stop, and first limit update via isForceDriveTimeUpdate
         if (uiData == null || uiData.isForceDriveTimeUpdate()) {
             String formattedDriveTime = FormatTime.nanosToShortHand(this, driveTimeNanos);
             String stylizedDriveTime = FormatTime.stylizedMainActivity(this, formattedDriveTime);
@@ -434,13 +430,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 .setTitle(R.string.stats_title)
                 .setCancelable(true)
                 .setPositiveButton(R.string.close_dialog_button, null)
-                .setNeutralButton("clear week", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        Prefs.setTimeSavedWeek(MainActivity.this, 0D);
-                        Prefs.setDriveTimeWeek(MainActivity.this, 0);
-                        Prefs.setTimeSavedWeekNum(MainActivity.this, 0);
-                    }
-                })
                 .show();
 
         Answers.getInstance().logCustom(new CustomEvent("Viewed stats"));

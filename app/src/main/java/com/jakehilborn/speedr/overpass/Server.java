@@ -1,5 +1,7 @@
 package com.jakehilborn.speedr.overpass;
 
+import com.jakehilborn.speedr.utils.UnitUtils;
+
 import java.util.Arrays;
 
 public class Server {
@@ -59,7 +61,7 @@ public class Server {
                 ", latencies=" + Arrays.toString(latencies) +
                 ", ptr=" + ptr +
                 ", latency=" + getLatency() +
-                ", delayDiff=" + (delay - System.nanoTime()) / 1000000000L +
+                ", delayDiff=" + (delay - System.nanoTime()) / UnitUtils.NANO_ONE_SECOND +
                 '}';
     }
 }
