@@ -135,9 +135,9 @@
     <string name="close_dialog_button">Close</string>
 
     <string name="changelog_content">
-        <b>beta-1</b>\n
+        <b>1.0</b>\n
         <ul>
-            <li>Still developing</li>
+            <li>Initial release</li>
         </ul>
     </string>
 </resources>
