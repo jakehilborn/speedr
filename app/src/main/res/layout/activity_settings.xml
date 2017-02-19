@@ -100,7 +100,6 @@
                     android:textColor="?android:textColorSecondary"
                     android:textSize="14sp"
                     />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -174,7 +173,6 @@
                     android:textColor="?android:textColorSecondary"
                     android:textSize="14sp"
                     />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -212,7 +210,6 @@
                     android:text="@string/donate_to_open_street_map_button_text"
                     android:textSize="16sp"
                     />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -300,7 +297,6 @@
                     android:text="@string/privacy_policy_terms_and_conditions"
                     android:textSize="16sp"
                     />
-
             </LinearLayout>
         </LinearLayout>
 

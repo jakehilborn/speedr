@@ -111,6 +111,7 @@
         <item>@string/mph</item>
         <item>@string/kmh</item>
     </string-array>
+
     <string name="privacy_policy_terms_and_conditions">Privacy Policy / Terms and Conditions</string>
     <string name="privacy_policy_title">Speedr Privacy Policy</string>
     <string name="privacy_policy_content"><![CDATA[
