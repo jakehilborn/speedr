@@ -147,6 +147,9 @@ public class ErrorReporter {
         if (error instanceof SocketTimeoutException) {
             if (here) Crashlytics.logException(new Exception(HERE + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
             else Crashlytics.logException(new Exception(OVERPASS + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
+        } else if (error instanceof java.net.SocketException) {
+            if (here) Crashlytics.logException(new Exception(HERE + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
+            else Crashlytics.logException(new Exception(OVERPASS + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
         } else if (error instanceof MalformedJsonException) {
             if (here) Crashlytics.logException(new Exception(HERE + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
             else Crashlytics.logException(new Exception(OVERPASS + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
@@ -157,6 +160,9 @@ public class ErrorReporter {
             if (here) Crashlytics.logException(new Exception(HERE + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
             else Crashlytics.logException(new Exception(OVERPASS + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
         } else if (error instanceof IllegalStateException) {
+            if (here) Crashlytics.logException(new Exception(HERE + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
+            else Crashlytics.logException(new Exception(OVERPASS + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
+        } else if (error instanceof java.io.IOException) {
             if (here) Crashlytics.logException(new Exception(HERE + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
             else Crashlytics.logException(new Exception(OVERPASS + error.toString() + "\n\n" + Arrays.toString(error.getStackTrace()).replaceAll(", ", "\n")));
         } else { //some other exception
