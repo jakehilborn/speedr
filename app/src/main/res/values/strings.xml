@@ -101,7 +101,7 @@
 
     <string name="open_street_map_section">OpenStreetMap</string>
     <string name="check_open_street_map_coverage_button_text">Check OpenStreetMap coverage</string>
-    <string name="check_open_street_map_coverage_button_subtext">Visit <b>openstreetmap.org</b> on your computer to add/fix speed limits</string>
+    <string name="check_open_street_map_coverage_button_subtext">Visit <b>openstreetmap.org</b> on your computer to add/fix speed limits.</string>
     <string name="donate_to_open_street_map_button_text">Donate to OpenStreetMap</string>
 
     <string name="general_section">General</string>
