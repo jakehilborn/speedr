@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private TextView timeSaved;
 
     private View driveTimeGroup;
-    private TextView totalTime;
-    private TextView totalTimeNoSpeed;
+    private TextView driveTime;
+    private TextView driveTimeNoSpeed;
     private TextView percentFaster;
 
     private TextView speed;
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     private Toast poweredByOpenStreetMapToast;
     private Toast poweredByHereMapsToast;
 
-    private Handler totalTimeHandler;
-    private Runnable totalTimeRunnable;
-    private static final int TOTAL_TIME_REFRESH_FREQ = 1000; //1 second
+    private Handler driveTimeHandler;
+    private Runnable driveTimeRunnable;
+    private static final int DRIVE_TIME_REFRESH_FREQ = 1000; //1 second
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         timeSaved = (TextView) findViewById(R.id.time_saved);
 
         driveTimeGroup = findViewById(R.id.drive_time_group);
-        totalTime = (TextView) findViewById(R.id.total_time);
-        totalTimeNoSpeed = (TextView) findViewById(R.id.total_time_no_speed);
+        driveTime = (TextView) findViewById(R.id.drive_time);
+        driveTimeNoSpeed = (TextView) findViewById(R.id.drive_time_no_speed);
         percentFaster = (TextView) findViewById(R.id.percent_faster);
 
         speed = (TextView) findViewById(R.id.speed);
@@ -168,18 +168,18 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         restoreSessionInUI();
 
-        totalTimeHandler = new Handler();
-        totalTimeRunnable = new Runnable() {
+        driveTimeHandler = new Handler();
+        driveTimeRunnable = new Runnable() {
             @Override
             public void run() {
-                refreshTotalTime(null);
-                totalTimeHandler.postDelayed(this, TOTAL_TIME_REFRESH_FREQ);
+                updateDriveTime(null);
+                driveTimeHandler.postDelayed(this, DRIVE_TIME_REFRESH_FREQ);
             }
         };
 
         if (isMainServiceRunning()) {
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
-            totalTimeHandler.postDelayed(totalTimeRunnable, TOTAL_TIME_REFRESH_FREQ);
+            driveTimeHandler.postDelayed(driveTimeRunnable, DRIVE_TIME_REFRESH_FREQ);
         }
     }
 
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         String stylizedTime = FormatTime.stylizedMainActivity(this, formattedTime);
         timeSaved.setText(Html.fromHtml(stylizedTime));
 
-        refreshTotalTime(uiData);
+        updateDriveTime(uiData);
 
         if (uiData.getLimit() == null || uiData.getLimit() == 0) {
             limit.setText("--");
@@ -257,45 +257,45 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         }
     }
 
-    private void refreshTotalTime(UIData uiData) {
+    private void updateDriveTime(UIData uiData) {
         if (uiData != null) {
             if (firstLimitTime == 0 && uiData.getFirstLimitTime() != 0) {
                 uiData.setForceDriveTimeUpdate(true); //First speed limit received, set force to true so we can show the value below
             }
-            firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
-            curTimeSaved = uiData.getTimeSaved(); //store value in activity so totalTimeRunnable has access without location updates
+            firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so driveTimeRunnable has access without location updates
+            curTimeSaved = uiData.getTimeSaved(); //store value in activity so driveTimeRunnable has access without location updates
         }
 
-        if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
+        if (firstLimitTime == 0 && Prefs.getSessionDriveTime(this) == 0) {
             driveTimeGroup.setVisibility(View.INVISIBLE);
             percentFaster.setVisibility(View.INVISIBLE);
             return;
         }
 
-        double totalNanos = Prefs.getSessionTimeTotal(this);
+        double driveTimeNanos = Prefs.getSessionDriveTime(this);
         if (firstLimitTime != 0) { //User resuming session, first limit has not yet been received
             if (mainService != null && mainService.stopTime != 0) { //MainService stopping, use shared stop time to keep time values in sync
-                totalNanos += (mainService.stopTime - firstLimitTime);
+                driveTimeNanos += (mainService.stopTime - firstLimitTime);
             }
             else {
-                totalNanos += (System.nanoTime() - firstLimitTime);
+                driveTimeNanos += (System.nanoTime() - firstLimitTime);
             }
         }
 
-        int percent = (int) Math.round((curTimeSaved / totalNanos) * 100);
+        int percent = (int) Math.round((curTimeSaved / driveTimeNanos) * 100);
         Spanned percentFasterText = Html.fromHtml("<b>" + percent + "%</b>  " + getString(R.string.percent_faster));
         percentFaster.setText(percentFasterText);
 
         //Only refresh time via handler so that it increments evenly second to second. uiData is null when handler calls.
         //Allow force refetch on start, resume, stop, and first limit update via isForceDriveTimeUpdate
         if (uiData == null || uiData.isForceDriveTimeUpdate()) {
-            String formattedTotalTime = FormatTime.nanosToShortHand(this, totalNanos);
-            String stylizedTotalTime = FormatTime.stylizedMainActivity(this, formattedTotalTime);
-            String formattedTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, totalNanos + curTimeSaved);
-            String stylizedTotalTimeNoSpeed = FormatTime.stylizedMainActivity(this, formattedTotalTimeNoSpeed);
+            String formattedDriveTime = FormatTime.nanosToShortHand(this, driveTimeNanos);
+            String stylizedDriveTime = FormatTime.stylizedMainActivity(this, formattedDriveTime);
+            String formattedDriveTimeNoSpeed = FormatTime.nanosToShortHand(this, driveTimeNanos + curTimeSaved);
+            String stylizedDriveTimeNoSpeed = FormatTime.stylizedMainActivity(this, formattedDriveTimeNoSpeed);
 
-            totalTime.setText(Html.fromHtml(stylizedTotalTime));
-            totalTimeNoSpeed.setText(Html.fromHtml(stylizedTotalTimeNoSpeed));
+            driveTime.setText(Html.fromHtml(stylizedDriveTime));
+            driveTimeNoSpeed.setText(Html.fromHtml(stylizedDriveTimeNoSpeed));
 
             driveTimeGroup.setVisibility(View.VISIBLE);
             percentFaster.setVisibility(View.VISIBLE);
@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         uiData.setForceDriveTimeUpdate(true);
         updateUI(uiData);
 
-        if (!isMainServiceRunning() && (uiData.getTimeSaved() != 0 || Prefs.getSessionTimeTotal(this) != 0)) { //MainService may not be bound yet so explicitly check if running
+        if (!isMainServiceRunning() && (uiData.getTimeSaved() != 0 || Prefs.getSessionDriveTime(this) != 0)) { //MainService may not be bound yet so explicitly check if running
             reset.setVisibility(View.VISIBLE);
         }
     }
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
         pendingHereActivationNotice.setVisibility(View.GONE);
 
-        if (uiData.getTimeSaved() != 0 || firstLimitTime != 0 || Prefs.getSessionTimeTotal(this) != 0) {
+        if (uiData.getTimeSaved() != 0 || firstLimitTime != 0 || Prefs.getSessionDriveTime(this) != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.INVISIBLE);
@@ -370,64 +370,64 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         final View dialogView = getLayoutInflater().inflate(R.layout.stats_dialog, null);
 
         //week
-        String statsWeekTotalTime = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalWeek(this));
-        String statsWeekTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalWeek(this) + Prefs.getTimeSavedWeek(this));
+        String statsWeekDriveTime = FormatTime.nanosToShortHand(this, Prefs.getDriveTimeWeek(this));
+        String statsWeekDriveTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getDriveTimeWeek(this) + Prefs.getTimeSavedWeek(this));
         String statsWeekTimeSaved = FormatTime.nanosToLongHand(this, Prefs.getTimeSavedWeek(this));
 
-        Spanned statsWeekTotalTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTotalTime)
-                + " - " + this.getString(R.string.stats_total_drive_time));
-        Spanned statsWeekTotalTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTotalTimeNoSpeed)
+        Spanned statsWeekDriveTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekDriveTime)
+                + " - " + this.getString(R.string.stats_drive_time));
+        Spanned statsWeekDriveTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekDriveTimeNoSpeed)
                 + " - " + getString(R.string.stats_time_if_you_did_not_seepd));
         Spanned statsWeekTimeSavedStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTimeSaved)
                 + " - " + this.getString(R.string.stats_time_saved));
         Spanned statsWeekRatioStylized = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round((Prefs.getTimeSavedWeek(this) / Prefs.getTimeTotalWeek(this)) * 100) + "%</b> "
+                + Math.round((Prefs.getTimeSavedWeek(this) / Prefs.getDriveTimeWeek(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
-        ((TextView) dialogView.findViewById(R.id.stats_week_total_time)).setText(statsWeekTotalTimeStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_week_total_time_no_speed)).setText(statsWeekTotalTimeNoSpeedStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_week_drive_time)).setText(statsWeekDriveTimeStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_week_drive_time_no_speed)).setText(statsWeekDriveTimeNoSpeedStylized);
         ((TextView) dialogView.findViewById(R.id.stats_week_time_saved)).setText(statsWeekTimeSavedStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_week_ratio)).setText(statsWeekRatioStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_week_percent_faster)).setText(statsWeekRatioStylized);
 
         //month
-        String statsMonthTotalTime = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalMonth(this));
-        String statsMonthTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalMonth(this) + Prefs.getTimeSavedMonth(this));
+        String statsMonthDriveTime = FormatTime.nanosToShortHand(this, Prefs.getDriveTimeMonth(this));
+        String statsMonthDriveTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getDriveTimeMonth(this) + Prefs.getTimeSavedMonth(this));
         String statsMonthTimeSaved = FormatTime.nanosToLongHand(this, Prefs.getTimeSavedMonth(this));
 
-        Spanned statsMonthTotalTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTotalTime)
-                + " - " + this.getString(R.string.stats_total_drive_time));
-        Spanned statsMonthTotalTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTotalTimeNoSpeed)
+        Spanned statsMonthDriveTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthDriveTime)
+                + " - " + this.getString(R.string.stats_drive_time));
+        Spanned statsMonthDriveTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthDriveTimeNoSpeed)
                 + " - " + getString(R.string.stats_time_if_you_did_not_seepd));
         Spanned statsMonthTimeSavedStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTimeSaved)
                 + " - " + this.getString(R.string.stats_time_saved));
         Spanned statsMonthRatioStylized = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round((Prefs.getTimeSavedMonth(this) / Prefs.getTimeTotalMonth(this)) * 100) + "%</b> "
+                + Math.round((Prefs.getTimeSavedMonth(this) / Prefs.getDriveTimeMonth(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
-        ((TextView) dialogView.findViewById(R.id.stats_month_total_time)).setText(statsMonthTotalTimeStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_month_total_time_no_speed)).setText(statsMonthTotalTimeNoSpeedStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_month_drive_time)).setText(statsMonthDriveTimeStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_month_drive_time_no_speed)).setText(statsMonthDriveTimeNoSpeedStylized);
         ((TextView) dialogView.findViewById(R.id.stats_month_time_saved)).setText(statsMonthTimeSavedStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_month_ratio)).setText(statsMonthRatioStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_month_percent_faster)).setText(statsMonthRatioStylized);
 
         //year
-        String statsYearTotalTime = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalYear(this));
-        String statsYearTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalYear(this) + Prefs.getTimeSavedYear(this));
+        String statsYearDriveTime = FormatTime.nanosToShortHand(this, Prefs.getDriveTimeYear(this));
+        String statsYearDriveTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getDriveTimeYear(this) + Prefs.getTimeSavedYear(this));
         String statsYearTimeSaved = FormatTime.nanosToLongHand(this, Prefs.getTimeSavedYear(this));
 
-        Spanned statsYearTotalTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTotalTime)
-                + " - " + this.getString(R.string.stats_total_drive_time));
-        Spanned statsYearTotalTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTotalTimeNoSpeed)
+        Spanned statsYearDriveTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearDriveTime)
+                + " - " + this.getString(R.string.stats_drive_time));
+        Spanned statsYearDriveTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearDriveTimeNoSpeed)
                 + " - " + getString(R.string.stats_time_if_you_did_not_seepd));
         Spanned statsYearTimeSavedStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTimeSaved)
                 + " - " + this.getString(R.string.stats_time_saved));
         Spanned statsYearRatioStylized = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round((Prefs.getTimeSavedYear(this) / Prefs.getTimeTotalYear(this)) * 100) + "%</b> "
+                + Math.round((Prefs.getTimeSavedYear(this) / Prefs.getDriveTimeYear(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
-        ((TextView) dialogView.findViewById(R.id.stats_year_total_time)).setText(statsYearTotalTimeStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_year_total_time_no_speed)).setText(statsYearTotalTimeNoSpeedStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_year_drive_time)).setText(statsYearDriveTimeStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_year_drive_time_no_speed)).setText(statsYearDriveTimeNoSpeedStylized);
         ((TextView) dialogView.findViewById(R.id.stats_year_time_saved)).setText(statsYearTimeSavedStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_year_ratio)).setText(statsYearRatioStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_year_percent_faster)).setText(statsYearRatioStylized);
 
         new AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 .setNeutralButton("clear week", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         Prefs.setTimeSavedWeek(MainActivity.this, 0D);
-                        Prefs.setTimeTotalWeek(MainActivity.this, 0);
+                        Prefs.setDriveTimeWeek(MainActivity.this, 0);
                         Prefs.setTimeSavedWeekNum(MainActivity.this, 0);
                     }
                 })
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
             startService(new Intent(this, MainService.class));
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_AUTO_CREATE);
-            totalTimeHandler.postDelayed(totalTimeRunnable, TOTAL_TIME_REFRESH_FREQ);
+            driveTimeHandler.postDelayed(driveTimeRunnable, DRIVE_TIME_REFRESH_FREQ);
 
             Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService started");
             Answers.getInstance().logCustom(new CustomEvent(useHereMaps ? "Using HERE" : "Using Overpass"));
@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         unbindService(mainServiceConn);
         stopService(new Intent(this, MainService.class));
         mainService = null;
-        totalTimeHandler.removeCallbacks(totalTimeRunnable);
+        driveTimeHandler.removeCallbacks(driveTimeRunnable);
         showHereSuggestion();
     }
 
@@ -525,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "resetSessionOnClick()");
 
         Prefs.setSessionTimeSaved(this, 0D);
-        Prefs.setSessionTimeTotal(this, 0);
+        Prefs.setSessionDriveTime(this, 0);
 
         UIData uiData = new UIData();
         uiData.setTimeSaved(0D);
@@ -700,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         poweredByOpenStreetMapToast.cancel();
         poweredByHereMapsToast.cancel();
 
-        if (totalTimeHandler != null) totalTimeHandler.removeCallbacks(totalTimeRunnable);
+        if (driveTimeHandler != null) driveTimeHandler.removeCallbacks(driveTimeRunnable);
         if (mainService != null) unbindService(mainServiceConn);
         if (googleApiClient != null) googleApiClient.disconnect();
 

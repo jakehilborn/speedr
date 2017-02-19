@@ -67,7 +67,7 @@
             >
 
             <View
-                android:id="@+id/drive_time_versus"
+                android:id="@+id/drive_time_spacer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_centerHorizontal="true"
@@ -77,11 +77,11 @@
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_toStartOf="@id/drive_time_versus"
+                android:layout_toStartOf="@id/drive_time_spacer"
                 >
 
                 <TextView
-                    android:id="@+id/total_time"
+                    android:id="@+id/drive_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -121,11 +121,11 @@
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_toEndOf="@id/drive_time_versus"
+                android:layout_toEndOf="@id/drive_time_spacer"
                 >
 
                 <TextView
-                    android:id="@+id/total_time_no_speed"
+                    android:id="@+id/drive_time_no_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

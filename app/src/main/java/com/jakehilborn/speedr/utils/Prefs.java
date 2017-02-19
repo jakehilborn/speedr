@@ -15,16 +15,16 @@ public class Prefs {
     private static final String TIME_OF_HERE_CREDS = "time_of_here_creds";
     private static final String PENDING_HERE_ACTIVATION = "pending_here_activation";
     private static final String SESSION_TIME_SAVED = "session_time_saved";
-    private static final String SESSION_TIME_TOTAL = "session_time_total";
+    private static final String SESSION_DRIVE_TIME = "session_drive_time";
     private static final String TIME_SAVED_WEEK = "time_saved_week";
     private static final String TIME_SAVED_MONTH = "time_saved_month";
     private static final String TIME_SAVED_YEAR = "time_saved_year";
     private static final String TIME_SAVED_WEEK_NUM = "time_saved_week_num";
     private static final String TIME_SAVED_MONTH_NUM = "time_saved_month_num";
     private static final String TIME_SAVED_YEAR_NUM = "time_saved_year_num";
-    private static final String TIME_TOTAL_WEEK = "time_total_week";
-    private static final String TIME_TOTAL_MONTH = "time_total_month";
-    private static final String TIME_TOTAL_YEAR = "time_total_year";
+    private static final String DRIVE_TIME_WEEK = "drive_time_week";
+    private static final String DRIVE_TIME_MONTH = "drive_time_month";
+    private static final String DRIVE_TIME_YEAR = "drive_time_year";
 
     private static SharedPreferences.Editor editPrefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
@@ -107,12 +107,12 @@ public class Prefs {
         return Double.longBitsToDouble(prefs(context).getLong(SESSION_TIME_SAVED, 0));
     }
 
-    public static void setSessionTimeTotal(Context context, long time) {
-        editPrefs(context).putLong(SESSION_TIME_TOTAL, time).apply();
+    public static void setSessionDriveTime(Context context, long time) {
+        editPrefs(context).putLong(SESSION_DRIVE_TIME, time).apply();
     }
 
-    public static long getSessionTimeTotal(Context context) {
-        return prefs(context).getLong(SESSION_TIME_TOTAL, 0);
+    public static long getSessionDriveTime(Context context) {
+        return prefs(context).getLong(SESSION_DRIVE_TIME, 0);
     }
 
     public static void setTimeSavedWeek(Context context, Double timeSaved) {
@@ -163,27 +163,27 @@ public class Prefs {
         return prefs(context).getInt(TIME_SAVED_YEAR_NUM, 0);
     }
 
-    public static void setTimeTotalWeek(Context context, long time) {
-        editPrefs(context).putLong(TIME_TOTAL_WEEK, time).apply();
+    public static void setDriveTimeWeek(Context context, long time) {
+        editPrefs(context).putLong(DRIVE_TIME_WEEK, time).apply();
     }
 
-    public static long getTimeTotalWeek(Context context) {
-        return prefs(context).getLong(TIME_TOTAL_WEEK, 0);
+    public static long getDriveTimeWeek(Context context) {
+        return prefs(context).getLong(DRIVE_TIME_WEEK, 0);
     }
 
-    public static void setTimeTotalMonth(Context context, long time) {
-        editPrefs(context).putLong(TIME_TOTAL_MONTH, time).apply();
+    public static void setDriveTimeMonth(Context context, long time) {
+        editPrefs(context).putLong(DRIVE_TIME_MONTH, time).apply();
     }
 
-    public static long getTimeTotalMonth(Context context) {
-        return prefs(context).getLong(TIME_TOTAL_MONTH, 0);
+    public static long getDriveTimeMonth(Context context) {
+        return prefs(context).getLong(DRIVE_TIME_MONTH, 0);
     }
 
-    public static void setTimeTotalYear(Context context, long time) {
-        editPrefs(context).putLong(TIME_TOTAL_YEAR, time).apply();
+    public static void setDriveTimeYear(Context context, long time) {
+        editPrefs(context).putLong(DRIVE_TIME_YEAR, time).apply();
     }
 
-    public static long getTimeTotalYear(Context context) {
-        return prefs(context).getLong(TIME_TOTAL_YEAR, 0);
+    public static long getDriveTimeYear(Context context) {
+        return prefs(context).getLong(DRIVE_TIME_YEAR, 0);
     }
 }

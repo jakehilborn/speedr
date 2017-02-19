@@ -249,13 +249,13 @@ public class MainService extends Service implements StatsCalculator.Callback {
     }
 
     private void persistTimeSaved(Double timeSaved, long firstLimitTime) {
-        long totalTime;
+        long driveTime;
         if (firstLimitTime == 0) {
-            totalTime = 0; //User stopped MainService before 1st speed limit was received
+            driveTime = 0; //User stopped MainService before 1st speed limit was received
         } else if (stopTime == 0) {
-            totalTime = System.nanoTime() - firstLimitTime; //Service shutting down despite user not clicking the stop button in MainActivity
+            driveTime = System.nanoTime() - firstLimitTime; //Service shutting down despite user not clicking the stop button in MainActivity
         } else {
-            totalTime = stopTime - firstLimitTime;
+            driveTime = stopTime - firstLimitTime;
         }
 
         GregorianCalendar now = new GregorianCalendar();
@@ -263,35 +263,35 @@ public class MainService extends Service implements StatsCalculator.Callback {
         Double sessionTimeSavedDelta = timeSaved - Prefs.getSessionTimeSaved(this);
 
         Prefs.setSessionTimeSaved(this, timeSaved);
-        Prefs.setSessionTimeTotal(this, totalTime + Prefs.getSessionTimeTotal(this));
+        Prefs.setSessionDriveTime(this, driveTime + Prefs.getSessionDriveTime(this));
 
         //redundant cast to int to suppress false positive IDE error
         if (Prefs.getTimeSavedWeekNum(this) != (int) now.get(Calendar.WEEK_OF_YEAR)) {
             Prefs.setTimeSavedWeekNum(this, now.get(Calendar.WEEK_OF_YEAR));
             Prefs.setTimeSavedWeek(this, sessionTimeSavedDelta);
-            Prefs.setTimeTotalWeek(this, totalTime);
+            Prefs.setDriveTimeWeek(this, driveTime);
         } else {
             Prefs.setTimeSavedWeek(this, sessionTimeSavedDelta + Prefs.getTimeSavedWeek(this));
-            Prefs.setTimeTotalWeek(this, totalTime + Prefs.getTimeTotalWeek(this));
+            Prefs.setDriveTimeWeek(this, driveTime + Prefs.getDriveTimeWeek(this));
         }
 
         //Month is zero-indexed. Adding 1 since Prefs returns '0' as the default value if it has not yet been set
         if (Prefs.getTimeSavedMonthNum(this) != (int) now.get(Calendar.MONTH) + 1) {
             Prefs.setTimeSavedMonthNum(this, now.get(Calendar.MONTH) + 1);
             Prefs.setTimeSavedMonth(this, sessionTimeSavedDelta);
-            Prefs.setTimeTotalMonth(this, totalTime);
+            Prefs.setDriveTimeMonth(this, driveTime);
         } else {
             Prefs.setTimeSavedMonth(this, sessionTimeSavedDelta + Prefs.getTimeSavedMonth(this));
-            Prefs.setTimeTotalMonth(this, totalTime + Prefs.getTimeTotalMonth(this));
+            Prefs.setDriveTimeMonth(this, driveTime + Prefs.getDriveTimeMonth(this));
         }
 
         if (Prefs.getTimeSavedYearNum(this) != (int) now.get(Calendar.YEAR)) {
             Prefs.setTimeSavedYearNum(this, now.get(Calendar.YEAR));
             Prefs.setTimeSavedYear(this, sessionTimeSavedDelta);
-            Prefs.setTimeTotalYear(this, totalTime);
+            Prefs.setDriveTimeYear(this, driveTime);
         } else {
             Prefs.setTimeSavedYear(this, sessionTimeSavedDelta + Prefs.getTimeSavedYear(this));
-            Prefs.setTimeTotalYear(this, totalTime + Prefs.getTimeTotalYear(this));
+            Prefs.setDriveTimeYear(this, driveTime + Prefs.getDriveTimeYear(this));
         }
     }
 

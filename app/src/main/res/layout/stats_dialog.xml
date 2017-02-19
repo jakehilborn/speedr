@@ -30,7 +30,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_week_total_time"
+            android:id="@+id/stats_week_drive_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="50:00 - Total drive time"
@@ -38,7 +38,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_week_total_time_no_speed"
+            android:id="@+id/stats_week_drive_time_no_speed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1:00:00 - Time if you did not speed"
@@ -54,7 +54,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_week_ratio"
+            android:id="@+id/stats_week_percent_faster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reached destinations 20% sooner"
@@ -73,7 +73,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_month_total_time"
+            android:id="@+id/stats_month_drive_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="50:00 - Total drive time"
@@ -81,7 +81,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_month_total_time_no_speed"
+            android:id="@+id/stats_month_drive_time_no_speed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1:00:00 - Time if you did not speed"
@@ -97,7 +97,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_month_ratio"
+            android:id="@+id/stats_month_percent_faster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reached destinations 20% sooner"
@@ -116,7 +116,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_year_total_time"
+            android:id="@+id/stats_year_drive_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="50:00 - Total drive time"
@@ -124,7 +124,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_year_total_time_no_speed"
+            android:id="@+id/stats_year_drive_time_no_speed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1:00:00 - Time if you did not speed"
@@ -140,7 +140,7 @@
             />
 
         <TextView
-            android:id="@+id/stats_year_ratio"
+            android:id="@+id/stats_year_percent_faster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reached destinations 20% sooner"

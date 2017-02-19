@@ -55,7 +55,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/total_time"
+                    android:id="@+id/drive_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
@@ -118,7 +118,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/total_time_no_speed"
+                    android:id="@+id/drive_time_no_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"

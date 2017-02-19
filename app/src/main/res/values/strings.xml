@@ -27,7 +27,6 @@
 
     <string name="drive_time">DRIVE TIME</string>
     <string name="percent_faster">FASTER</string>
-    <string name="total_time_versus">vs</string>
     <string name="estimated_time">ESTIMATED TIME</string>
     <string name="without_speeding">WITHOUT SPEEDING</string>
 
@@ -54,7 +53,7 @@
     <string name="stats_this_week">This week</string>
     <string name="stats_this_month">This month</string>
     <string name="stats_this_year">This year</string>
-    <string name="stats_total_drive_time">Total drive time</string>
+    <string name="stats_drive_time">Total drive time</string>
     <string name="stats_time_if_you_did_not_seepd">Time if you did not speed</string>
     <string name="stats_time_saved">Time saved</string>
     <string name="stats_percentage_sooner_start">Reached destinations</string>
