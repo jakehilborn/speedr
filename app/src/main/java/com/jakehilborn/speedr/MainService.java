@@ -218,7 +218,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
                 .setContentTitle(getString(R.string.notification_time) + ":  " + timeSaved)
                 .setContentText(getString(R.string.notification_speed_limit) + ": " + limit + "   |   " + getString(R.string.notification_speed) + ": " + speed);
 
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        if (notificationManager != null) notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     private void checkNetworkDown() {
@@ -298,6 +298,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
         Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onDestroy()");
         persistTimeSaved(statsCalculator.getTimeSaved(), statsCalculator.getFirstLimitTime());
         notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager = null;
         limitFetcher.destroy(this);
         if (googleApiClient != null) googleApiClient.disconnect();
         super.onDestroy();

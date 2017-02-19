@@ -462,7 +462,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void stopMainService() {
-        if (mainService != null) mainService.stopTime = System.nanoTime();
+        if (mainService != null) {
+            mainService.stopTime = System.nanoTime();
+            mainService.setCallback(null);
+        }
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Stopping MainService");
         styleStartStopButton(false);
         finalizeSessionInUI();
