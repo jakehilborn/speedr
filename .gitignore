@@ -16,7 +16,6 @@ bin/
 *.log
 *.DS_Store
 *.jks
-fabric.properties
 
 # GitHub Pages #
 ################
