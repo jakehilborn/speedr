@@ -315,7 +315,7 @@
                 android:gravity="center"
                 android:typeface="normal"
                 android:textStyle="bold"
-                android:textSize="10dp"
+                android:textSize="12dp"
                 android:textColor="@color/pastelRed"
                 android:text="@string/internet_down_notice_text"
                 tools:ignore="SpUsage"
