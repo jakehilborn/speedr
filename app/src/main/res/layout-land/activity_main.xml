@@ -42,7 +42,7 @@
                 android:typeface="sans"
                 android:textStyle="normal"
                 android:textSize="12dp"
-                android:text="@string/time_difference_text"
+                android:text="@string/time_saved_text"
                 tools:ignore="SpUsage"
                 />
 

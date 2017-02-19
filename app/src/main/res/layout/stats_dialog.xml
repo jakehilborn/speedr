@@ -46,10 +46,10 @@
             />
 
         <TextView
-            android:id="@+id/stats_week_time_diff"
+            android:id="@+id/stats_week_time_saved"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10m 00.0s - Time difference"
+            android:text="10m 00.0s - Time saved"
             android:textSize="14sp"
             />
 
@@ -89,10 +89,10 @@
             />
 
         <TextView
-            android:id="@+id/stats_month_time_diff"
+            android:id="@+id/stats_month_time_saved"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10m 00.0s - Time difference"
+            android:text="10m 00.0s - Time saved"
             android:textSize="14sp"
             />
 
@@ -132,10 +132,10 @@
             />
 
         <TextView
-            android:id="@+id/stats_year_time_diff"
+            android:id="@+id/stats_year_time_saved"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10m 00.0s - Time difference"
+            android:text="10m 00.0s - Time saved"
             android:textSize="14sp"
             />
 

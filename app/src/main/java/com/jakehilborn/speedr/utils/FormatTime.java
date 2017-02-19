@@ -14,19 +14,19 @@ public class FormatTime {
     public static String nanosToLongHand(Context context, Double nanos) {
         if (context == null || nanos == null) return null;
 
-        StringBuilder timeDiffString = new StringBuilder(
+        StringBuilder timeSavedString = new StringBuilder(
                 UnitUtils.nanosToSecondsModuloMinutes(nanos) + context.getString(R.string.decimal_symbol) +
                         UnitUtils.nanosTo10thsModuloSeconds(nanos) + context.getString(R.string.second_symbol)
         ); //always show seconds
 
         if (nanos >= UnitUtils.NANO_ONE_MINUTE) {
-            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(nanos) + context.getString(R.string.minute_symbol) + "  ");
+            timeSavedString.insert(0, UnitUtils.nanosToMinutesModuloHours(nanos) + context.getString(R.string.minute_symbol) + "  ");
         }
         if (nanos >= UnitUtils.NANO_ONE_HOUR) {
-            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(nanos) + context.getString(R.string.hour_symbol) + "  ");
+            timeSavedString.insert(0, UnitUtils.nanosToHoursModuloMinutes(nanos) + context.getString(R.string.hour_symbol) + "  ");
         }
 
-        return timeDiffString.toString();
+        return timeSavedString.toString();
     }
 
     //Hours, minutes, seconds, tenths of a second separated by symbols.
@@ -39,18 +39,18 @@ public class FormatTime {
 
         nanos = UnitUtils.roundNanosToNearestSecond(nanos);
 
-        StringBuilder timeDiffString = new StringBuilder(
+        StringBuilder timeSavedString = new StringBuilder(
                 UnitUtils.nanosToSecondsModuloMinutes(nanos) + context.getString(R.string.second_symbol)
         ); //always show seconds
 
         if (nanos >= UnitUtils.NANO_ONE_MINUTE) {
-            timeDiffString.insert(0, UnitUtils.nanosToMinutesModuloHours(nanos) + context.getString(R.string.minute_symbol) + "  ");
+            timeSavedString.insert(0, UnitUtils.nanosToMinutesModuloHours(nanos) + context.getString(R.string.minute_symbol) + "  ");
         }
         if (nanos >= UnitUtils.NANO_ONE_HOUR) {
-            timeDiffString.insert(0, UnitUtils.nanosToHoursModuloMinutes(nanos) + context.getString(R.string.hour_symbol) + "  ");
+            timeSavedString.insert(0, UnitUtils.nanosToHoursModuloMinutes(nanos) + context.getString(R.string.hour_symbol) + "  ");
         }
 
-        return timeDiffString.toString();
+        return timeSavedString.toString();
     }
 
     public static String nanosToShortHand(Context context, Long nanos) {

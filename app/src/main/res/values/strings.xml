@@ -19,7 +19,7 @@
     <string name="gps_disabled_message_4_4up">Please change location mode to <b>Device only</b> or <b>High accuracy</b> in settings.</string>
     <string name="go_to_location_settings_alert_button_text">Go to Location Settings</string>
 
-    <string name="time_difference_text">TIME SAVED</string>
+    <string name="time_saved_text">TIME SAVED</string>
     <string name="hour_symbol">h</string>
     <string name="minute_symbol">m</string>
     <string name="second_symbol">s</string>
@@ -56,7 +56,7 @@
     <string name="stats_this_year">This year</string>
     <string name="stats_total_drive_time">Total drive time</string>
     <string name="stats_time_if_you_did_not_seepd">Time if you did not speed</string>
-    <string name="stats_time_difference">Time saved</string>
+    <string name="stats_time_saved">Time saved</string>
     <string name="stats_percentage_sooner_start">Reached destinations</string>
     <string name="stats_percentage_sooner_end">sooner</string>
 

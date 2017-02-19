@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private boolean useHereMaps;
     private long firstLimitTime;
-    private double curTimeDiff;
+    private double curTimeSaved;
 
     private TextView timeSaved;
 
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     }
 
     private void updateUI(UIData uiData) {
-        String formattedTime = FormatTime.nanosToLongHand(this, uiData.getTimeDiff());
+        String formattedTime = FormatTime.nanosToLongHand(this, uiData.getTimeSaved());
         String stylizedTime = FormatTime.stylizedMainActivity(this, formattedTime);
         timeSaved.setText(Html.fromHtml(stylizedTime));
 
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 uiData.setForceDriveTimeUpdate(true); //First speed limit received, set force to true so we can show the value below
             }
             firstLimitTime = uiData.getFirstLimitTime(); //store value in activity so totalTimeRunnable has access without location updates
-            curTimeDiff = uiData.getTimeDiff(); //store value in activity so totalTimeRunnable has access without location updates
+            curTimeSaved = uiData.getTimeSaved(); //store value in activity so totalTimeRunnable has access without location updates
         }
 
         if (firstLimitTime == 0 && Prefs.getSessionTimeTotal(this) == 0) {
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             }
         }
 
-        int percent = (int) Math.round((curTimeDiff / totalNanos) * 100);
+        int percent = (int) Math.round((curTimeSaved / totalNanos) * 100);
         Spanned percentFasterText = Html.fromHtml("<b>" + percent + "%</b>  " + getString(R.string.percent_faster));
         percentFaster.setText(percentFasterText);
 
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (uiData == null || uiData.isForceDriveTimeUpdate()) {
             String formattedTotalTime = FormatTime.nanosToShortHand(this, totalNanos);
             String stylizedTotalTime = FormatTime.stylizedMainActivity(this, formattedTotalTime);
-            String formattedTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, totalNanos + curTimeDiff);
+            String formattedTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, totalNanos + curTimeSaved);
             String stylizedTotalTimeNoSpeed = FormatTime.stylizedMainActivity(this, formattedTotalTimeNoSpeed);
 
             totalTime.setText(Html.fromHtml(stylizedTotalTime));
@@ -306,15 +306,15 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         UIData uiData;
         if (mainService != null) {
             uiData = mainService.pollUIData();
-        } else { //If service is not running then read the timeDiff from storage
+        } else { //If service is not running then read the timeSaved from storage
             uiData = new UIData();
-            uiData.setTimeDiff(Prefs.getSessionTimeDiff(this));
+            uiData.setTimeSaved(Prefs.getSessionTimeSaved(this));
         }
 
         uiData.setForceDriveTimeUpdate(true);
         updateUI(uiData);
 
-        if (!isMainServiceRunning() && (uiData.getTimeDiff() != 0 || Prefs.getSessionTimeTotal(this) != 0)) { //MainService may not be bound yet so explicitly check if running
+        if (!isMainServiceRunning() && (uiData.getTimeSaved() != 0 || Prefs.getSessionTimeTotal(this) != 0)) { //MainService may not be bound yet so explicitly check if running
             reset.setVisibility(View.VISIBLE);
         }
     }
@@ -323,9 +323,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         UIData uiData;
         if (mainService != null) {
             uiData = mainService.pollUIData();
-        } else { //If MainService was unexpectedly terminated this else block provides null safety and displays most recent timeDiff
+        } else { //If MainService was unexpectedly terminated this else block provides null safety and displays most recent timeSaved
             uiData = new UIData();
-            uiData.setTimeDiff(Prefs.getSessionTimeDiff(this));
+            uiData.setTimeSaved(Prefs.getSessionTimeSaved(this));
         }
 
         uiData.setLimit(null);
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         missingOpenStreetMapLimit.setVisibility(View.INVISIBLE);
         pendingHereActivationNotice.setVisibility(View.GONE);
 
-        if (uiData.getTimeDiff() != 0 || firstLimitTime != 0 || Prefs.getSessionTimeTotal(this) != 0) {
+        if (uiData.getTimeSaved() != 0 || firstLimitTime != 0 || Prefs.getSessionTimeTotal(this) != 0) {
             reset.setVisibility(View.VISIBLE);
         } else {
             reset.setVisibility(View.INVISIBLE);
@@ -371,62 +371,62 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         //week
         String statsWeekTotalTime = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalWeek(this));
-        String statsWeekTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalWeek(this) + Prefs.getTimeDiffWeek(this));
-        String statsWeekTimeDiff = FormatTime.nanosToLongHand(this, Prefs.getTimeDiffWeek(this));
+        String statsWeekTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalWeek(this) + Prefs.getTimeSavedWeek(this));
+        String statsWeekTimeSaved = FormatTime.nanosToLongHand(this, Prefs.getTimeSavedWeek(this));
 
         Spanned statsWeekTotalTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTotalTime)
                 + " - " + this.getString(R.string.stats_total_drive_time));
         Spanned statsWeekTotalTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTotalTimeNoSpeed)
                 + " - " + getString(R.string.stats_time_if_you_did_not_seepd));
-        Spanned statsWeekTimeDiffStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTimeDiff)
-                + " - " + this.getString(R.string.stats_time_difference));
+        Spanned statsWeekTimeSavedStylized = Html.fromHtml(FormatTime.stylizedStats(statsWeekTimeSaved)
+                + " - " + this.getString(R.string.stats_time_saved));
         Spanned statsWeekRatioStylized = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round((Prefs.getTimeDiffWeek(this) / Prefs.getTimeTotalWeek(this)) * 100) + "%</b> "
+                + Math.round((Prefs.getTimeSavedWeek(this) / Prefs.getTimeTotalWeek(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
         ((TextView) dialogView.findViewById(R.id.stats_week_total_time)).setText(statsWeekTotalTimeStylized);
         ((TextView) dialogView.findViewById(R.id.stats_week_total_time_no_speed)).setText(statsWeekTotalTimeNoSpeedStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_week_time_diff)).setText(statsWeekTimeDiffStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_week_time_saved)).setText(statsWeekTimeSavedStylized);
         ((TextView) dialogView.findViewById(R.id.stats_week_ratio)).setText(statsWeekRatioStylized);
 
         //month
         String statsMonthTotalTime = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalMonth(this));
-        String statsMonthTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalMonth(this) + Prefs.getTimeDiffMonth(this));
-        String statsMonthTimeDiff = FormatTime.nanosToLongHand(this, Prefs.getTimeDiffMonth(this));
+        String statsMonthTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalMonth(this) + Prefs.getTimeSavedMonth(this));
+        String statsMonthTimeSaved = FormatTime.nanosToLongHand(this, Prefs.getTimeSavedMonth(this));
 
         Spanned statsMonthTotalTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTotalTime)
                 + " - " + this.getString(R.string.stats_total_drive_time));
         Spanned statsMonthTotalTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTotalTimeNoSpeed)
                 + " - " + getString(R.string.stats_time_if_you_did_not_seepd));
-        Spanned statsMonthTimeDiffStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTimeDiff)
-                + " - " + this.getString(R.string.stats_time_difference));
+        Spanned statsMonthTimeSavedStylized = Html.fromHtml(FormatTime.stylizedStats(statsMonthTimeSaved)
+                + " - " + this.getString(R.string.stats_time_saved));
         Spanned statsMonthRatioStylized = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round((Prefs.getTimeDiffMonth(this) / Prefs.getTimeTotalMonth(this)) * 100) + "%</b> "
+                + Math.round((Prefs.getTimeSavedMonth(this) / Prefs.getTimeTotalMonth(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
         ((TextView) dialogView.findViewById(R.id.stats_month_total_time)).setText(statsMonthTotalTimeStylized);
         ((TextView) dialogView.findViewById(R.id.stats_month_total_time_no_speed)).setText(statsMonthTotalTimeNoSpeedStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_month_time_diff)).setText(statsMonthTimeDiffStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_month_time_saved)).setText(statsMonthTimeSavedStylized);
         ((TextView) dialogView.findViewById(R.id.stats_month_ratio)).setText(statsMonthRatioStylized);
 
         //year
         String statsYearTotalTime = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalYear(this));
-        String statsYearTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalYear(this) + Prefs.getTimeDiffYear(this));
-        String statsYearTimeDiff = FormatTime.nanosToLongHand(this, Prefs.getTimeDiffYear(this));
+        String statsYearTotalTimeNoSpeed = FormatTime.nanosToShortHand(this, Prefs.getTimeTotalYear(this) + Prefs.getTimeSavedYear(this));
+        String statsYearTimeSaved = FormatTime.nanosToLongHand(this, Prefs.getTimeSavedYear(this));
 
         Spanned statsYearTotalTimeStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTotalTime)
                 + " - " + this.getString(R.string.stats_total_drive_time));
         Spanned statsYearTotalTimeNoSpeedStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTotalTimeNoSpeed)
                 + " - " + getString(R.string.stats_time_if_you_did_not_seepd));
-        Spanned statsYearTimeDiffStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTimeDiff)
-                + " - " + this.getString(R.string.stats_time_difference));
+        Spanned statsYearTimeSavedStylized = Html.fromHtml(FormatTime.stylizedStats(statsYearTimeSaved)
+                + " - " + this.getString(R.string.stats_time_saved));
         Spanned statsYearRatioStylized = Html.fromHtml(this.getString(R.string.stats_percentage_sooner_start) + " <b>"
-                + Math.round((Prefs.getTimeDiffYear(this) / Prefs.getTimeTotalYear(this)) * 100) + "%</b> "
+                + Math.round((Prefs.getTimeSavedYear(this) / Prefs.getTimeTotalYear(this)) * 100) + "%</b> "
                 + this.getString(R.string.stats_percentage_sooner_end));
 
         ((TextView) dialogView.findViewById(R.id.stats_year_total_time)).setText(statsYearTotalTimeStylized);
         ((TextView) dialogView.findViewById(R.id.stats_year_total_time_no_speed)).setText(statsYearTotalTimeNoSpeedStylized);
-        ((TextView) dialogView.findViewById(R.id.stats_year_time_diff)).setText(statsYearTimeDiffStylized);
+        ((TextView) dialogView.findViewById(R.id.stats_year_time_saved)).setText(statsYearTimeSavedStylized);
         ((TextView) dialogView.findViewById(R.id.stats_year_ratio)).setText(statsYearRatioStylized);
 
         new AlertDialog.Builder(this)
@@ -436,9 +436,9 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 .setPositiveButton(R.string.close_dialog_button, null)
                 .setNeutralButton("clear week", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        Prefs.setTimeDiffWeek(MainActivity.this, 0D);
+                        Prefs.setTimeSavedWeek(MainActivity.this, 0D);
                         Prefs.setTimeTotalWeek(MainActivity.this, 0);
-                        Prefs.setTimeDiffWeekNum(MainActivity.this, 0);
+                        Prefs.setTimeSavedWeekNum(MainActivity.this, 0);
                     }
                 })
                 .show();
@@ -524,11 +524,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     public void resetSessionOnClick(View view) {
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "resetSessionOnClick()");
 
-        Prefs.setSessionTimeDiff(this, 0D);
+        Prefs.setSessionTimeSaved(this, 0D);
         Prefs.setSessionTimeTotal(this, 0);
 
         UIData uiData = new UIData();
-        uiData.setTimeDiff(0D);
+        uiData.setTimeSaved(0D);
         updateUI(uiData);
 
         reset.setVisibility(View.INVISIBLE);

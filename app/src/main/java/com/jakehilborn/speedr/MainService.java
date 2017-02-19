@@ -98,7 +98,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
 
         statsCalculator = new StatsCalculator();
         statsCalculator.setCallback(this);
-        statsCalculator.setTimeDiff(Prefs.getSessionTimeDiff(this));
+        statsCalculator.setTimeSaved(Prefs.getSessionTimeSaved(this));
         limitFetcher = new LimitFetcher(statsCalculator);
 
         locationListener = new LocationListener() {
@@ -144,7 +144,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
 
     private void handleLocationChange(Location location) {
         statsCalculator.setLocation(location);
-        statsCalculator.calcTimeDiff();
+        statsCalculator.calcTimeSaved();
 
         boolean forceFetch = false;
         if (statsCalculator.isLimitStale() || forceFetch) {
@@ -176,7 +176,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
             uiData.setSpeed(UnitUtils.msToMph(statsCalculator.getSpeed()));
             uiData.setLimit(UnitUtils.msToMphRoundToFive(statsCalculator.getLimit()));
         }
-        uiData.setTimeDiff(statsCalculator.getTimeDiff());
+        uiData.setTimeSaved(statsCalculator.getTimeSaved());
         uiData.setFirstLimitTime(statsCalculator.getFirstLimitTime());
         uiData.setNetworkDown(statsCalculator.isNetworkDown());
 
@@ -196,7 +196,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
     }
 
     private void updateNotification(UIData uiData) {
-        String timeDiff = FormatTime.nanosToLongHand(this, uiData.getTimeDiff());
+        String timeSaved = FormatTime.nanosToLongHand(this, uiData.getTimeSaved());
 
         String speed = "  "; //Padding to prevent values from shifting too much in notification
         if (uiData.getSpeed() == null) {
@@ -217,7 +217,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
         }
 
         notificationBuilder
-                .setContentTitle(getString(R.string.notification_time) + ":  " + timeDiff)
+                .setContentTitle(getString(R.string.notification_time) + ":  " + timeSaved)
                 .setContentText(getString(R.string.notification_speed_limit) + ": " + limit + "   |   " + getString(R.string.notification_speed) + ": " + speed);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
@@ -248,7 +248,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
         }.start();
     }
 
-    private void persistTimeDiff(Double timeDiff, long firstLimitTime) {
+    private void persistTimeSaved(Double timeSaved, long firstLimitTime) {
         long totalTime;
         if (firstLimitTime == 0) {
             totalTime = 0; //User stopped MainService before 1st speed limit was received
@@ -260,37 +260,37 @@ public class MainService extends Service implements StatsCalculator.Callback {
 
         GregorianCalendar now = new GregorianCalendar();
 
-        Double sessionTimeDiffDelta = timeDiff - Prefs.getSessionTimeDiff(this);
+        Double sessionTimeSavedDelta = timeSaved - Prefs.getSessionTimeSaved(this);
 
-        Prefs.setSessionTimeDiff(this, timeDiff);
+        Prefs.setSessionTimeSaved(this, timeSaved);
         Prefs.setSessionTimeTotal(this, totalTime + Prefs.getSessionTimeTotal(this));
 
         //redundant cast to int to suppress false positive IDE error
-        if (Prefs.getTimeDiffWeekNum(this) != (int) now.get(Calendar.WEEK_OF_YEAR)) {
-            Prefs.setTimeDiffWeekNum(this, now.get(Calendar.WEEK_OF_YEAR));
-            Prefs.setTimeDiffWeek(this, sessionTimeDiffDelta);
+        if (Prefs.getTimeSavedWeekNum(this) != (int) now.get(Calendar.WEEK_OF_YEAR)) {
+            Prefs.setTimeSavedWeekNum(this, now.get(Calendar.WEEK_OF_YEAR));
+            Prefs.setTimeSavedWeek(this, sessionTimeSavedDelta);
             Prefs.setTimeTotalWeek(this, totalTime);
         } else {
-            Prefs.setTimeDiffWeek(this, sessionTimeDiffDelta + Prefs.getTimeDiffWeek(this));
+            Prefs.setTimeSavedWeek(this, sessionTimeSavedDelta + Prefs.getTimeSavedWeek(this));
             Prefs.setTimeTotalWeek(this, totalTime + Prefs.getTimeTotalWeek(this));
         }
 
         //Month is zero-indexed. Adding 1 since Prefs returns '0' as the default value if it has not yet been set
-        if (Prefs.getTimeDiffMonthNum(this) != (int) now.get(Calendar.MONTH) + 1) {
-            Prefs.setTimeDiffMonthNum(this, now.get(Calendar.MONTH) + 1);
-            Prefs.setTimeDiffMonth(this, sessionTimeDiffDelta);
+        if (Prefs.getTimeSavedMonthNum(this) != (int) now.get(Calendar.MONTH) + 1) {
+            Prefs.setTimeSavedMonthNum(this, now.get(Calendar.MONTH) + 1);
+            Prefs.setTimeSavedMonth(this, sessionTimeSavedDelta);
             Prefs.setTimeTotalMonth(this, totalTime);
         } else {
-            Prefs.setTimeDiffMonth(this, sessionTimeDiffDelta + Prefs.getTimeDiffMonth(this));
+            Prefs.setTimeSavedMonth(this, sessionTimeSavedDelta + Prefs.getTimeSavedMonth(this));
             Prefs.setTimeTotalMonth(this, totalTime + Prefs.getTimeTotalMonth(this));
         }
 
-        if (Prefs.getTimeDiffYearNum(this) != (int) now.get(Calendar.YEAR)) {
-            Prefs.setTimeDiffYearNum(this, now.get(Calendar.YEAR));
-            Prefs.setTimeDiffYear(this, sessionTimeDiffDelta);
+        if (Prefs.getTimeSavedYearNum(this) != (int) now.get(Calendar.YEAR)) {
+            Prefs.setTimeSavedYearNum(this, now.get(Calendar.YEAR));
+            Prefs.setTimeSavedYear(this, sessionTimeSavedDelta);
             Prefs.setTimeTotalYear(this, totalTime);
         } else {
-            Prefs.setTimeDiffYear(this, sessionTimeDiffDelta + Prefs.getTimeDiffYear(this));
+            Prefs.setTimeSavedYear(this, sessionTimeSavedDelta + Prefs.getTimeSavedYear(this));
             Prefs.setTimeTotalYear(this, totalTime + Prefs.getTimeTotalYear(this));
         }
     }
@@ -298,7 +298,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
     @Override
     public void onDestroy() {
         Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "onDestroy()");
-        persistTimeDiff(statsCalculator.getTimeDiff(), statsCalculator.getFirstLimitTime());
+        persistTimeSaved(statsCalculator.getTimeSaved(), statsCalculator.getFirstLimitTime());
         notificationManager.cancel(NOTIFICATION_ID);
         limitFetcher.destroy(this);
         if (googleApiClient != null) googleApiClient.disconnect();

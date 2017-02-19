@@ -20,7 +20,7 @@ public class StatsCalculator {
     private boolean networkDown;
     private long prevNetworkCheckTime;
 
-    private double timeDiff;
+    private double timeSaved;
 
     public interface Callback {
         void handleNetworkUpdate();
@@ -102,15 +102,15 @@ public class StatsCalculator {
         callback.handleNetworkUpdate();
     }
 
-    public double getTimeDiff() {
-        return timeDiff;
+    public double getTimeSaved() {
+        return timeSaved;
     }
 
-    public void setTimeDiff(double timeDiff) {
-        this.timeDiff = timeDiff;
+    public void setTimeSaved(double timeSaved) {
+        this.timeSaved = timeSaved;
     }
 
-    public void calcTimeDiff() {
+    public void calcTimeSaved() {
         if (prevLimitTime == 0 //Limit data not available yet
             || prevLocation == null //Less than 2 speed data points have been captured
             || limit == null
@@ -119,6 +119,6 @@ public class StatsCalculator {
         double currentDiff = ((location.getElapsedRealtimeNanos() - prevLocation.getElapsedRealtimeNanos())
                 * (location.getSpeed() - limit)) / limit;
 
-        if (currentDiff > 0) timeDiff += currentDiff;
+        if (currentDiff > 0) timeSaved += currentDiff;
     }
 }

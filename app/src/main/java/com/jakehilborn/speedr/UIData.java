@@ -3,7 +3,7 @@ package com.jakehilborn.speedr;
 public class UIData {
     private Integer speed;
     private Integer limit;
-    private Double timeDiff; //nanoseconds
+    private Double timeSaved; //nanoseconds
     private long firstLimitTime;
     private boolean networkDown;
 
@@ -27,12 +27,12 @@ public class UIData {
         this.limit = limit;
     }
 
-    public Double getTimeDiff() {
-        return timeDiff;
+    public Double getTimeSaved() {
+        return timeSaved;
     }
 
-    public void setTimeDiff(Double timeDiff) {
-        this.timeDiff = timeDiff;
+    public void setTimeSaved(Double timeSaved) {
+        this.timeSaved = timeSaved;
     }
 
     public long getFirstLimitTime() {
