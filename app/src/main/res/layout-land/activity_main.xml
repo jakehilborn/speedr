@@ -111,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="32dp"
                         android:layout_alignParentEnd="true"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         android:background="@drawable/reset"
                         android:contentDescription="@string/content_description_reset"
                         />
