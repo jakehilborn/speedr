@@ -3,6 +3,7 @@ package com.jakehilborn.speedr.overpass;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.jakehilborn.speedr.LimitFetcher;
 import com.jakehilborn.speedr.utils.ErrorReporter;
 import com.jakehilborn.speedr.utils.UnitUtils;
 
@@ -38,7 +39,7 @@ public class OverpassInterceptor implements Interceptor {
                 .addHeader("Connection", "keep-alive")
                 .addHeader("DNT", "1")
                 .addHeader("Upgrade-Insecure-Requests", "1")
-                .addHeader("User-Agent", "currentlydebugging") //replace this with name + version or something
+                .addHeader("User-Agent", LimitFetcher.USER_AGENT)
                 .build();
 
         overpassServer.setDelay(System.nanoTime());

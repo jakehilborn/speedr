@@ -50,6 +50,8 @@ public class LimitFetcher {
     private HereMapsManager hereMapsManager;
     private Toast hereMapsError;
 
+    public static final String USER_AGENT = "Speedr/" + BuildConfig.VERSION_NAME;
+
     public LimitFetcher(StatsCalculator statsCalculator) {
         buildOverpassService();
         overpassManager = new OverpassManager(statsCalculator);
@@ -81,7 +83,7 @@ public class LimitFetcher {
         Gson gson = new GsonBuilder().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://route.st.nlp.nokia.com/routing/7.2/")
+                .baseUrl("https://route.api.here.com/routing/7.2/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
@@ -131,7 +133,7 @@ public class LimitFetcher {
         String appCode = Prefs.getHereAppCode(context);
         String waypoint = lat + "," + lon;
 
-        hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint)
+        hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint, USER_AGENT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleSubscriber<HereMapsResponse>() {

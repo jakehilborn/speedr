@@ -3,6 +3,7 @@ package com.jakehilborn.speedr.heremaps;
 import com.jakehilborn.speedr.heremaps.deserial.HereMapsResponse;
 
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Query;
 import rx.Single;
 
@@ -13,5 +14,6 @@ public interface HereMapsService {
             @Query("app_id") String appId,
             @Query("app_code") String appCode,
             @Query("linkattributes") String linkattributes,
-            @Query("waypoint") String waypoint);
+            @Query("waypoint") String waypoint,
+            @Header("User-Agent") String userAgent);
 }
