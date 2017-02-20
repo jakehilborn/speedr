@@ -1,2 +1,2 @@
-# speedr landing page
-jakehilborn.github.io/speedr
+[jakehilborn.github.io/speedr](https://jakehilborn.github.io/speedr/)
+-
