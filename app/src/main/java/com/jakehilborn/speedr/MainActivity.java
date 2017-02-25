@@ -445,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
     private void startMainService() {
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService start chain");
-        if (checkPlayServicesPrereq() && requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq()) {
+        if (checkPlayServicesPrereq() && hasAcceptedTerms() && requestLocationPermission() && checkGPSPrereq() && checkNetworkPrereq()) {
             styleStartStopButton(true);
             reset.setVisibility(View.INVISIBLE);
 
@@ -539,6 +539,32 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 .show();
 
         Answers.getInstance().logCustom(new CustomEvent("Viewed missing OpenStreetMaps limit"));
+    }
+
+    private boolean hasAcceptedTerms() {
+        if (Prefs.isTermsAccepted(this)) return true;
+
+        String localizedTerms = getString(R.string.speedr_terms_content);
+        String englishTerms = "Speedr is for informational purposes only. Its function is to quantify how much time, or how little time, one saves when speeding in their car to help the user decide if speeding is worth the safety, monetary, and legal risks. Speeding is illegal and dangerous. By accepting these terms you absolve the Speedr developers, speed limit providers, and all other parties of any responsibility for accidents, legal consequences, and any and all other outcomes. The data presented by Speedr is not guaranteed to be accurate. Outdated/incorrect speed limit data and innaccurate GPS sensors may produce faulty data. Pay attention to the posted speed limits of roads as Speedr may not present accurate speed limits and pay attention to your vehicles' speedometer as Speedr may not present accurate current speed readings.";
+
+        //These terms are important. Always show original in addition to localized terms since we can't rely on translators to correctly word this.
+        if (!localizedTerms.equals(englishTerms)) {
+            localizedTerms += "\n\n" + englishTerms;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.speedr_terms_title)
+                .setMessage(localizedTerms)
+                .setCancelable(true)
+                .setPositiveButton(R.string.accept_terms_button_text, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        Prefs.setTermsAccepted(MainActivity.this, true);
+                        startMainService(); //Restart startMainService() chain
+                    }})
+                .setNegativeButton(R.string.reject_terms_button_text, null)
+                .show();
+
+        return false;
     }
 
     private boolean requestLocationPermission() {

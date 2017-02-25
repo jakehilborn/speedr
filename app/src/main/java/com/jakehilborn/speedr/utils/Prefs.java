@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 public class Prefs {
 
     private static final String USE_KPH = "use_kph";
+    private static final String TERMS_ACCEPTED = "terms_accepted";
     private static final String HERE_SUGGESTION_ACKNOWLEDGED = "here_suggestion_acknowledged";
     private static final String HERE_APP_ID = "here_app_id";
     private static final String HERE_APP_CODE = "here_app_code";
@@ -40,6 +41,14 @@ public class Prefs {
 
     public static boolean isUseKph(Context context) {
         return prefs(context).getBoolean(USE_KPH, false);
+    }
+
+    public static void setTermsAccepted(Context context, boolean isTermsAccepted) {
+        editPrefs(context).putBoolean(TERMS_ACCEPTED, isTermsAccepted).apply();
+    }
+
+    public static boolean isTermsAccepted(Context context) {
+        return prefs(context).getBoolean(TERMS_ACCEPTED, false);
     }
 
     public static void setHereSuggestionAcknowledged(Context context, boolean hereSuggestionAcknowledged) {

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Speedr</string>
 
+    <string name="speedr_terms_title">Speedr Terms</string>
+    <string name="speedr_terms_content">Speedr is for informational purposes only. Its function is to quantify how much time, or how little time, one saves when speeding in their car to help the user decide if speeding is worth the safety, monetary, and legal risks. Speeding is illegal and dangerous. By accepting these terms you absolve the Speedr developers, speed limit providers, and all other parties of any responsibility for accidents, legal consequences, and any and all other outcomes. The data presented by Speedr is not guaranteed to be accurate. Outdated/incorrect speed limit data and innaccurate GPS sensors may produce faulty data. Pay attention to the posted speed limits of roads as Speedr may not present accurate speed limits and pay attention to your vehicles\' speedometer as Speedr may not present accurate current speed readings.</string>
+    <string name="accept_terms_button_text">Accept Terms</string>
+    <string name="reject_terms_button_text">Reject Terms</string>
+
     <!-- MainActivity -->
     <string name="no_gps_permission_toast">Location permission needed to track driving speed</string>
     <string name="no_network_toast">Internet needed to get speed limit data. Enable wifi or cellular data.</string>
@@ -95,8 +100,6 @@
     <string name="enabled_here_maps_toast">Enabled HERE Maps</string>
 
     <string name="here_maps_terms_url">"https://legal.here.com/en/terms/serviceterms/us/"</string>
-    <string name="accept_here_maps_terms_alert_button_text">Accept Terms</string>
-    <string name="reject_here_maps_terms_alert_button_text">Reject Terms</string>
 
     <string name="open_street_map_section">OpenStreetMap</string>
     <string name="check_open_street_map_coverage_button_text">Check OpenStreetMap coverage</string>
