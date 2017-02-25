@@ -117,7 +117,13 @@ public class MainService extends Service implements StatsCalculator.Callback {
                         locationRequest.setInterval(1000); //Request GPS location every 1 second
                         locationRequest.setFastestInterval(500);
                         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationListener);
+                        try {
+                            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationListener);
+                        } catch (IllegalStateException e) {
+                            Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "Play Services illegal state, retrying connection");
+                            Crashlytics.logException(e);
+                            googleApiClient.connect(); //Handling common error "GoogleApiClient is not connected yet"
+                        }
                         Crashlytics.log(Log.INFO, MainService.class.getSimpleName(), "Location connected");
                     }
 
