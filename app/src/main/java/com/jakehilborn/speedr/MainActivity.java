@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         @Override //Only called on service crashes, not called onDestroy or on unbindService
         public void onServiceDisconnected(ComponentName className) {
-            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService disconnected");
+            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "MainService unexpectedly disconnected");
             mainService = null;
         }
     };

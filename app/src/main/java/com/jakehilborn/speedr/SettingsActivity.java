@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onCreate()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "onCreate()");
         setContentView(R.layout.activity_settings);
 
         appIdField = (EditText) findViewById(R.id.here_app_id);
@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
                 devInfoOnClick();
                 return true;
             case android.R.id.home:
-                Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "AppBar Home pressed");
+                Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "AppBar Home pressed");
                 if (newHereCredentials()) {
                     return true;
                 } else {
@@ -182,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void showHereMapsTerms() {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "showHereMapsTerms()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "showHereMapsTerms()");
 
         WebView webView = new WebView(this);
         webView.loadUrl(getString(R.string.here_maps_terms_url));
@@ -201,13 +201,13 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void launchWebpage(String uri) {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "launchWebpage()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "launchWebpage()");
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(intent);
     }
 
     public void hereMapsCreateAccountOnClick(View view) {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "hereMapsCreateAccountOnClick()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "hereMapsCreateAccountOnClick()");
 
         final View dialogView = getLayoutInflater().inflate(R.layout.here_account_dialog, null);
 
@@ -263,7 +263,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void showHereMapsCreateAccountHelpDialog() {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "showHereMapsCreateAccountHelpDialog()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "showHereMapsCreateAccountHelpDialog()");
 
         final View dialogView = getLayoutInflater().inflate(R.layout.here_account_help_dialog, null);
 
@@ -311,7 +311,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void openStreetMapCoverageOnClick(View view) {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "openStreetMapCoverageOnClick()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "openStreetMapCoverageOnClick()");
 
         final String mapOfUnitedStates = "http://product.itoworld.com/map/124?lat=37.77557&lon=-100.44588&zoom=4";
 
@@ -321,7 +321,7 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         @SuppressWarnings("MissingPermission")
                         public void onConnected(Bundle bundle) {
-                            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Coverage map with location");
+                            Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "Coverage map with location");
 
                             String uri;
                             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
@@ -343,7 +343,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             googleApiClient.connect();
         } else {
-            Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Coverage map without location");
+            Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "Coverage map without location");
             launchWebpage(mapOfUnitedStates);
         }
 
@@ -356,7 +356,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void privacyAndTermsOnClick(View view) {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "privacyAndTermsOnClick()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "privacyAndTermsOnClick()");
 
         String content = getString(R.string.privacy_policy_content).replace("HERE_TERMS_PLACEHOLDER", getString(R.string.here_maps_terms_url));
 
@@ -413,7 +413,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onBackPressed()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "onBackPressed()");
 
         if (!newHereCredentials()) {
             super.onBackPressed();
@@ -422,7 +422,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onPause()");
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "onPause()");
         saveHereCredsIfChanged();
         Prefs.setUseKph(this, (speedUnitSpinner.getSelectedItemPosition() == 1)); //0 is mph, 1 is km/h
         emptyCredentials.cancel();
