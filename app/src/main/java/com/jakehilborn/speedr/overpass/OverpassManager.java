@@ -1,5 +1,8 @@
 package com.jakehilborn.speedr.overpass;
 
+import android.util.Log;
+
+import com.crashlytics.android.Crashlytics;
 import com.jakehilborn.speedr.StatsCalculator;
 import com.jakehilborn.speedr.overpass.deserial.Element;
 import com.jakehilborn.speedr.overpass.deserial.OverpassResponse;
@@ -86,8 +89,15 @@ public class OverpassManager {
     private Double parseLimit(String limit) {
         if (limit == null || limit.isEmpty()) return null;
 
-        //Overpass maxspeed uses whole numbers. Example limit: "35 mph"
-        Integer num = Integer.parseInt(limit.replaceAll("[^0-9]", ""));
+        Integer num;
+        try {
+            //Overpass maxspeed uses whole numbers. Example limit: "35 mph"
+            num = Integer.parseInt(limit.replaceAll("[^0-9]", "")); //remove all non-digit characters
+        } catch (NumberFormatException e) {
+            Crashlytics.log(Log.ERROR, OverpassManager.class.getSimpleName(), "Limit missing digits: " + limit);
+            Crashlytics.logException(e);
+            return null;
+        }
 
         if (limit.contains("mph")) {
             return UnitUtils.mphToMs(num);
