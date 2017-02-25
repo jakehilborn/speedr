@@ -20,11 +20,13 @@ public class OverpassInterceptor implements Interceptor {
     private Server DE; //Primary
     private Server RU; //Primary
     private Server FR; //Secondary
+    private Server COM; //Secondary - Thank you to Daniel Ciao for letting me use the personal server he set up for Velociraptor: https://github.com/plusCubed/velociraptor
 
     public OverpassInterceptor() {
         DE = new Server("https://overpass-api.de/api/interpreter");
         RU = new Server("http://overpass.osm.rambler.ru/cgi/interpreter");
         FR = new Server("https://api.openstreetmap.fr/oapi/interpreter");
+        COM = new Server("http://overpass.pluscubed.com/api/interpreter");
     }
 
     @Override
@@ -81,7 +83,6 @@ public class OverpassInterceptor implements Interceptor {
     //the last 5 stored latencies for the slower server. If both DE and RU have been penalized due to
     //slowness/errors then use the FR server.
     private Server chooseServer() {
-
         if (DE.getDelay() <= System.nanoTime() || RU.getDelay() <= System.nanoTime()) { //Use primary
             if (DE.getLatency() == 0 || RU.getLatency() == 0) {
               //Latencies can't be compared, use return value below.
@@ -96,12 +97,12 @@ public class OverpassInterceptor implements Interceptor {
             }
 
             return DE.getDelay() <= RU.getDelay() ? DE : RU;
-        } else { //Use secondary
-            if (DE.getDelay() <= RU.getDelay()) {
-                return FR.getDelay() <= DE.getDelay() ? FR : DE;
-            } else {
-                return FR.getDelay() <= RU.getDelay() ? FR : RU;
-            }
+        } else { //Use whichever server has been penalized least recently, this is a secondary server in most cases
+            Server leastDelayed = COM;
+            if (DE.getDelay() <= leastDelayed.getDelay()) leastDelayed = DE;
+            if (RU.getDelay() <= leastDelayed.getDelay()) leastDelayed = RU;
+            if (FR.getDelay() <= leastDelayed.getDelay()) leastDelayed = FR;
+            return leastDelayed;
         }
     }
 }
