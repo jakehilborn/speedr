@@ -81,7 +81,7 @@ public class OverpassInterceptor implements Interceptor {
     //Round robin between primary servers DE and RU. However, if either DE or RU is 5 times slower
     //than the other then use the faster of DE,RU and don't retry the slow one for 60s. We also clear
     //the last 5 stored latencies for the slower server. If both DE and RU have been penalized due to
-    //slowness/errors then use the FR server.
+    //slowness/errors then use whichever server has the least recent penalty.
     private Server chooseServer() {
         if (DE.getDelay() <= System.nanoTime() || RU.getDelay() <= System.nanoTime()) { //Use primary
             if (DE.getLatency() == 0 || RU.getLatency() == 0) {
