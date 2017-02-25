@@ -693,7 +693,14 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         poweredByHereMapsToast.cancel();
 
         if (driveTimeHandler != null) driveTimeHandler.removeCallbacks(driveTimeRunnable);
-        if (mainService != null) unbindService(mainServiceConn);
+
+        try {
+            if (mainService != null) unbindService(mainServiceConn);
+        } catch (IllegalArgumentException e) {
+            Crashlytics.log(Log.ERROR, MainActivity.class.getSimpleName(), "Unexpected MainService unbind error");
+            Crashlytics.logException(e);
+        }
+
         if (googleApiClient != null) googleApiClient.disconnect();
 
         super.onStop();

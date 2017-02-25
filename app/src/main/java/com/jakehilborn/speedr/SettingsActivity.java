@@ -90,6 +90,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "onStart()");
         String versionString = getString(R.string.version_text) + " " + BuildConfig.VERSION_NAME;
         version.setText(versionString);
         super.onStart();
