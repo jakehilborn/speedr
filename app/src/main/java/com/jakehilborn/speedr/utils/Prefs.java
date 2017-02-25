@@ -15,6 +15,7 @@ public class Prefs {
     private static final String HERE_MAPS_TERMS_ACCEPTED = "here_maps_terms_accepted";
     private static final String TIME_OF_HERE_CREDS = "time_of_here_creds";
     private static final String PENDING_HERE_ACTIVATION = "pending_here_activation";
+    private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String SESSION_TIME_SAVED = "session_time_saved";
     private static final String SESSION_DRIVE_TIME = "session_drive_time";
     private static final String TIME_SAVED_WEEK = "time_saved_week";
@@ -105,6 +106,14 @@ public class Prefs {
 
     public static boolean isPendingHereActivation(Context context) {
         return prefs(context).getBoolean(PENDING_HERE_ACTIVATION, false);
+    }
+
+    public static void setKeepScreenOn(Context context, boolean isKeepScreenOn) {
+        editPrefs(context).putBoolean(KEEP_SCREEN_ON, isKeepScreenOn).apply();
+    }
+
+    public static boolean isKeepScreenOn(Context context) {
+        return prefs(context).getBoolean(KEEP_SCREEN_ON, false);
     }
 
     public static void setSessionTimeSaved(Context context, Double timeSaved) {

@@ -264,6 +264,44 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
+                android:src="@drawable/screen_on"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/keep_screen_on_switch_text"
+                android:textSize="16sp"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/screen_on_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/privacy_policy_terms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

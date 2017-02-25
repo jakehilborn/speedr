@@ -115,6 +115,8 @@
         <item>@string/kmh</item>
     </string-array>
 
+    <string name="keep_screen_on_switch_text">Keep screen on</string>
+
     <string name="privacy_policy_terms_and_conditions">Privacy Policy / Terms and Conditions</string>
     <string name="privacy_policy_title">Speedr Privacy Policy</string>
     <string name="privacy_policy_content"><![CDATA[

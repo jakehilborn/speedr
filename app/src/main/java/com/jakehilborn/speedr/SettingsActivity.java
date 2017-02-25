@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -44,8 +45,10 @@ public class SettingsActivity extends AppCompatActivity {
     private AppCompatButton hereMapsButton;
     private AppCompatButton openStreetMapButton;
     private Spinner speedUnitSpinner;
-    private GoogleApiClient googleApiClient;
+    private SwitchCompat keepScreenOnSwitch;
     private TextView version;
+
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         speedUnitSpinner = (Spinner) findViewById(R.id.speed_unit);
         speedUnitSpinner.setSelection(Prefs.isUseKph(this) ? 1 : 0); //defaults to mph - 0 is mph, 1 is km/h
+
+        keepScreenOnSwitch = (SwitchCompat) findViewById(R.id.screen_on_switch);
+        keepScreenOnSwitch.setChecked(Prefs.isKeepScreenOn(this));
 
         version = (TextView) findViewById(R.id.version_button);
     }
@@ -436,6 +442,7 @@ public class SettingsActivity extends AppCompatActivity {
         Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "onPause()");
         saveHereCredsIfChanged();
         Prefs.setUseKph(this, (speedUnitSpinner.getSelectedItemPosition() == 1)); //0 is mph, 1 is km/h
+        Prefs.setKeepScreenOn(this, keepScreenOnSwitch.isChecked());
         emptyCredentials.cancel();
         shortCredentials.cancel();
         super.onPause();

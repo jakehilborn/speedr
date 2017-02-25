@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
     protected void onStart() {
         super.onStart();
         Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "onStart()");
+
+        if (Prefs.isKeepScreenOn(this)) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
 
         if (Prefs.isUseKph(this)) {
             speedUnit.setText(R.string.kmh);
