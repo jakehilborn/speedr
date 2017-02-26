@@ -54,6 +54,7 @@
     <string name="internet_down_notice_text">Lost Internet connection - speed limit may be out of date</string>
 
     <string name="new_update_available">New update available</string>
+    <string name="update_available_content_main_activity">Use the app store you downloaded Speedr from to update. Or, click download for the apk.</string>
     <string name="download_button_text">Download</string>
     <string name="later_button_text">Later</string>
 
@@ -80,7 +81,7 @@
     <string name="content_description_developer_info">Info about Speedr developer</string>
 
     <string name="update_available_section">New update available</string>
-    <string name="update_available_content">Use the app store you downloaded Speedr from to update. Or, click here for the apk.</string>
+    <string name="update_available_content_settings">Use the app store you downloaded Speedr from to update. Or, click here for the apk.</string>
 
     <string name="speed_limit_provider_section">Speed limit provider</string>
     <string name="open_street_map_limit_provider_button_text">Open Street Map</string>

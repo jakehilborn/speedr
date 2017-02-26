@@ -759,6 +759,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.new_update_available)
+                .setMessage(R.string.update_available_content_main_activity)
                 .setCancelable(true)
                 .setPositiveButton(R.string.download_button_text, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {

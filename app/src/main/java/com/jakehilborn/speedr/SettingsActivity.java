@@ -439,7 +439,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void updateAvailableOnClick(View view) {
-        Prefs.setUpdateAcknowledged(this, false);
+        Prefs.setUpdateAcknowledged(this, true);
         launchWebpage("https://jakehilborn.github.io/speedr");
         Answers.getInstance().logCustom(new CustomEvent("Settings update download"));
     }
