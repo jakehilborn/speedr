@@ -99,6 +99,12 @@ public class SettingsActivity extends AppCompatActivity {
         Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "onStart()");
         String versionString = getString(R.string.version_text) + " " + BuildConfig.VERSION_NAME;
         version.setText(versionString);
+
+        if (BuildConfig.VERSION_CODE < Prefs.getLatestVersion(this)) {
+            findViewById(R.id.update_available_section).setVisibility(View.VISIBLE);
+            findViewById(R.id.update_available).setVisibility(View.VISIBLE);
+        }
+
         super.onStart();
     }
 
@@ -426,6 +432,11 @@ public class SettingsActivity extends AppCompatActivity {
                 .show();
 
         Answers.getInstance().logCustom(new CustomEvent("Viewed changelog"));
+    }
+
+    public void updateAvailableOnClick(View view) {
+        launchWebpage("https://jakehilborn.github.io/speedr");
+        Answers.getInstance().logCustom(new CustomEvent("Settings update download"));
     }
 
     @Override

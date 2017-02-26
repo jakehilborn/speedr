@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class Prefs {
-
+    private static final String LATEST_VERSION = "latest_version";
+    private static final String UPDATE_ACKNOWLEDGED = "update_acknowledged";
     private static final String USE_KPH = "use_kph";
     private static final String TERMS_ACCEPTED = "terms_accepted";
     private static final String HERE_SUGGESTION_ACKNOWLEDGED = "here_suggestion_acknowledged";
@@ -34,6 +35,22 @@ public class Prefs {
 
     private static SharedPreferences prefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public static void setLatestVersion(Context context, int latestVersion) {
+        editPrefs(context).putInt(LATEST_VERSION, latestVersion).apply();
+    }
+
+    public static int getLatestVersion(Context context) {
+        return prefs(context).getInt(LATEST_VERSION, 0);
+    }
+
+    public static void setUpdateAcknowledged(Context context, boolean acknowledged) {
+        editPrefs(context).putBoolean(UPDATE_ACKNOWLEDGED, acknowledged).apply();
+    }
+
+    public static boolean isUpdateAcknowledged(Context context) {
+        return prefs(context).getBoolean(UPDATE_ACKNOWLEDGED, false);
     }
 
     public static void setUseKph(Context context, boolean useKph) {

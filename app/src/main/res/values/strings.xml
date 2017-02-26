@@ -53,6 +53,10 @@
     <string name="pending_here_activation_text">HERE accounts may take up to 1 hour to activate. This text will disappear once activation completes. Using OpenStreetMap until activation completes.</string>
     <string name="internet_down_notice_text">Lost Internet connection - speed limit may be out of date</string>
 
+    <string name="new_update_available">New update available</string>
+    <string name="download_button_text">Download</string>
+    <string name="later_button_text">Later</string>
+
     <!-- Stats dialog -->
     <string name="stats_title">Stats</string>
     <string name="stats_this_week">This week</string>
@@ -74,6 +78,9 @@
     <!-- SettingsActivity -->
     <string name="speedr_settings_app_bar_title">Speedr settings</string>
     <string name="content_description_developer_info">Info about Speedr developer</string>
+
+    <string name="update_available_section">New update available</string>
+    <string name="update_available_content">Use the app store you downloaded Speedr from to update. Or, click here for the apk.</string>
 
     <string name="speed_limit_provider_section">Speed limit provider</string>
     <string name="open_street_map_limit_provider_button_text">Open Street Map</string>

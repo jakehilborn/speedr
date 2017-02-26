@@ -19,6 +19,50 @@
         >
 
         <TextView
+            android:id="@+id/update_available_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_update_available"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:id="@+id/update_available"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="?selectableItemBackground"
+            android:onClick="updateAvailableOnClick"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
+                android:src="@drawable/update"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/update_available_content"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"

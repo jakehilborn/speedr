@@ -13,6 +13,7 @@ import android.content.res.ColorStateList;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +51,11 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.jakehilborn.speedr.utils.FormatTime;
 import com.jakehilborn.speedr.utils.Prefs;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements MainService.Callback {
 
@@ -181,6 +187,11 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (isMainServiceRunning()) {
             bindService(new Intent(this, MainService.class), mainServiceConn, BIND_IF_SERVICE_RUNNING);
             driveTimeHandler.postDelayed(driveTimeRunnable, DRIVE_TIME_REFRESH_FREQ);
+        } else {
+            updateCheck(); //If update available then a dialog will show on the next MainActivity.onStart()
+            if (!Prefs.isUpdateAcknowledged(this) && BuildConfig.VERSION_CODE < Prefs.getLatestVersion(this)) {
+                showUpdateDialog();
+            }
         }
     }
 
@@ -277,8 +288,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (firstLimitTime != 0) { //User resuming session, first limit has not yet been received
             if (mainService != null && mainService.stopTime != 0) { //MainService stopping, use shared stop time to keep time values in sync
                 driveTimeNanos += (mainService.stopTime - firstLimitTime);
-            }
-            else {
+            } else {
                 driveTimeNanos += (System.nanoTime() - firstLimitTime);
             }
         }
@@ -712,6 +722,58 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
                 }
                 googleApiClient.disconnect();
         }
+    }
+
+    private void updateCheck() {
+        new Thread() {
+            public void run() {
+                Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "updateCheck()");
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) new URL("https://jakehilborn.github.io/speedr/latest-version.txt").openConnection();
+                    conn.setConnectTimeout(30000);
+                    conn.connect();
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        String latestVersion = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
+                        if (Prefs.getLatestVersion(MainActivity.this) < Integer.valueOf(latestVersion)) {
+                            Prefs.setUpdateAcknowledged(MainActivity.this, false);
+                        }
+                        Prefs.setLatestVersion(MainActivity.this, Integer.valueOf(latestVersion));
+                    } else {
+                        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Update check failed");
+                        Crashlytics.logException(new Exception("Update check response: " + conn.getResponseCode()));
+                    }
+                } catch (Throwable t) {
+                    Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "Update check failed");
+                    Crashlytics.logException(t);
+                }
+            }
+        }.start();
+    }
+
+    private void showUpdateDialog() {
+        //Only show dialog for side-loaded installs. If a store installed the app installer package name will be non-null.
+        if (this.getPackageManager().getInstallerPackageName(this.getPackageName()) != null) {
+            Answers.getInstance().logCustom(new CustomEvent("Installed via: " + this.getPackageManager().getInstallerPackageName(this.getPackageName())));
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.new_update_available)
+                .setCancelable(true)
+                .setPositiveButton(R.string.download_button_text, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        Prefs.setUpdateAcknowledged(MainActivity.this, true);
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://jakehilborn.github.io/speedr")));
+                        Answers.getInstance().logCustom(new CustomEvent("MainActivity update download"));
+                    }
+                })
+                .setNegativeButton(R.string.later_button_text, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        Prefs.setUpdateAcknowledged(MainActivity.this, true);
+                        Answers.getInstance().logCustom(new CustomEvent("MainActivity update later"));
+                    }
+                })
+                .show();
     }
 
     @Override
