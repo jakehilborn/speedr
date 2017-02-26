@@ -147,7 +147,14 @@
     <string name="close_dialog_button">Close</string>
 
     <string name="changelog_content">
-        <b>1.0</b>\n
+        <b>v1.1.0 - 2/25/17</b>\n
+        <ul>
+            <li>Bug fixes</li>\n
+            <li>Setting to keep screen on</li>\n
+            <li>Added another OpenStreetMap server. Thanks to Daniel Ciao for sharing his personal server built for Velociraptor.</li>\n
+        </ul>
+        \n
+        <b>v1.0.0 - 2/19/17</b>\n
         <ul>
             <li>Initial release</li>
         </ul>
