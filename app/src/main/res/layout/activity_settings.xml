@@ -342,6 +342,7 @@
                 android:id="@+id/screen_on_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:onClick="keepScreenOnClick"
                 />
         </LinearLayout>
 

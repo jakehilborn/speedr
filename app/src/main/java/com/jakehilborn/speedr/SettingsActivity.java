@@ -368,6 +368,10 @@ public class SettingsActivity extends AppCompatActivity {
         Answers.getInstance().logCustom(new CustomEvent("Launched OpenStreetMap donate"));
     }
 
+    public void keepScreenOnClick(View view) {
+        Answers.getInstance().logCustom(new CustomEvent(keepScreenOnSwitch.isChecked() ? "Keep screen on enabled" : "Keep screen on enabled"));
+    }
+
     public void privacyAndTermsOnClick(View view) {
         Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "privacyAndTermsOnClick()");
 
