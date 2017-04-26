@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -198,6 +199,7 @@ public class SettingsActivity extends AppCompatActivity {
         Crashlytics.log(Log.INFO, SettingsActivity.class.getSimpleName(), "showHereMapsTerms()");
 
         WebView webView = new WebView(this);
+        webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(getString(R.string.here_maps_terms_url));
 
         new AlertDialog.Builder(this)

@@ -107,7 +107,7 @@
     <string name="short_here_maps_credentials_toast">The HERE Maps credentials you entered look incomplete. Check to make sure you copied the entire app id and app code.</string>
     <string name="enabled_here_maps_toast">Enabled HERE Maps</string>
 
-    <string name="here_maps_terms_url">"https://legal.here.com/en/terms/serviceterms/us/"</string>
+    <string name="here_maps_terms_url">"https://legal.here.com/us-en/terms/serviceterms"</string>
 
     <string name="open_street_map_section">OpenStreetMap</string>
     <string name="check_open_street_map_coverage_button_text">Check OpenStreetMap coverage</string>
