@@ -148,14 +148,19 @@
     <string name="close_dialog_button">Close</string>
 
     <string name="changelog_content">
-        <b>v1.1.x - 2/25/17</b>\n
+        <b>v1.1.2 - 4/26/17</b>\n
+        <ul>
+            <li>Updated HERE terms URL</li>\n
+        </ul>
+        \n
+        <b>v1.1.1 - 2/25/17</b>\n
         <ul>
             <li>Bug fixes</li>\n
             <li>Setting to keep screen on</li>\n
             <li>Added another OpenStreetMap server. Thanks to Daniel Ciao for sharing his personal server built for Velociraptor.</li>\n
         </ul>
         \n
-        <b>v1.0.x - 2/19/17</b>\n
+        <b>v1.0 - 2/19/17</b>\n
         <ul>
             <li>Initial release</li>
         </ul>
