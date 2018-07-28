@@ -147,6 +147,11 @@
     <string name="close_dialog_button">Close</string>
 
     <string name="changelog_content">
+        <b>v1.2.0 - 7/28/18</b>\n
+        <ul>
+            <li>Removed HERE Maps since the speed limit API was deactivated.</li>\n
+        </ul>
+        \n
         <b>v1.1.2 - 4/26/17</b>\n
         <ul>
             <li>Updated HERE terms URL</li>\n
@@ -159,7 +164,7 @@
             <li>Added another OpenStreetMap server. Thanks to Daniel Ciao for sharing his personal server built for Velociraptor.</li>\n
         </ul>
         \n
-        <b>v1.0 - 2/19/17</b>\n
+        <b>v1.0.0 - 2/19/17</b>\n
         <ul>
             <li>Initial release</li>
         </ul>
