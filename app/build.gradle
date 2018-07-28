@@ -7,7 +7,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+//    buildToolsVersion "25.0.0"
 
     defaultConfig {
 //        applicationId "com.jakehilborn.speedr.prod"
@@ -30,17 +30,17 @@ buildscript {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') { transitive = true }
-    compile 'com.google.android.gms:play-services-location:9.8.0' //Last version compatible with Android SDK emulators
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.1'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    api 'com.android.support:appcompat-v7:25.2.0'
+    api 'com.android.support:design:25.2.0'
+    api('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') { transitive = true }
+    api 'com.google.android.gms:play-services-location:9.8.0' //Last version compatible with Android SDK emulators
+    api 'com.google.code.gson:gson:2.8.0'
+    api 'com.squareup.retrofit2:retrofit:2.1.0'
+    api 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    api 'com.squareup.retrofit2:converter-gson:2.1.0'
+    api 'io.reactivex:rxandroid:1.2.1'
+    api 'io.reactivex:rxjava:1.2.1'
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
 }
