@@ -19,6 +19,12 @@ public class UnitUtils {
         return (int) Math.round(ms * 3.6);
     }
 
+    public static Integer roundToFive(Integer kph) { //meters per second to nearest increment of 5 kph
+        if (kph == null) return null;
+
+        return 5 * Math.round(kph / 5);
+    }
+
     public static Integer msToMphRoundToFive(Double ms) { //meters per second to nearest increment of 5 mph
         if (ms == null) return null;
 

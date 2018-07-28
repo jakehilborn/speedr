@@ -9,10 +9,11 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakehilborn.speedr.heremaps.HereGeoService;
 import com.jakehilborn.speedr.heremaps.HereMapsManager;
-import com.jakehilborn.speedr.heremaps.HereMapsService;
-import com.jakehilborn.speedr.heremaps.deserial.HereMapsResponse;
-import com.jakehilborn.speedr.heremaps.deserial.Response;
+import com.jakehilborn.speedr.heremaps.HerePDEService;
+import com.jakehilborn.speedr.heremaps.deserial.geo.HereGeoResponse;
+import com.jakehilborn.speedr.heremaps.deserial.geo.Response;
 import com.jakehilborn.speedr.overpass.OverpassInterceptor;
 import com.jakehilborn.speedr.overpass.OverpassManager;
 import com.jakehilborn.speedr.overpass.OverpassService;
@@ -44,20 +45,22 @@ public class LimitFetcher {
     private Subscription overpassSubscription;
     private OverpassManager overpassManager;
 
-    private HereMapsService hereMapsService;
-    private Converter<ResponseBody, HereMapsResponse> hereMapsErrorConverter;
+    private HerePDEService herePDEService;
+
+    private HereGeoService hereGeoService;
+    private Converter<ResponseBody, HereGeoResponse> hereMapsErrorConverter;
     private Subscription hereMapsSubscription;
     private HereMapsManager hereMapsManager;
     private Toast hereMapsError;
 
     public static final String USER_AGENT = "Speedr/" + BuildConfig.VERSION_NAME;
 
-    public LimitFetcher(StatsCalculator statsCalculator) {
+    public LimitFetcher(Context context, StatsCalculator statsCalculator) {
         buildOverpassService();
         overpassManager = new OverpassManager(statsCalculator);
 
         buildHereMapsService();
-        hereMapsManager = new HereMapsManager(statsCalculator);
+        hereMapsManager = new HereMapsManager(context, statsCalculator);
     }
 
     private void buildOverpassService() {
@@ -80,16 +83,14 @@ public class LimitFetcher {
     }
 
     private void buildHereMapsService() {
-        Gson gson = new GsonBuilder().create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://route.api.here.com/routing/7.2/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
+        Retrofit geoRetrofit = new Retrofit.Builder()
+                .baseUrl("https://reverse.geocoder.cit.api.here.com/6.2/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
-        hereMapsService = retrofit.create(HereMapsService.class);
-        hereMapsErrorConverter = retrofit.responseBodyConverter(HereMapsResponse.class, new Annotation[0]);
+        hereGeoService = geoRetrofit.create(HereGeoService.class);
+        hereMapsErrorConverter = geoRetrofit.responseBodyConverter(HereGeoResponse.class, new Annotation[0]);
     }
 
     public void fetchLimit(Context context, Double lat, Double lon) {
@@ -131,17 +132,17 @@ public class LimitFetcher {
         final boolean isUseKph = Prefs.isUseKph(context);
         String appId = Prefs.getHereAppId(context);
         String appCode = Prefs.getHereAppCode(context);
-        String waypoint = lat + "," + lon;
+        String prox = lat + "," + lon + "," + RADIUS;
 
-        hereMapsSubscription = hereMapsService.getLimit(appId, appCode, "roadName", waypoint, USER_AGENT)
+        hereMapsSubscription = hereGeoService.reverseGeocode(appId, appCode, prox, "retrieveAddresses", "linkInfo", "9", USER_AGENT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<HereMapsResponse>() {
+                .subscribe(new SingleSubscriber<HereGeoResponse>() {
                     @Override
-                    public void onSuccess(HereMapsResponse hereMapsResponse) {
-                        hereMapsSubscription = null;
+                    public void onSuccess(HereGeoResponse hereGeoResponse) {
                         Prefs.setPendingHereActivation(context, false);
-                        hereMapsManager.handleResponse(hereMapsResponse, lat, lon, isUseKph);
+                        hereMapsManager.handleResponse(context, hereGeoResponse, lat, lon, isUseKph);
+                        hereMapsSubscription = null;
                     }
 
                     @Override
@@ -158,9 +159,9 @@ public class LimitFetcher {
                                 Response hereResponse = hereMapsErrorConverter.convert(body).getResponse();
 
                                 statusCode = ((HttpException) error).code();
-                                type = hereResponse.getType();
-                                subType = hereResponse.getSubtype();
-                                details = hereResponse.getDetails();
+//                                type = hereResponse.getType();
+//                                subType = hereResponse.getSubtype();
+//                                details = hereResponse.getDetails();
                             } catch (IOException ioe) {
                                 Crashlytics.logException(ioe);
                             }

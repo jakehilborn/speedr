@@ -145,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         playServicesErrorToast = Toast.makeText(this, R.string.play_services_error_toast, Toast.LENGTH_LONG);
         poweredByOpenStreetMapToast = Toast.makeText(MainActivity.this, R.string.powered_by_open_street_map_toast, Toast.LENGTH_SHORT);
         poweredByHereMapsToast = Toast.makeText(MainActivity.this, R.string.powered_by_here_maps_toast, Toast.LENGTH_SHORT);
+
+        //DELETE THIS
+        Prefs.setHereAppId(this, "8R2okd2taFgs8TBeFwQN");
+        Prefs.setHereAppCode(this, "jNqRDiE-aWj2sozwuRRByw");
     }
 
     @Override

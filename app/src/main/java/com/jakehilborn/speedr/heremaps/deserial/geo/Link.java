@@ -1,4 +1,4 @@
-package com.jakehilborn.speedr.heremaps.deserial;
+package com.jakehilborn.speedr.heremaps.deserial.geo;
 
 public class Link {
     private Double speedLimit;

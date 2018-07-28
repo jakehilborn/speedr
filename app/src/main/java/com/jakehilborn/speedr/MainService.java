@@ -98,7 +98,7 @@ public class MainService extends Service implements StatsCalculator.Callback {
         statsCalculator = new StatsCalculator();
         statsCalculator.setCallback(this);
         statsCalculator.setTimeSaved(Prefs.getSessionTimeSaved(this));
-        limitFetcher = new LimitFetcher(statsCalculator);
+        limitFetcher = new LimitFetcher(this, statsCalculator);
 
         final LocationListener locationListener = new LocationListener() {
             @Override

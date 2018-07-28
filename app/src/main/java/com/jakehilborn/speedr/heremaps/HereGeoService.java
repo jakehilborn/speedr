@@ -7,13 +7,15 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 import rx.Single;
 
-public interface HereMapsService {
+public interface HereGeoService {
 
-    @GET("getlinkinfo.json")
-    Single<HereGeoResponse> getLimit(
+    @GET("reversegeocode.json")
+    Single<HereGeoResponse> reverseGeocode(
             @Query("app_id") String appId,
             @Query("app_code") String appCode,
-            @Query("linkattributes") String linkattributes,
-            @Query("waypoint") String waypoint,
+            @Query("prox") String prox,
+            @Query("mode") String mode,
+            @Query("locationAttributes") String locationAttributes,
+            @Query("gen") String gen,
             @Header("User-Agent") String userAgent);
 }
