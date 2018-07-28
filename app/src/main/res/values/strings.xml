@@ -2,7 +2,7 @@
     <string name="app_name">Speedr</string>
 
     <string name="speedr_terms_title">Speedr Terms</string>
-    <string name="speedr_terms_content">Speedr is for informational purposes only. Its function is to quantify how much time, or how little time, one saves when speeding in their car to help the user decide if speeding is worth the safety, monetary, and legal risks. Speeding is illegal and dangerous. By accepting these terms you absolve the Speedr developers, speed limit providers, and all other parties of any responsibility for accidents, legal consequences, and any and all other outcomes. The data presented by Speedr is not guaranteed to be accurate. Outdated/incorrect speed limit data and innaccurate GPS sensors may produce faulty data. Pay attention to the posted speed limits of roads as Speedr may not present accurate speed limits and pay attention to your vehicles\' speedometer as Speedr may not present accurate current speed readings.</string>
+    <string name="speedr_terms_content">Speedr is for informational purposes only. Its function is to quantify how much time, or how little time, one saves when speeding in their car to help the user decide if speeding is worth the safety, monetary, and legal risks. Speeding is illegal and dangerous. By accepting these terms you absolve the Speedr developers, speed limit providers, and all other parties of any responsibility for accidents, legal consequences, and any and all other outcomes. The data presented by Speedr is not guaranteed to be accurate. Outdated/incorrect speed limit data and inaccurate GPS sensors may produce faulty data. Pay attention to the posted speed limits of roads as Speedr may not present accurate speed limits and pay attention to your vehicle\'s speedometer as Speedr may not present accurate current speed readings.</string>
     <string name="accept_terms_button_text">Accept Terms</string>
     <string name="reject_terms_button_text">Reject Terms</string>
 
@@ -40,7 +40,7 @@
     <string name="current_speed_title">CURRENT SPEED</string>
 
     <string name="missing_open_street_map_limit_dialog_title">Spotty speed limits?</string>
-    <string name="missing_open_street_map_limit_dialog_content">HERE Maps offers more accurate speed limits and better coverage. Open settings to create a free HERE Maps account.</string>
+    <string name="missing_open_street_map_limit_dialog_content">This road is missing speed limit data. Open settings for a link to add this road to OpenStreetMaps.</string>
     <string name="settings_dialog_button">Settings</string>
 
     <string name="here_maps_suggestion_snackbar_text">
@@ -133,9 +133,8 @@
         <a href="http://try.crashlytics.com/terms">Crash report tool terms</a><br>
         <br>
         3rd party speed limit providers<br>
-        <a href="HERE_TERMS_PLACEHOLDER">HERE Service Terms</a><br>
         <a href="https://www.openstreetmap.org/copyright">OpenStreetMap Copyright</a>
-    ]]></string> <!-- HERE_TERMS_PLACEHOLDER is replaced with @string/here_maps_terms_url at runtime -->
+    ]]></string>
 
     <string name="developed_by_jake_hilborn_dialog_title">Developed by Jake Hilborn</string>
     <string name="github_link_text">GitHub</string>

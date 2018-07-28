@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             limitUnit.setText(R.string.mph);
         }
 
-        useHereMaps = Prefs.isUseHereMaps(this);
+        useHereMaps = false;
 
         if (useHereMaps) {
             limitProviderLogo.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.here_maps_logo));
@@ -488,7 +487,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         stopService(new Intent(this, MainService.class));
         mainService = null;
         driveTimeHandler.removeCallbacks(driveTimeRunnable);
-        showHereSuggestion();
     }
 
     private void styleStartStopButton(boolean start) {
@@ -505,27 +503,6 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
             ((FloatingActionButton) findViewById(R.id.start_stop))
                     .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.car));
         }
-    }
-
-    private void showHereSuggestion() {
-        if (useHereMaps || Prefs.isHereSuggestionAcknowledged(this)) return;
-
-        Crashlytics.log(Log.INFO, MainActivity.class.getSimpleName(), "showHereSuggestion()");
-
-        Snackbar snackbar = Snackbar
-                .make(findViewById(R.id.start_stop), R.string.here_maps_suggestion_snackbar_text, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.dismiss_snackbar, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Prefs.setHereSuggestionAcknowledged(MainActivity.this, true);
-                    }
-                });
-
-        View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundColor(getResources().getColor(R.color.darkGray));
-        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setMaxLines(5); //Override 2 line limit
-        snackbar.show();
     }
 
     public void resetSessionOnClick(View view) {
@@ -560,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements MainService.Callb
         if (Prefs.isTermsAccepted(this)) return true;
 
         String localizedTerms = getString(R.string.speedr_terms_content);
-        String englishTerms = "Speedr is for informational purposes only. Its function is to quantify how much time, or how little time, one saves when speeding in their car to help the user decide if speeding is worth the safety, monetary, and legal risks. Speeding is illegal and dangerous. By accepting these terms you absolve the Speedr developers, speed limit providers, and all other parties of any responsibility for accidents, legal consequences, and any and all other outcomes. The data presented by Speedr is not guaranteed to be accurate. Outdated/incorrect speed limit data and innaccurate GPS sensors may produce faulty data. Pay attention to the posted speed limits of roads as Speedr may not present accurate speed limits and pay attention to your vehicles' speedometer as Speedr may not present accurate current speed readings.";
+        String englishTerms = "Speedr is for informational purposes only. Its function is to quantify how much time, or how little time, one saves when speeding in their car to help the user decide if speeding is worth the safety, monetary, and legal risks. Speeding is illegal and dangerous. By accepting these terms you absolve the Speedr developers, speed limit providers, and all other parties of any responsibility for accidents, legal consequences, and any and all other outcomes. The data presented by Speedr is not guaranteed to be accurate. Outdated/incorrect speed limit data and inaccurate GPS sensors may produce faulty data. Pay attention to the posted speed limits of roads as Speedr may not present accurate speed limits and pay attention to your vehicle's speedometer as Speedr may not present accurate current speed readings.";
 
         //These terms are important. Always show original in addition to localized terms since we can't rely on translators to correctly word this.
         if (!localizedTerms.equals(englishTerms)) {

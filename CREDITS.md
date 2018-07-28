@@ -4,4 +4,4 @@ Code and UI design inspiration: [Velociraptor](https://github.com/plusCubed/velo
 
 Icons: [Material Design Icons](https://materialdesignicons.com)
 
-Speed limit data: OpenStreetMap & HERE
+Speed limit data: OpenStreetMap
